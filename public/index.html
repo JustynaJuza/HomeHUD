@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HQ</title>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+Heartbit:
+<div id="heartbit"></div>
+<button id="sl1">sl1</button>
+<br />
+<button id="sl2">sl2</button>
+<br />
+<button id="sl3">sl3</button>
+<br />
+<button id="sl4">sl4</button>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://hql.cloudapp.net');
+  socket.on('news', function (data) {
+  	$('#heartbit').html(data.ping);
+    console.log(data);
+  });
+
+  $('#sl1').click(function(){
+  	console.log('emiting sl1 event');
+    socket.emit('sl1 event', { on: 'true' });
+  });
+
+  $('#sl2').click(function(){
+    console.log('emiting sl2 event');
+    socket.emit('sl2 event', { on: 'true' });
+  });
+
+  $('#sl3').click(function(){
+    console.log('emiting sl3 event');
+    socket.emit('sl3 event', { on: 'true' });
+  });
+
+  $('#sl4').click(function(){
+    console.log('emiting sl4 event');
+    socket.emit('sl4 event', { on: 'true' });
+  });
+
+</script>
+
+
+</body>
+</html>
