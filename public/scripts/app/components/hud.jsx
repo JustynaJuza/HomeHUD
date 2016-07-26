@@ -8,38 +8,40 @@ import React from 'react';
 class Hud extends React.Component {
 
     render() {
-        return <div className="hud">
-        	<Overview>
-        	<Tab>1</Tab>
-        	<Tab>2</Tab>
-        	<Tab>3</Tab>
+        return (
+        <div className="hud">
+            <span>Hello!</span>
         </div>
+        )
     }
 }
 
 class Tab extends React.Component {
 
-    getDefaultProps() {
-            return {
-                hasFocus: false,
-                isSelected: false,
-                id: null,
-                panelId: null
-            };
-        },
+   getDefaultProps() {
+           return {
+               hasFocus: false,
+               isSelected: false,
+               id: null,
+               panelId: null
+           };
+       },
 
-        render() {
-            return <div className="tab">
-        	<Overview>
-        	<Tab>1</Tab>
-        	<Tab>2</Tab>
-        	<Tab>3</Tab>
-        </div>
-        }
+       render() {
+           return
+           <div className="tab">
+       	<Overview>
+       	<Tab>1</Tab>
+       	<Tab>2</Tab>
+       	<Tab>3</Tab>
+       </div>
+       }
 }
 
-export default Hud;
-
+module.exports = {
+    Hud: Hud,
+    Tab: Tab
+};
 
 // if (isNode) {
 //     exports.Hud = Hud
