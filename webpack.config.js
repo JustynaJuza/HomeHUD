@@ -6,15 +6,15 @@ var autoprefixer = require('autoprefixer');
 
 const paths = {
     app: path.join(__dirname, 'public/scripts'),
-    build: path.join(__dirname, 'public/scripts/min'),
-    style: path.join(__dirname, 'public/stylesheets')
+    build: path.join(__dirname, 'public/scripts/dist'),
+    styles: path.join(__dirname, 'public/styles')
 };
 
 const config = {
-    entry: paths.app + '/app/components/index.tsx',
+    entry: paths.app + '/components/index.tsx',
     output: {
         path: paths.build,
-        filename: '[name].js'
+        filename: '[name].bundle.js'
     },
     module: {
         loaders: [
@@ -38,7 +38,7 @@ const config = {
             {
                 test: /\.less$/,
                 loaders: ['style', 'css', 'less'],
-                include: paths.style
+                include: paths.styles
             },
             {
                 test: /\.scss$/,

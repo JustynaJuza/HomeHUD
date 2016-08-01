@@ -5,7 +5,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 
-import * as style from './hud.css';
+import * as style from './../../styles/hud.css';
 
 //import { Component } from "react";
 //import { Tab, Tabs, TabList, TabPanel } from './tabs/exports'

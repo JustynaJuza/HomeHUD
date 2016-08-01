@@ -11,6 +11,6 @@
   },
   "files": [
     "./typings/index.d.ts",
-    "./public/scripts/app/components/index.tsx"
+    "./public/scripts/components/index.tsx"
   ]
 }
