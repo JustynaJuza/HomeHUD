@@ -1,52 +1,95 @@
 const webpack = require('webpack');
 const path = require('path');
 
+var precss       = require('precss');
+var autoprefixer = require('autoprefixer');
+
 const paths = {
     app: path.join(__dirname, 'public/scripts'),
-    build: path.join(__dirname, 'public/scripts/min')
+    build: path.join(__dirname, 'public/scripts/min'),
+    style: path.join(__dirname, 'public/stylesheets')
 };
 
-const TARGET = process.env.npm_lifecycle_event;
-
 const config = {
-    entry: paths.app + '/app.jsx',
+    entry: paths.app + '/app/components/index.tsx',
     output: {
         path: paths.build,
         filename: '[name].js'
     },
-    // add 'babel-loader' jsx transforms (requires babel-loader babel-core babel-preset-es2015 babel-preset-react)
     module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: 'babel?cacheDirectory',
-            query: {
-                presets: ['es2015', 'react']
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'babel',
+                query: {
+                    presets: ['es2015', 'react']
+                }
+            },
+            {
+                test: /\.ts(x?)$/,
+                loader: 'babel-loader!ts-loader',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+            },
+            {
+                test: /\.less$/,
+                loaders: ['style', 'css', 'less'],
+                include: paths.style
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass'],
+                include: paths.style
             }
-        }]
+        ],
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'source-map-loader'
+            }
+        ]
+    },
+    postcss: function () {
+        return [precss, autoprefixer];
     },
     modulesDirectories: paths.app,
-    // look for files with extensions to just require('file')
+    devtool: 'source-map',
     resolve: {
-        extensions: ['', '.js', '.json', '.jsx']
+        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
     },
     plugins: [
         // minify code
         new webpack.optimize.UglifyJsPlugin({
             compress: {
-                warnings: false,
+                warnings: false
             },
             output: {
-                comments: false,
-            },
-        })
+                comments: false
+            }
+        }),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: '"development"',
-                BABEL_ENV: TARGET
+                NODE_ENV: '"development"'
             }
         })
-    ]
+    ],
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM'
+    }
 };
 
 module.exports = config;
+
+// module.exports = {
+//     config,
+//     postcss: [
+//         require('postcss-cssnext')({
+//             browsers: ['ie >= 9', 'last 2 versions']
+//         })
+//     ]
+// }
