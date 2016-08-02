@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { Hud } from './hud';
+import { Layout } from './page/layout';
 
 ReactDOM.render(
-    <Hud compiler="TypeScript" framework="React" />,
-    document.getElementById('hud')
+    <Layout />,
+    document.getElementById('layout')
 );
