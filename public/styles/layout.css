@@ -28,26 +28,3 @@ a {
     margin: 0 auto;
     height: 100%;
 }
-
-.list {
-	background: #333;
-	color: #fff;
-}
-
-.tab {
-	background: #333;
-	color: #fff;
-}
-
-.header {
-	background: #c3c3c3;
-	color: #333;
-	padding: 1em 1.25em;
-    border-bottom: 3px solid #452244;
-}
-
-.title {
-	background: #333;
-	color: #fff;
-}
-

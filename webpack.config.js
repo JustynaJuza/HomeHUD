@@ -53,8 +53,22 @@ const config = {
             }
         ]
     },
-    postcss: function () {
-        return [precss, autoprefixer];
+//     postcss([
+//     require('postcss-advanced-variables')({ /* options */ })
+// ]);
+    postcss: function (webpack) {
+        return [
+            // require('postcss-import')({ 
+            //     path: [paths.styles, './public/styles/*.css'],
+            //     addDependencyTo: webpack
+            // }),
+            require('postcss-easy-import'),
+            require('postcss-url'),
+            require('precss'),
+            require('postcss-cssnext')
+            //require('postcss-advanced-variables'),
+            //require('postcss-nested')
+                ];
     },
     modulesDirectories: paths.app,
     devtool: 'source-map',

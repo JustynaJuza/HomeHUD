@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 import * as style from './../../../styles/layout.css';
+import { Header } from './header';
+import { Navigation } from './navigation';
+
 
 interface ILayoutProps {
 }
@@ -14,7 +17,8 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
         return (
             <div className={style.layout}>
-                   <Header />
+                   <Header />                   
+                   <Navigation />
                    <Content />                  
                </div>
                );
@@ -44,44 +48,4 @@ class Content extends React.Component<IContentProps, IContentState> {
     }
 }
 
-
-interface IHeaderProps {
-}
-
-interface IHeaderState {
-}
-
-class Header extends React.Component<IHeaderProps, IHeaderState> {
-    public render() {
-
-        return (
-            <div className={style.header}>
-                <span className={style.title}>HomeHUD</span>
-                   <Navigation />
-               </div>
-               );
-    }
-}
-
-interface INavigationProps {
-}
-
-interface INavigationState {
-}
-
-class Navigation extends React.Component<INavigationProps, INavigationState> {
-    public render() {
-
-        return (
-            <ul className={style.list}>
-<li className={style.tab}>All</li>
-<li className={style.tab}>One</li>
-<li className={style.tab}>Two</li>
-<li className={style.tab}>Three</li>
-</ul>
-               );
-    }
-}
-
-export { Layout, Header, Navigation };
-
+export { Layout };
