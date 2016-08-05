@@ -4,7 +4,7 @@
 	background: $header_color;
 	color: #333;
 	padding: 1em 1.25em;
-    border-bottom: 3px solid #452244;
+    border-bottom: 3px solid $header_border_color;
 }
 
 .logo {

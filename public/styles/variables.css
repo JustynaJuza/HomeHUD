@@ -1,9 +1,17 @@
-$color_accent_1: #93ff33;
-$color_background_1: #efefef;
+$color_accent_green: #BBFF33;
+$color_accent_yellow: #FFC300;
+$color_accent_lime: #DAF7A6;
+$color_accent_orange: #FF5733;
+$color_accent_rose: #C70039;
+$color_background_purple: #900C3F;
+$color_background_plum: #581845;
+$color_background_neutral: #efefef;
 $color_background_2: #acacac;
 $color_background_3: #c3c3c3;
 
-$logo_color: $color_accent_1;
-$header_color: $color_background_3;
-$body_color: $color_background_1;
-$content_color: $color_background_2;
+$logo_color: $color_accent_rose;
+$header_color: $color_accent_lime;
+$header_border_color: $color_accent_rose;
+
+$body_color: #fff;
+$content_color: #fff;

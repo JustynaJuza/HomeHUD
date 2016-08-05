@@ -14,10 +14,18 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
 
         return (
             <ul className={style.list}>
-<li className={style.tab}>All</li>
-<li className={style.tab}>One</li>
-<li className={style.tab}>Two</li>
-<li className={style.tab}>Three</li>
+<li className={style.tab}>
+<a href="#" className={style.link}>Control Panel</a>
+</li>
+<li className={style.tab}>
+<a href="#" className={style.link}>Gaming room</a>
+</li>
+<li className={style.tab}>
+<a href="#" className={style.link}>Bedroom</a>
+</li>
+<li className={style.tab}>
+<a href="#" className={style.link}>Living room</a>
+</li>
 </ul>
                );
     }
