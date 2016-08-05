@@ -1,13 +1,29 @@
 const webpack = require('webpack');
 const path = require('path');
 
-var precss       = require('precss');
-var autoprefixer = require('autoprefixer');
-
 const paths = {
     app: path.join(__dirname, 'public/scripts'),
     build: path.join(__dirname, 'public/scripts/dist'),
     styles: path.join(__dirname, 'public/styles')
+};
+
+const postcssConfig = {
+    import: function(webpack){
+        return require('postcss-import')({ 
+                path: paths.styles,
+                addDependencyTo: webpack
+            })
+    },
+    precss: require('precss'), //({        
+           // variables: [require(paths.styles + '/variables.js')].concat({'$color_accent_1': '#93ff33'})
+    //}),    
+    processors: [
+            require('postcss-url'),
+            require('postcss-cssnext')
+            //({
+//             browsers: ['ie >= 9', 'last 2 versions']
+//         })
+            ]
 };
 
 const config = {
@@ -53,22 +69,11 @@ const config = {
             }
         ]
     },
-//     postcss([
-//     require('postcss-advanced-variables')({ /* options */ })
-// ]);
     postcss: function (webpack) {
         return [
-            // require('postcss-import')({ 
-            //     path: [paths.styles, './public/styles/*.css'],
-            //     addDependencyTo: webpack
-            // }),
-            require('postcss-easy-import'),
-            require('postcss-url'),
-            require('precss'),
-            require('postcss-cssnext')
-            //require('postcss-advanced-variables'),
-            //require('postcss-nested')
-                ];
+        postcssConfig.import(webpack),
+        postcssConfig.precss,
+                ].concat(postcssConfig.processors);
     },
     modulesDirectories: paths.app,
     devtool: 'source-map',

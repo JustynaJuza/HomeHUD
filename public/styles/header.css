@@ -1,4 +1,4 @@
-@import "./config.css"
+@import './variables.css';
 
 .container {
 	background: $header_color;
