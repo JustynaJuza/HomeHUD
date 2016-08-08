@@ -14,9 +14,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
 
         return (
             <div className={style.container}>
-            <span className={style.logo}>Home HUD</span>
-               </div>
-               );
+				<span className={style.logo}>Home HUD</span>
+			</div>
+		);
     }
 }
 

@@ -17,11 +17,11 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
         return (
             <div className={style.layout}>
-                   <Header />                   
-                   <Navigation />
-                   <Content />                  
-               </div>
-               );
+            <Header />
+            <Navigation />
+            <Content />
+         </div>
+      );
     }
 }
 
@@ -42,9 +42,9 @@ class Content extends React.Component<IContentProps, IContentState> {
     public render() {
 
         return (
-            <div className={style.content}>          
-               </div>
-               );
+            <div className={style.content}>
+            </div>
+      );
     }
 }
 
