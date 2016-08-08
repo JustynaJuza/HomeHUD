@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 
+import { NavigationTab } from './navigation-tab';
+
 import * as style from './../../../styles/navigation.css';
 
 interface INavigationProps {
@@ -10,26 +12,22 @@ interface INavigationState {
 }
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
+
+    private activateTab(id : number) {
+		//this.state.isActive = true;
+    }
+
     public render() {
 
         return (
             <ul className={style.list}>
-<li className={style.tab}>
-<a href="#" className={style.link}>Control Panel</a>
-</li>
-<li className={style.tab}>
-<a href="#" className={style.link}>Gaming room</a>
-</li>
-<li className={style.tab}>
-<a href="#" className={style.link}>Bedroom</a>
-</li>
-<li className={style.tab}>
-<a href="#" className={style.link}>Living room</a>
-</li>
-</ul>
-               );
+            	<NavigationTab hash='#control'>Control Panel</NavigationTab>
+            	<NavigationTab hash='#gaming'>Gaming room</NavigationTab>
+            	<NavigationTab hash='#bed'>Bedroom</NavigationTab>
+            	<NavigationTab hash='#living'>Living room</NavigationTab>
+			</ul>
+		);
     }
 }
 
 export { Navigation };
-

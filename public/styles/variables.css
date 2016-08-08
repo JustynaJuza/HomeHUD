@@ -8,10 +8,19 @@ $color_background_plum: #581845;
 $color_background_neutral: #efefef;
 $color_background_2: #acacac;
 $color_background_3: #c3c3c3;
+$color_background_4: #f1f1f1;
+$color_text_dark: #ccc;
+
+$body_color: #fff;
+$content_color: #fff;
 
 $logo_color: $color_accent_rose;
 $header_color: $color_accent_lime;
 $header_border_color: $color_accent_rose;
 
-$body_color: #fff;
-$content_color: #fff;
+$nav_color: $color_background_4;
+$nav_hover_color: $color_text_dark;
+$nav_active_hover_color: $color_background_purple;
+$nav_active_color: $color_background_3;
+$nav_border_color: $color_text_dark;
+$nav_text_color: #000;

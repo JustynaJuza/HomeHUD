@@ -1,39 +1,19 @@
 @import './variables.css';
 
-
-.active {
-	&:hover {
-	background-color: #ccc;
-}
-}
-
 .list {
 	list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
+    border-bottom: 1px solid $nav_border_color;
+    background-color: $nav_color;
 
-.tab {
-	float: left;
-}
-
-.link {
-	composes: active;
-
-    display: inline-block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    transition: 0.3s;
-    font-size: 17px;
-
-    &:focus{
-    	background-color: #ccc;
-    }
+    display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: stretch;
+	align-content: stretch;
 }
 
 .tabcontent {

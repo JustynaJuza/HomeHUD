@@ -1,0 +1,45 @@
+@import './variables.css';
+
+.hover {
+    transition: 0.3s;
+
+    &:hover {
+    background-color: $nav_hover_color;
+}
+}
+
+.active{
+    background-color: $nav_active_color;
+    
+    &:hover {
+    background-color: $nav_active_hover_color;
+}
+}
+
+.tab {
+    composes: hover;
+
+    width: 100%;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.link {
+    width: 100%;
+    color: $nav_text_color;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 1.3em;
+    line-height: 1em;
+    text-transform: uppercase;
+    
+    &:hover {
+        background-color: transparent;
+    }
+}
