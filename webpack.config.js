@@ -8,22 +8,23 @@ const paths = {
 };
 
 const postcssConfig = {
-    import: function(webpack){
-        return require('postcss-import')({ 
-                path: paths.styles,
-                addDependencyTo: webpack
-            })
+    import: function(webpack) {
+        return require('postcss-import')({
+            path: paths.styles,
+            addDependencyTo: webpack
+        })
     },
+    fonts: require('postcss-font-magician'),
     precss: require('precss'), //({        
-           // variables: [require(paths.styles + '/variables.js')].concat({'$color_accent_1': '#93ff33'})
+    // variables: [require(paths.styles + '/variables.js')].concat({'$color_accent_1': '#93ff33'})
     //}),    
     processors: [
-            require('postcss-url'),
-            require('postcss-cssnext')
-            //({
-//             browsers: ['ie >= 9', 'last 2 versions']
-//         })
-            ]
+        require('postcss-url'),
+        require('postcss-cssnext')
+        //({
+        //             browsers: ['ie >= 9', 'last 2 versions']
+        //         })
+    ]
 };
 
 const config = {
@@ -33,47 +34,40 @@ const config = {
         filename: '[name].bundle.js'
     },
     module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel',
-                query: {
-                    presets: ['es2015', 'react']
-                }
-            },
-            {
-                test: /\.ts(x?)$/,
-                loader: 'babel-loader!ts-loader',
-                exclude: /node_modules/
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
-            },
-            {
-                test: /\.less$/,
-                loaders: ['style', 'css', 'less'],
-                include: paths.styles
-            },
-            {
-                test: /\.scss$/,
-                loaders: ['style', 'css', 'sass'],
-                include: paths.style
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: {
+                presets: ['es2015', 'react']
             }
-        ],
-        preLoaders: [
-            {
-                test: /\.js$/,
-                loader: 'source-map-loader'
-            }
-        ]
+        }, {
+            test: /\.ts(x?)$/,
+            loader: 'babel-loader!ts-loader',
+            exclude: /node_modules/
+        }, {
+            test: /\.css$/,
+            loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+        }, {
+            test: /\.less$/,
+            loaders: ['style', 'css', 'less'],
+            include: paths.styles
+        }, {
+            test: /\.scss$/,
+            loaders: ['style', 'css', 'sass'],
+            include: paths.style
+        }],
+        preLoaders: [{
+            test: /\.js$/,
+            loader: 'source-map-loader'
+        }]
     },
-    postcss: function (webpack) {
+    postcss: function(webpack) {
         return [
-        postcssConfig.import(webpack),
-        postcssConfig.precss,
-                ].concat(postcssConfig.processors);
+            postcssConfig.import(webpack),
+            postcssConfig.fonts,
+            postcssConfig.precss,
+        ].concat(postcssConfig.processors);
     },
     modulesDirectories: paths.app,
     devtool: 'source-map',

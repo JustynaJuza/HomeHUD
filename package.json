@@ -44,6 +44,7 @@
     "postcss-advanced-variables": "^1.2.2",
     "postcss-cssnext": "^2.7.0",
     "postcss-easy-import": "^1.0.1",
+    "postcss-font-magician": "^1.4.0",
     "postcss-loader": "^0.9.1",
     "postcss-nested": "^1.0.0",
     "postcss-url": "^5.1.2",
