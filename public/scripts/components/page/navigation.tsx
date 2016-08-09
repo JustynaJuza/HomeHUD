@@ -1,13 +1,16 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
 import { NavigationTab } from './navigation-tab';
 import { HomeHUD, IRoomTab } from '../homeHud';
+import { TabAction, TabActions } from '../../stores/actions/navigationActions'
 
 import * as style from './../../../styles/navigation.css';
 
 interface INavigationProps {
+    selectedNavigationTab: number;
 }
 
 interface INavigationState {
@@ -15,10 +18,11 @@ interface INavigationState {
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
 
-    private activateTab(id : number) {
-		//this.state.isActive = true;
     private config = new HomeHUD();
 
+    private activateTab(id: number) {
+        //this.state.isActive = true;
+    }
 
     private createTabFromConfig(entry: IRoomTab, index: number) {
         return <NavigationTab 
@@ -43,4 +47,10 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
     }
 }
 
-export { Navigation };
+const mapStateToProps = function(state: INavigationProps) {
+    return {
+        selectedNavigationTab: state.selectedNavigationTab
+    }
+};
+
+export default connect(mapStateToProps)(Navigation);

@@ -4,6 +4,7 @@ import * as classNames from 'classnames';
 import * as style from './../../../styles/navigation-tab.css';
 
 interface INavigationTabProps {
+	onSelectTab: (id) => void;
 	hash: string;
 }
 
@@ -12,10 +13,10 @@ interface INavigationTabState {
 }
 
 class NavigationTab extends React.Component<INavigationTabProps, INavigationTabState> {
-	// public static defaultProps: INavigationTabProps = {
- //        isActive: false,
- //        hash: ''
- //    };
+	public static defaultProps: INavigationTabProps = {
+        //isActive: false,
+        hash: ''
+    };
 
 	constructor() {
 		super();
