@@ -1,10 +1,16 @@
-import { createAction } from 'redux-actions';
+export interface IAction<T>{
+	type: string;
+	data: T
+}
 
-export const ACTIVATE_TAB = 'ACTIVATE_TAB';
-export type ACTIVATE_TAB = number;
+export const SELECT_NAVIGATION_TAB = 'SELECT_NAVIGATION_TAB';
+export type SELECT_NAVIGATION_TAB = number;
+
 
 export const NavigationActions = {
-	ACTIVATE_TAB : (tabId : number) => ({type: ACTIVATE_TAB, tabId })
+	SELECT_NAVIGATION_TAB : 
+		(tabId : number) => 
+		(<IAction<SELECT_NAVIGATION_TAB>>{type: SELECT_NAVIGATION_TAB, data: tabId })
 }
 
 // export const NavigationActions = {

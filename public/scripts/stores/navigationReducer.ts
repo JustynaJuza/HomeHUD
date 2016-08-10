@@ -1,9 +1,9 @@
-import { handleActions, Action } from 'redux-actions';
+import { handleActions } from 'redux-actions';
 import * as _ from 'lodash';
 
-import { ACTIVATE_TAB } from './actions/navigationActions';
+import { IAction, SELECT_NAVIGATION_TAB } from './actions/navigationActions';
 
-export interface INavigationState{
+export interface INavigationState {
 	selectedNavigationTab: number;
 }
 
@@ -12,11 +12,11 @@ const initialState : INavigationState = {
 };
 
 export const navigationReducer = handleActions({
-  	[ACTIVATE_TAB]: 
-  		(state : INavigationState, action : any) => {
-  			console.log(action)
+  	[SELECT_NAVIGATION_TAB]: 
+  		(state : INavigationState, action : IAction<SELECT_NAVIGATION_TAB>) => {
+
   			return Object.assign({}, state, {
-    	    	selectedNavigationTab: action.tabId
+    	    	selectedNavigationTab: action.data
     	  	});
   	}
 },

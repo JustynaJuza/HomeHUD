@@ -5,11 +5,13 @@ import { Dispatch } from 'redux';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
+import { IAppState } from '../../stores/app';
+
 import { NavigationTab } from './navigation-tab';
 import { HomeHUD, IRoomTab } from '../homeHud';
-import { NavigationActions, ACTIVATE_TAB } from '../../stores/actions/navigationActions'
+import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions'
 
-import * as style from './../../../styles/navigation.css';
+import * as style from '../../../styles/navigation.css';
 
 interface INavigationProps {
     dispatch: Dispatch<any>;
@@ -31,7 +33,7 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
 
     private createHandlers(dispatch : Dispatch<any>){
         return {
-            onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id))
+            onSelectTab: (id: number) => dispatch(NavigationActions.SELECT_NAVIGATION_TAB(id))
         }
     }
 
@@ -60,17 +62,10 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
 }
 
 
-const mapStateToProps = (state: any) => {
-        console.log(state)
+const mapStateToProps = (state: IAppState) => {
     return {
-        selectedNavigationTab: state.navigationReducer.selectedNavigationTab
+        selectedNavigationTab: state.navigation.selectedNavigationTab
     }
 };
-
-//     function mapDispatchToProps(dispatch : Dispatch<ACTIVATE_TAB>) {
-//   return {
-//     onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id)),
-//   };
-// }
 
 export default connect(mapStateToProps)(Navigation);

@@ -4,14 +4,11 @@ import { combineReducers, createStore } from 'redux';
 import { navigationReducer, INavigationState } from './navigationReducer';
 
 export const app = combineReducers({
-  navigationReducer
+  navigation: navigationReducer
 });
 
-export interface IAppState extends INavigationState { }
-
+export interface IAppState {
+	navigation: INavigationState
+}
 
 export const store = createStore(app);
-
-export const getState = () => store.getState() as IAppState;
-export const dispatch = (a:Action<any>) => store.dispatch(a);
-export const subscribeToState = (callback: () => void) => store.subscribe(callback);
