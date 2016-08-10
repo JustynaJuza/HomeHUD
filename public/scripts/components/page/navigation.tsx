@@ -14,7 +14,6 @@ import * as style from './../../../styles/navigation.css';
 interface INavigationProps {
     dispatch: Dispatch<any>;
     selectedNavigationTab: number;
-    onSelectTab: (id:number) => Action<ACTIVATE_TAB>;
 }
 
 interface INavigationState {
@@ -22,15 +21,25 @@ interface INavigationState {
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
 
-    constructor(){
-        super();
+    private handlers : any;
+
+    constructor(props : INavigationProps){
+        super(props);
+        this.handlers = this.createHandlers(this.props.dispatch);
         this.createTabFromConfig = this.createTabFromConfig.bind(this);
     }
+
+    private createHandlers(dispatch : Dispatch<any>){
+        return {
+            onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id))
+        }
+    }
+
 
     private config = new HomeHUD();
 
     private createTabFromConfig(entry: IRoomTab, index: number) {
-        return <NavigationTab key={index} id={index} hash={entry.hash} onSelectTab={this.props.onSelectTab}
+        return <NavigationTab key={index} id={index} hash={entry.hash} onSelectTab={this.handlers.onSelectTab}
             selectedNavigationTab={this.props.selectedNavigationTab}>
             {entry.name}
         </NavigationTab>
@@ -51,16 +60,17 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
 }
 
 
-    function mapStateToProps(state: INavigationProps) {
+const mapStateToProps = (state: any) => {
+        console.log(state)
     return {
-        selectedNavigationTab: state.selectedNavigationTab
+        selectedNavigationTab: state.navigationReducer.selectedNavigationTab
     }
 };
 
-    function mapDispatchToProps(dispatch : Dispatch<ACTIVATE_TAB>) {
-  return {
-    onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id)),
-  };
-}
+//     function mapDispatchToProps(dispatch : Dispatch<ACTIVATE_TAB>) {
+//   return {
+//     onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id)),
+//   };
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps)(Navigation);

@@ -13,10 +13,10 @@ const initialState : INavigationState = {
 
 export const navigationReducer = handleActions({
   	[ACTIVATE_TAB]: 
-  		(state : INavigationState, action: Action<ACTIVATE_TAB>) => {
+  		(state : INavigationState, action : any) => {
   			console.log(action)
   			return Object.assign({}, state, {
-    	    	selectedNavigationTab: action.payload
+    	    	selectedNavigationTab: action.tabId
     	  	});
   	}
 },

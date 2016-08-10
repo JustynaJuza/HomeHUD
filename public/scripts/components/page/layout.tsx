@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as style from '../../../styles/layout.css';
 
 import { Header } from './header';
-import { Navigation } from './navigation';
+import Navigation from './navigation';
 import { Content } from './content';
 
 interface ILayoutProps {

@@ -1,14 +1,18 @@
-import { Action, createAction } from 'redux-actions';
+import { createAction } from 'redux-actions';
 
 export const ACTIVATE_TAB = 'ACTIVATE_TAB';
 export type ACTIVATE_TAB = number;
 
 export const NavigationActions = {
-	ACTIVATE_TAB : createAction<ACTIVATE_TAB>(
-		ACTIVATE_TAB,
-		(tabId: ACTIVATE_TAB) => { console.log(tabId); return tabId; }
-	)
+	ACTIVATE_TAB : (tabId : number) => ({type: ACTIVATE_TAB, tabId })
 }
+
+// export const NavigationActions = {
+// 	ACTIVATE_TAB : createAction<ACTIVATE_TAB>(
+// 		ACTIVATE_TAB,
+// 		(tabId: ACTIVATE_TAB) => ({ tabId })
+// 	)
+// }
 
 // interface ITabAction {
 // 	//name: TabAction;
