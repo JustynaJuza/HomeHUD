@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 
-import * as style from './../../../styles/header.css';
+import * as style from '../../../styles/header.css';
 
 interface IHeaderProps {
 }
