@@ -1,47 +1,52 @@
-enum TabAction {
-	ACTIVATE_TAB
+import { Action, createAction } from 'redux-actions';
+
+export const ACTIVATE_TAB = 'ACTIVATE_TAB';
+export type ACTIVATE_TAB = number;
+
+export const NavigationActions = {
+	ACTIVATE_TAB : createAction<ACTIVATE_TAB>(
+		ACTIVATE_TAB,
+		(tabId: ACTIVATE_TAB) => { console.log(tabId); return tabId; }
+	)
 }
 
-interface ITabAction {
-	//name: TabAction;
-	dispatch: (...args: any[]) => Object;
-}
+// interface ITabAction {
+// 	//name: TabAction;
+// 	dispatch: (...args: any[]) => Object;
+// }
 
-interface ITabActions {
-	[name: number]: ITabAction
-}
+// interface ITabActions {
+// 	[name: string]: ITabAction
+// }
 
-let TabActions: ITabActions[];
-TabActions[TabAction.ACTIVATE_TAB] = {
-	//name: TabAction.ACTIVATE_TAB,
-	dispatch: function(tabId: number) {
-		return {
-			type: TabAction.ACTIVATE_TAB,
-			tabId
-		}
-	}
-}
+// let TabActions: ITabActions[] = new ITabActions[];
+// TabActions[ACTIVATE_TAB] = function(tabId: number) {
+// 		return {
+// 			type: ACTIVATE_TAB,
+// 			tabId
+// 		}
+// }
 
 
-interface ITabActionHandler {
-	//name: TabAction;
-	handler: (state: any, ...args: any[]) => Object;
-}
+// interface ITabActionHandler {
+// 	//name: TabAction;
+// 	handler: (state: any, ...args: any[]) => Object;
+// }
 
-interface ITabActionHandlers {
-	[name: number]: ITabActionHandler
-}
+// interface ITabActionHandlers {
+// 	[name: number]: ITabActionHandler
+// }
 
-let TabActionHandlers: ITabActionHandlers[];
-TabActionHandlers[TabAction.ACTIVATE_TAB] = {
-	//name: TabAction.ACTIVATE_TAB,
-	handler: function(state : any, tabId : number) {
-		if (state.selectedTabId !== tabId) {
-			state.selectedTabId = tabId;
-		}
+// let TabActionHandlers: ITabActionHandlers[];
+// TabActionHandlers[ACTIVATE_TAB] = {
+// 	//name: TabAction.ACTIVATE_TAB,
+// 	handler: function(state : any, tabId : number) {
+// 		if (state.selectedTabId !== tabId) {
+// 			state.selectedTabId = tabId;
+// 		}
 
-		return state;
-	}
-};
+// 		return state;
+// 	}
+// };
 
-export { TabAction, TabActions, TabActionHandlers }
+// export { TabActions, TabActionHandlers }

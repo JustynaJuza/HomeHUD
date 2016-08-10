@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Action } from 'redux-actions';
+import { Dispatch } from 'redux';
 import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
 import { NavigationTab } from './navigation-tab';
 import { HomeHUD, IRoomTab } from '../homeHud';
-import { TabAction, TabActions } from '../../stores/actions/navigationActions'
+import { NavigationActions, ACTIVATE_TAB } from '../../stores/actions/navigationActions'
 
 import * as style from './../../../styles/navigation.css';
 
 interface INavigationProps {
+    dispatch: Dispatch<any>;
     selectedNavigationTab: number;
+    onSelectTab: (id:number) => Action<ACTIVATE_TAB>;
 }
 
 interface INavigationState {
@@ -18,18 +22,17 @@ interface INavigationState {
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
 
-    private config = new HomeHUD();
-
-    private activateTab(id: number) {
-        //this.state.isActive = true;
+    constructor(){
+        super();
+        this.createTabFromConfig = this.createTabFromConfig.bind(this);
     }
 
+    private config = new HomeHUD();
+
     private createTabFromConfig(entry: IRoomTab, index: number) {
-        return <NavigationTab 
-        key={index} 
-        hash={entry.hash}
-        onSelectTab={TabActions[TabAction.ACTIVATE_TAB]}>
-        {entry.name}
+        return <NavigationTab key={index} id={index} hash={entry.hash} onSelectTab={this.props.onSelectTab}
+            selectedNavigationTab={this.props.selectedNavigationTab}>
+            {entry.name}
         </NavigationTab>
     }
 
@@ -47,10 +50,17 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
     }
 }
 
-const mapStateToProps = function(state: INavigationProps) {
+
+    function mapStateToProps(state: INavigationProps) {
     return {
         selectedNavigationTab: state.selectedNavigationTab
     }
 };
 
-export default connect(mapStateToProps)(Navigation);
+    function mapDispatchToProps(dispatch : Dispatch<ACTIVATE_TAB>) {
+  return {
+    onSelectTab: (id: number) => dispatch(NavigationActions.ACTIVATE_TAB(id)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
