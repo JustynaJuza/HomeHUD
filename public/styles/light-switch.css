@@ -1,0 +1,11 @@
+@import './variables.css';
+
+.switcher {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  box-sizing: border-box;
+}
+.active {
+background: $color_accent_orange;
+}

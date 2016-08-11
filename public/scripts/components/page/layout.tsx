@@ -3,7 +3,7 @@ import * as style from '../../../styles/layout.css';
 
 import { Header } from './header';
 import Navigation from './navigation';
-import { Content } from './content';
+import Content from './content';
 
 interface ILayoutProps {
 }
@@ -16,7 +16,7 @@ export class Layout extends React.Component<ILayoutProps, {}> {
             <div className={style.layout}>
                 <Header />
                 <Navigation />
-                <Content selectedNavigationTab={3} />
+                <Content />
             </div>
         );
     }

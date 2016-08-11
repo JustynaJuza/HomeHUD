@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 export interface IControlPanelTab {
 	index: number;
 	hash: string;
@@ -45,6 +47,11 @@ class HomeHud {
 
 	public getRooms(){
 		return this.rooms;
+	}
+
+	public getRoomLights(roomIndex: number){
+		const room = _.find(this.rooms, (entry: IControlPanelTab) => entry.index === roomIndex);
+		return room.lights;
 	}
 }
 

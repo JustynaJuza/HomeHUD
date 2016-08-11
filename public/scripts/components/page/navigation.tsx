@@ -7,7 +7,7 @@ import { IAppState } from '../../stores/app';
 import { homeHudConfig as config, IControlPanelTab } from '../homeHud';
 
 import { NavigationTab } from './navigation-tab';
-import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions'
+import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions';
 
 import * as style from '../../../styles/navigation.css';
 
@@ -31,7 +31,7 @@ class Navigation extends React.Component<INavigationProps, {}> {
         }
     }
 
-    private renderTabFromConfig = (entry: IControlPanelTab, index: number) => {
+    private renderNavigationTab = (entry: IControlPanelTab, index: number) => {
 
         var isActive = this.props.selectedNavigationTab === index;
 
@@ -44,7 +44,7 @@ class Navigation extends React.Component<INavigationProps, {}> {
 
     private renderNavigationTabs = () => {
         return _(config.getRooms())
-               .map(this.renderTabFromConfig)
+               .map(this.renderNavigationTab)
                .sortBy((entry: IControlPanelTab) => entry.index)
                .value();
     }
