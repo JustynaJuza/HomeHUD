@@ -4,14 +4,15 @@ import * as classNames from 'classnames';
 import * as style from '../../../styles/layout.css';
 
 interface IContentProps {
+    selectedNavigationTab: number;
 }
 
-interface IContentState {
-}
-
-class Content extends React.Component<IContentProps, IContentState> {
+export class Content extends React.Component<IContentProps, {}> {
 
     public render() {
+    	// if(selectedNavigationTab === 0){
+    	// 	var content =
+    	// }
 
         return (
             <div className={style.content}>
@@ -19,5 +20,3 @@ class Content extends React.Component<IContentProps, IContentState> {
         );
     }
 }
-
-export { Content };

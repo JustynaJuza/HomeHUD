@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import * as _ from 'lodash';
 
 import { IAppState } from '../../stores/app';
-import { HomeHUDConfig as config, IControlPanelTab } from '../homeHud';
+import { homeHudConfig as config, IControlPanelTab } from '../homeHud';
 
 import { NavigationTab } from './navigation-tab';
 import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions'

@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import * as style from '../../../styles/layout.css';
 
 import { Header } from './header';
@@ -9,10 +8,7 @@ import { Content } from './content';
 interface ILayoutProps {
 }
 
-interface ILayoutState {
-}
-
-class Layout extends React.Component<ILayoutProps, ILayoutState> {
+export class Layout extends React.Component<ILayoutProps, {}> {
 
     public render() {
 
@@ -20,7 +16,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             <div className={style.layout}>
                 <Header />
                 <Navigation />
-                <Content />
+                <Content selectedNavigationTab={3} />
             </div>
         );
     }
@@ -32,5 +28,3 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 //                            <div className={styles.message}>You said hello {this.state.sayHelloCount} time(s)</div>
 //                        </div>
 //                    </ContentBody>
-
-export { Layout };

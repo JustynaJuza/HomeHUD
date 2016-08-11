@@ -1,15 +1,11 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
-
 import * as style from '../../../styles/header.css';
 
 interface IHeaderProps {
 }
 
-interface IHeaderState {
-}
+export class Header extends React.Component<IHeaderProps, {}> {
 
-class Header extends React.Component<IHeaderProps, IHeaderState> {
     public render() {
 
         return (
@@ -19,6 +15,4 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
 		);
     }
 }
-
-export { Header };
 

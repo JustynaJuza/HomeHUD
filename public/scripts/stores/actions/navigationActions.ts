@@ -1,7 +1,4 @@
-export interface IAction<T>{
-	type: string;
-	data: T
-}
+import { IAction } from './action';
 
 export const SELECT_NAVIGATION_TAB = 'SELECT_NAVIGATION_TAB';
 export type SELECT_NAVIGATION_TAB = number;

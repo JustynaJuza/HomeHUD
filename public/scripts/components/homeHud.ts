@@ -10,7 +10,7 @@ export interface ILightSwitch {
 	name: string;
 }
 
-class HomeHUD {
+class HomeHud {
 	private rooms: Array<IControlPanelTab>;
 
 	constructor() {
@@ -48,4 +48,4 @@ class HomeHUD {
 	}
 }
 
-export const HomeHUDConfig = new HomeHUD();
+export const homeHudConfig = new HomeHud();

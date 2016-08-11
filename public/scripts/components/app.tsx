@@ -7,13 +7,9 @@ import { store } from '../stores/app';
 interface IAppProps {
 }
 
-interface IAppState {
-}
-
-class App extends React.Component<IAppProps, IAppState> {
+export class App extends React.Component<IAppProps, {}> {
 
     public render() {
-
         return (
 
             <Provider store={store}>
@@ -22,5 +18,3 @@ class App extends React.Component<IAppProps, IAppState> {
         );
     }
 }
-
-export { App }

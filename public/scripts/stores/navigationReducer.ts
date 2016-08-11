@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions';
 import * as _ from 'lodash';
 
-import { IAction, SELECT_NAVIGATION_TAB } from './actions/navigationActions';
+import { IAction } from './actions/action';
+import { SELECT_NAVIGATION_TAB } from './actions/navigationActions';
 
 export interface INavigationState {
 	selectedNavigationTab: number;
