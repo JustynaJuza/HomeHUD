@@ -5,26 +5,17 @@ import * as style from '../../../styles/navigation-tab.css';
 
 interface INavigationTabProps {
 	id: number;
-	selectedNavigationTab: number;
-	onSelectTab: (id : number) => void;
+	isActive: boolean;
 	hash: string;
+	onSelectTab: (id : number) => void;
 }
 
-class NavigationTab extends React.Component<INavigationTabProps, {}> {
-
-	constructor() {
-		super();
-    }
-
-    private isActive(){
-    	return this.props.selectedNavigationTab === this.props.id;
-    }
+export class NavigationTab extends React.Component<INavigationTabProps, {}> {
 
     public render() {
-		var tabClasses = classNames(
-			style.tab,
-			{
-				[style.active]: this.isActive()
+		var tabClasses = classNames({
+				[style.tab]: true,
+				[style.active]: this.props.isActive
 			})
 
         return (
@@ -36,5 +27,3 @@ class NavigationTab extends React.Component<INavigationTabProps, {}> {
 		);
     }
 }
-
-export { NavigationTab };

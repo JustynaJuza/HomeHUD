@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Action } from 'redux-actions';
 import { Dispatch } from 'redux';
-import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
 import { IAppState } from '../../stores/app';
+import { HomeHUDConfig as config, IControlPanelTab } from '../homeHud';
 
 import { NavigationTab } from './navigation-tab';
-import { HomeHUD, IRoomTab } from '../homeHud';
 import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions'
 
 import * as style from '../../../styles/navigation.css';
@@ -18,17 +16,13 @@ interface INavigationProps {
     selectedNavigationTab: number;
 }
 
-interface INavigationState {
-}
-
-class Navigation extends React.Component<INavigationProps, INavigationState> {
+class Navigation extends React.Component<INavigationProps, {}> {
 
     private handlers : any;
 
     constructor(props : INavigationProps){
         super(props);
         this.handlers = this.createHandlers(this.props.dispatch);
-        this.createTabFromConfig = this.createTabFromConfig.bind(this);
     }
 
     private createHandlers(dispatch : Dispatch<any>){
@@ -37,25 +31,28 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
         }
     }
 
+    private renderTabFromConfig = (entry: IControlPanelTab, index: number) => {
 
-    private config = new HomeHUD();
+        var isActive = this.props.selectedNavigationTab === index;
 
-    private createTabFromConfig(entry: IRoomTab, index: number) {
-        return <NavigationTab key={index} id={index} hash={entry.hash} onSelectTab={this.handlers.onSelectTab}
-            selectedNavigationTab={this.props.selectedNavigationTab}>
-            {entry.name}
-        </NavigationTab>
+        return (
+            <NavigationTab key={index} id={index} isActive={isActive} hash={entry.hash} onSelectTab={this.handlers.onSelectTab}>
+                {entry.name}
+            </NavigationTab>
+        )
+    }
+
+    private renderNavigationTabs = () => {
+        return _(config.getRooms())
+               .map(this.renderTabFromConfig)
+               .sortBy((entry: IControlPanelTab) => entry.index)
+               .value();
     }
 
     public render() {
-        const navigationTabs = _.chain(this.config.rooms)
-            .sortBy((entry) => { return entry.index; })
-            .map(this.createTabFromConfig)
-            .value();
-
         return (
             <ul className={style.list}>
-                { navigationTabs }
+                { this.renderNavigationTabs() }
             </ul>
         );
     }
