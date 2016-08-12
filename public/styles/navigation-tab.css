@@ -21,6 +21,8 @@
 
     width: 100%;
     min-width: 120px;
+    height: $header_height;
+
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
