@@ -21,7 +21,9 @@ export class NavigationTab extends React.Component<INavigationTabProps, {}> {
         return (
 			<li className={tabClasses}>
 				<a href={`#/${this.props.hash}`} onClick={this.props.onSelectTab.bind(this, this.props.id)} className={style.link}>
-					{this.props.children}
+					<span className={style.name}>
+						{this.props.children}
+					</span>
 				</a>
 			</li>
 		);

@@ -15,4 +15,3 @@ export class Header extends React.Component<IHeaderProps, {}> {
 		);
     }
 }
-

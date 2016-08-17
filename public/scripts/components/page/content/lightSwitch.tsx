@@ -25,8 +25,9 @@ export class LightSwitch extends React.Component<ILightSwitchProps, {}> {
 			})
 
         return (
-			<button className={switchClasses} onClick={this.onSwitchChange.bind(this, this.props.id)}>			
-			</button>
+			<div className={switchClasses} onClick={this.onSwitchChange.bind(this, this.props.id)}>
+				<button className={style.slider}></button>
+			</div>
 		);
     }
 }

@@ -10,7 +10,7 @@
 
 .active{
     background-color: $nav_active_color;
-    
+
     &:hover {
     background-color: $nav_active_hover_color;
 }
@@ -21,27 +21,34 @@
 
     width: 100%;
     min-width: 120px;
-    height: $header_height;
-
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: stretch;
-    align-content: stretch;
 }
 
 .link {
     width: 100%;
+    height: 100%;
     color: $nav_text_color;
     text-align: center;
-    padding: 14px 16px;
+    padding: 0.8em 1.5em;
     text-decoration: none;
-    font-size: 1.3em;
-    line-height: 1em;
-    text-transform: uppercase;
-    
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: stretch;
+        align-content: stretch;
+
     &:hover {
         background-color: transparent;
     }
+}
+
+.name {
+  max-height: calc(2*$nav_tab_line_height);
+  text-transform: uppercase;
+  font-size: 1.3em;
+  line-height: $nav_tab_line_height;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

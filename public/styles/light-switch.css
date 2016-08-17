@@ -1,11 +1,54 @@
 @import './variables.css';
 
 .switcher {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  box-sizing: border-box;
+  position: relative;
+  width: 10em;
+  height: 5em;
+  margin: 1em;
+  background: #efefef;
+
+  & .slider {
+      right: auto;
+      left: 0;
+      background-color: $color_accent_dark;
+  }
+
+  &.active .slider {
+      right: 0;
+      left: auto;
+      background-color: $color_accent_yellow;
+  }
 }
+
 .active {
-background: $color_accent_orange;
+
+}
+
+.slider {
+  width: 50%;
+    padding: 0;
+    margin: 0.2em;
+    border: 1px solid #white;
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  bottom: 0;
+  transition: .4s;
+
+  outline-color: transparent;
+
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }

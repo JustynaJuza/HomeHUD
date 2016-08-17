@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { IAppState } from '../../../stores/app';
 import { ILightSwitchState } from '../../../stores/lightsReducer';
 import { homeHudConfig as config } from "../../HomeHud";
-import { 
+import {
     LightActions,
     SWITCH_LIGHT_ON,
     SWITCH_LIGHT_OFF,
@@ -55,7 +55,7 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
     public render() {
 
         return (
-            <div>
+            <div className={style.switches}>
                 { this.renderLightSwitches() }
             </div>
         );
@@ -65,8 +65,8 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 const mapStateToProps = (state: IAppState) => {
     return {
         lights: _.intersectionBy(
-            config.getRoomLights(state.navigation.selectedNavigationTab), 
-            state.lights.all, 
+            state.lights.all,
+            config.getRoomLights(state.navigation.selectedNavigationTab),
             'id')
     }
 };

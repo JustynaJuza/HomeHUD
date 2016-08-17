@@ -1,13 +1,15 @@
 @custom-media --medium-viewport (min-width: 768px) and (max-width: 992px);
 @custom-media --phone (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)
 
-$base_font_size: 14px;
+$base_font_size: 12px;
+$mobile_font_size: 20px;
 
 $header_height: 4.5em;
-$nav_height: 5em;
+$nav_tab_line_height: 1em;
 
 $color_accent_green: #BBFF33;
 $color_accent_yellow: #FFC300;
+$color_accent_dark: #3E3A2D;
 $color_accent_lime: #DAF7A6;
 $color_accent_orange: #FF5733;
 $color_accent_rose: #C70039;
