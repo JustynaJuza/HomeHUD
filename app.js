@@ -4,9 +4,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var SignalR = require('signalrjs');
+//var controlHub = require('./signalr/controlHub')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var signalR = SignalR();
+signalR.hub(
+  'controlHub',
+{
+    switchLightOn: function(id){
+        this.clients.all.invoke('switchLightOn').withArgs(id);
+        console.log(id + 'switched on');
+    },
+    switchAllLightsOn: function(){
+        this.clients.all.invoke('switchAllLightsOn');
+        console.log('all lights switched on');
+    }
+});
+
 
 var app = express();
 
@@ -20,13 +37,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(signalR.createListener())
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+
 app.use('/scripts', express.static(__dirname + '/node_modules/react/dist/'));
 app.use('/scripts', express.static(__dirname + '/node_modules/react-dom/dist/'));
+app.use('/scripts', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -35,6 +55,13 @@ app.use(function (req, res, next) {
     next(err);
 });
 
+
+signalR.on('CONNECTED',function(){
+    console.log('connected');
+    // setInterval(function () {
+    //     signalR.send({time:new Date()});
+    // },1000)
+});
 // error handlers
 
 // development error handler
