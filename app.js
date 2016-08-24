@@ -4,26 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var SignalR = require('signalrjs');
-//var controlHub = require('./signalr/controlHub')
+
+var signalR = require('./signalR/index')
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
-var signalR = SignalR();
-signalR.hub(
-  'controlHub',
-{
-    switchLightOn: function(id){
-        this.clients.all.invoke('switchLightOn').withArgs(id);
-        console.log(id + 'switched on');
-    },
-    switchAllLightsOn: function(){
-        this.clients.all.invoke('switchAllLightsOn');
-        console.log('all lights switched on');
-    }
-});
-
 
 var app = express();
 

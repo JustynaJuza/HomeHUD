@@ -15,9 +15,9 @@ const postcssConfig = {
         })
     },
     fonts: require('postcss-font-magician'),
-    precss: require('precss'), //({        
+    precss: require('precss'), //({
     // variables: [require(paths.styles + '/variables.js')].concat({'$color_accent_1': '#93ff33'})
-    //}),    
+    //}),
     processors: [
         require('postcss-url'),
         require('postcss-cssnext')
@@ -27,11 +27,12 @@ const postcssConfig = {
     ]
 };
 
-const config = {
+const config = [{
+    name: 'client',
     entry: paths.app + '/components/index.tsx',
     output: {
         path: paths.build,
-        filename: '[name].bundle.js'
+        filename: 'client.bundle.js'
     },
     module: {
         loaders: [{
@@ -94,15 +95,27 @@ const config = {
         'react': 'React',
         'react-dom': 'ReactDOM'
     }
-};
+},
+{
+  name: 'server',
+		entry: "./signalR/index.ts",
+		target: "node",
+		output: {
+        filename: 'server.bundle.js'
+		},
+		externals: /^[a-z\-0-9]+$/,
+		module: {
+			loaders:
+      [{
+          test: /\.ts(x?)$/,
+          loader: 'babel-loader!ts-loader',
+          exclude: /node_modules/
+      }]
+		},
+    resolve: {
+        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
+    },
+}
+];
 
 module.exports = config;
-
-// module.exports = {
-//     config,
-//     postcss: [
-//         require('postcss-cssnext')({
-//             browsers: ['ie >= 9', 'last 2 versions']
-//         })
-//     ]
-// }
