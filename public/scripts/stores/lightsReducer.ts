@@ -6,12 +6,25 @@ import {
     SWITCH_LIGHT_ON,
     SWITCH_LIGHT_OFF,
     SWITCH_ALL_LIGHTS_ON,
-    SWITCH_ALL_LIGHTS_OFF
+    SWITCH_ALL_LIGHTS_OFF,
+    SET_LIGHT_ON,
+    SET_LIGHT_OFF,
+    SET_ALL_LIGHTS_ON,
+    SET_ALL_LIGHTS_OFF
 } from './actions/lightActions';
+
+import { hub } from './app';
+
+export enum LightSwitchPosition {
+    Off = 0,
+    On = 1,
+    SwitchingOn = 2,
+    SwitchingOff = 3
+}
 
 export interface ILightSwitchState {
     id: string | number;
-    isActive: boolean;
+    state: LightSwitchPosition;
     roomIndex: number;
 }
 
@@ -23,21 +36,21 @@ const initialState: ILightsState = {
     all: [
         {
             id: 'biurkoBartka',
-            isActive: true,
+            state: 1,
             roomIndex: 1
         }, {
             id: 'biurkoJustyny',
-            isActive: false,
+            state: 0,
             roomIndex: 1
         },
         {
             id: 'lozko',
-            isActive: false,
+            state: 2,
             roomIndex: 2
         },
         {
             id: 'salon',
-            isActive: true,
+            state: 3,
             roomIndex: 3
         }
     ]
@@ -47,19 +60,15 @@ export const lightsReducer = handleActions({
     [SWITCH_LIGHT_ON]:
     (state: ILightsState, action: IAction<SWITCH_LIGHT_ON>) => {
 
-        var index = _.findIndex(state.all, (entry: ILightSwitchState) => entry.id === action.data);
+        hub.switchLightOn(action.data);
 
-        // return Object.assign({},
-        //     state,
-        //     {
-        //         all: state.all.splice(index, 1, { id: action.data, isActive: true })
-        //     });        
+        var index = _.findIndex(state.all, (entry: ILightSwitchState) => entry.id === action.data);
                return Object.assign({}, state, {
                    all: state.all.map((light) => {
                        if (light.id === action.data) {
-                           light.isActive = true;
+                           light.state = 2;
                        }
-        
+
                        return light;
                    })
                });
@@ -67,19 +76,16 @@ export const lightsReducer = handleActions({
     [SWITCH_LIGHT_OFF]:
     (state: ILightsState, action: IAction<SWITCH_LIGHT_OFF>) => {
 
+        hub.switchLightOff(action.data);
+
         var index = _.findIndex(state.all, (entry: ILightSwitchState) => entry.id === action.data);
 
-        // return Object.assign({},
-        //     state,
-        //     {
-        //         all: state.all.splice(index, 1, { id: action.data, isActive: false })
-        //     });
                return Object.assign({}, state, {
                    all: state.all.map((light) => {
                        if (light.id === action.data) {
-                           light.isActive = false;
+                           light.state = 3;
                        }
-        
+
                        return light;
                    })
                });
@@ -87,20 +93,69 @@ export const lightsReducer = handleActions({
     [SWITCH_ALL_LIGHTS_ON]:
     (state: ILightsState, action: IAction<SWITCH_ALL_LIGHTS_ON>) => {
 
+              hub.switchAllLightsOn();
         return Object.assign({},
             state,
             {
-                all: state.all.map((light) => { light.isActive = true; })
+                all: state.all.map((light) => { light.state = 2; })
             });
     },
     [SWITCH_ALL_LIGHTS_OFF]:
     (state: ILightsState, action: IAction<SWITCH_ALL_LIGHTS_OFF>) => {
 
+              hub.switchAllLightsOff();
         return Object.assign({},
             state,
             {
-                all: state.all.map((light) => { light.isActive = false; })
+                all: state.all.map((light) => { light.state = 3; })
             });
-    }
+    },
+
+    [SET_LIGHT_ON]:
+    (state: ILightsState, action: IAction<SET_LIGHT_ON>) => {
+
+              var index = _.findIndex(state.all, (entry: ILightSwitchState) => entry.id === action.data);
+                     return Object.assign({}, state, {
+                         all: state.all.map((light) => {
+                             if (light.id === action.data) {
+                                 light.state = 1;
+                             }
+
+                             return light;
+                         })
+                     });
+    },
+    [SET_LIGHT_OFF]:
+    (state: ILightsState, action: IAction<SET_LIGHT_ON>) => {
+
+              var index = _.findIndex(state.all, (entry: ILightSwitchState) => entry.id === action.data);
+                     return Object.assign({}, state, {
+                         all: state.all.map((light) => {
+                             if (light.id === action.data) {
+                                 light.state = 0;
+                             }
+
+                             return light;
+                         })
+                     });
+    },
+    [SET_ALL_LIGHTS_ON]:
+    (state: ILightsState, action: IAction<SET_ALL_LIGHTS_ON>) => {
+
+        return Object.assign({},
+            state,
+            {
+                all: state.all.map((light) => { light.state = 1; })
+            });
+    },
+    [SET_ALL_LIGHTS_OFF]:
+    (state: ILightsState, action: IAction<SET_ALL_LIGHTS_OFF>) => {
+
+        return Object.assign({},
+            state,
+            {
+                all: state.all.map((light) => { light.state = 0; })
+            });
+    },
 },
     initialState);

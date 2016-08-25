@@ -1,27 +1,52 @@
 @import './variables.css';
 
+.active, .switching_on, .switching_off {
+
+}
+
+.light_switch {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: stretch;
+
+    & .slider {
+        right: auto;
+        left: 0;
+        background-color: $color_accent_dark;
+    }
+
+    &.active .slider {
+        right: 0;
+        left: auto;
+        background-color: $color_accent_yellow;
+    }
+
+  & .light {
+      background-color: $color_accent_dark;
+
+  }
+    &.switching_on .light {
+        background-color: $color_accent_orange;
+    }
+
+    &.switching_off .light {
+        background-color: $color_accent_lime;
+    }
+
+    &.active .light {
+        background-color: $color_accent_yellow;
+    }
+}
+
 .switcher {
   position: relative;
   width: 10em;
   height: 5em;
   margin: 1em;
   background: #efefef;
-
-  & .slider {
-      right: auto;
-      left: 0;
-      background-color: $color_accent_dark;
-  }
-
-  &.active .slider {
-      right: 0;
-      left: auto;
-      background-color: $color_accent_yellow;
-  }
-}
-
-.active {
-
 }
 
 .slider {
@@ -39,16 +64,11 @@
 
 }
 
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+.light {
+  height: 50px;
+  width: 50px;
+  border-radius: 20px;
+    padding: 0;
+    margin: 1em;
+    transition: .4s;
 }

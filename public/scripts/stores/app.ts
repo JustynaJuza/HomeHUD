@@ -1,3 +1,5 @@
+import { ControlHub } from '../components/controlHub';
+
 import { Action } from 'redux-actions';
 import { combineReducers, createStore } from 'redux';
 
@@ -14,5 +16,7 @@ export const app = combineReducers({
   lights: lightsReducer
 });
 
-
 export const store = createStore(app);
+
+export const hub = new ControlHub();
+hub.init();

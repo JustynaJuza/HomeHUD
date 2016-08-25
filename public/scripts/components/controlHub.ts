@@ -1,20 +1,19 @@
-// interface SignalR {
-//     controlHub: ControlHub;
-// }
-// interface ControlHub {
-//     client: ControlHubClient;
-//     server: ControlHubServer;
-// }
-// interface ControlHubClient {
-//     //addNewMessageToPage : (name : number, message : string) => void;
-// }
-// interface ControlHubServer {
-//     //send(name: string, message: string): JQueryPromise<void>;
-// }
+import { store } from '../stores/app';
+import {
+    LightActions,
+    SET_LIGHT_ON,
+    SET_LIGHT_OFF,
+    SET_ALL_LIGHTS_ON,
+    SET_ALL_LIGHTS_OFF
+} from '../stores/actions/lightActions';
 
 interface IControlHub {
   connected:boolean;
   init: () => void;
+  switchLightOn: (id: string|number) => void;
+  switchLightOff: (id: string|number) => void;
+  switchAllLightsOn: () => void;
+  switchAllLightsOff: () => void;
 }
 
 export class ControlHub implements IControlHub {
@@ -35,15 +34,19 @@ export class ControlHub implements IControlHub {
 
     private setClientEventHandlers() : void {
       this.proxy.on('switchLightOn', (id: string | number) => {
-        console.log(id + 'switched on on client')
+        store.dispatch(LightActions.SET_LIGHT_ON(id))
+        console.log(id + ' switched on on client')
       })
       this.proxy.on('switchLightOff', (id: string | number) => {
-        console.log(id + 'switched off on client')
+        store.dispatch(LightActions.SET_LIGHT_OFF(id))
+        console.log(id + ' switched off on client')
       })
       this.proxy.on('switchAllLightsOn', () => {
+        store.dispatch(LightActions.SET_ALL_LIGHTS_ON())
         console.log('all lights switched on on client')
       })
       this.proxy.on('switchAllLightsOff', () => {
+        store.dispatch(LightActions.SET_ALL_LIGHTS_ON())
         console.log('all lights switched off on client')
       })
     }
@@ -53,5 +56,21 @@ export class ControlHub implements IControlHub {
         .done(() => {
             this.proxy.invoke('switchLightOn', '234').done(() => { console.log('sent'); });
         })
+    }
+
+    public switchLightOn(id: string|number): void {
+          this.proxy.invoke('switchLightOn', id).done(() => { console.log('sent'); });
+    }
+
+    public switchLightOff(id: string|number): void {
+        this.proxy.invoke('switchLightOff', id).done(() => { console.log('sent'); });
+    }
+
+    public switchAllLightsOn() : void {
+        this.proxy.invoke('switchAllLightsOn').done(() => { console.log('sent'); });
+    }
+
+    public switchAllLightsOff() : void {
+        this.proxy.invoke('switchAllLightsOff').done(() => { console.log('sent'); });
     }
 }

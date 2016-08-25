@@ -42,7 +42,7 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
     }
     private renderLightSwitch = (entry: ILightSwitchState, index: number) => {
         return (
-            <LightSwitch key={index} id={entry.id} isActive={entry.isActive}
+            <LightSwitch key={index} id={entry.id} state={entry.state}
             onSwitchOn={this.handlers.onSwitchOn}
             onSwitchOff={this.handlers.onSwitchOff}/>
         )
