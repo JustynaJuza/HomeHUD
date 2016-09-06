@@ -29,7 +29,7 @@ const postcssConfig = {
 
 const config = [{
     name: 'client',
-    entry: paths.app + '/components/index.tsx',
+    entry: ['babel-polyfill', paths.app + '/components/index.tsx'],
     output: {
         path: paths.build,
         filename: 'client.bundle.js'

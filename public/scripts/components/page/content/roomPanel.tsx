@@ -3,16 +3,11 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import * as _ from 'lodash';
 
-import { IAppState } from '../../../stores/app';
-import { ILightSwitchState } from '../../../stores/lightsReducer';
 import { homeHudConfig as config } from "../../HomeHud";
-import {
-    LightActions,
-    SWITCH_LIGHT_ON,
-    SWITCH_LIGHT_OFF,
-    SWITCH_ALL_LIGHTS_ON,
-    SWITCH_ALL_LIGHTS_OFF
-} from '../../../stores/actions/lightActions';
+
+import { IAppState } from '../../../stores/app';
+import { ILightSwitchState } from '../../../stores/lights/lightsState';
+import { lightActions } from '../../../stores/lights/lightActions';
 
 import { LightSwitch } from './lightSwitch';
 
@@ -36,8 +31,8 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 
     private createHandlers(dispatch : Dispatch<any>){
         return {
-            onSwitchOn: (id: string | number) => dispatch(LightActions.SWITCH_LIGHT_ON(id)),
-            onSwitchOff: (id: string | number) => dispatch(LightActions.SWITCH_LIGHT_OFF(id))
+            onSwitchOn: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_ON(id)),
+            onSwitchOff: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_OFF(id))
         }
     }
     private renderLightSwitch = (entry: ILightSwitchState, index: number) => {

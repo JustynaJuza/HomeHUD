@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash';
 
 import { IAppState } from '../../../stores/app';
-import { ILightSwitchState } from '../../../stores/lightsReducer';
+import { ILightSwitchState } from '../../../stores/lights/lightsState';
 import { homeHudConfig as config } from "../../HomeHud";
 
 import * as style from '../../../../styles/control-panel.css';

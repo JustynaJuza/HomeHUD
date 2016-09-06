@@ -7,7 +7,7 @@ import { IAppState } from '../../stores/app';
 import { homeHudConfig as config, IControlPanelTab } from '../homeHud';
 
 import { NavigationTab } from './navigation-tab';
-import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/actions/navigationActions';
+import { NavigationActions, SELECT_NAVIGATION_TAB } from '../../stores/navigation/navigationActions';
 
 import * as style from '../../../styles/navigation.css';
 

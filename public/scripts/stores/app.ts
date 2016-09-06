@@ -1,22 +1,22 @@
-import { ControlHub } from '../components/controlHub';
+import { ControlHub } from './controlHub';
 
-import { Action } from 'redux-actions';
 import { combineReducers, createStore } from 'redux';
 
-import { navigationReducer, INavigationState } from './navigationReducer';
-import { lightsReducer, ILightsState } from './lightsReducer';
+import { navigationReducer, INavigationState } from './navigation/navigationReducer';
+import { LightsReducer } from './lights/lightsReducer';
+import { ILightsState } from './lights/lightsState';
 
 export interface IAppState {
 	navigation: INavigationState,
 	lights: ILightsState
 }
 
+const hub = new ControlHub();
+//hub.init();
+
 export const app = combineReducers({
   navigation: navigationReducer,
-  lights: lightsReducer
+  lights: new LightsReducer(hub).get()
 });
 
 export const store = createStore(app);
-
-export const hub = new ControlHub();
-hub.init();
