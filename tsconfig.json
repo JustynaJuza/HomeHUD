@@ -12,5 +12,6 @@
   "files": [
     "./typings/index.d.ts",
     "./public/scripts/components/index.tsx",
+    "./signalr/index.ts"
   ]
 }
