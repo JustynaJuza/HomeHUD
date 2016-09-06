@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 
-import { LightSwitchPosition } from '../../../stores/lightsReducer';
+import { LightSwitchPosition } from '../../../stores/lights/lightsState';
 import * as style from '../../../../styles/light-switch.css';
 
 interface ILightSwitchProps {
@@ -21,19 +21,20 @@ export class LightSwitch extends React.Component<ILightSwitchProps, {}> {
 
     public render() {
 			console.log( this.props.id,  this.props.state)
-		var switchClasses = classNames({
-				[style.light_switch]: true,
-				[style.active]: this.props.state === 1,
+		var lightClasses = classNames({
+				[style.light]: true,
+				[style.off]: this.props.state === 0,
+				[style.on]: this.props.state === 1,
 				[style.switching_on]: this.props.state === 2,
 				[style.switching_off]: this.props.state === 3,
 			})
 
         return (
-					<div className={switchClasses}>
-			<div className={style.switcher} onClick={this.onSwitchChange.bind(this, this.props.id)}>
-				<button className={style.slider}></button>
+					<div className={lightClasses}>
+			<div className={style.light_switcher} onClick={this.onSwitchChange.bind(this, this.props.id)}>
+				<button className={style.switcher}></button>
 			</div>
-			<span className={style.light}></span>
+			<span className={style.icon}></span>
 		</div>
 		);
     }
