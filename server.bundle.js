@@ -59,27 +59,8 @@
 	exports.SET_LIGHT_OFF = lightActionDescriptions_1.SET_LIGHT_OFF;
 	exports.SET_ALL_LIGHTS_ON = lightActionDescriptions_1.SET_ALL_LIGHTS_ON;
 	exports.SET_ALL_LIGHTS_OFF = lightActionDescriptions_1.SET_ALL_LIGHTS_OFF;
-	exports.GET_CURRENT_LIGHT_STATE = lightActionDescriptions_1.GET_CURRENT_LIGHT_STATE;
-	exports.SET_CURRENT_LIGHT_STATE = lightActionDescriptions_1.SET_CURRENT_LIGHT_STATE;
-	exports.initialState = {
-	    all: [{
-	        id: 'biurkoBartka',
-	        state: 1,
-	        roomIndex: 1
-	    }, {
-	        id: 'biurkoJustyny',
-	        state: 0,
-	        roomIndex: 1
-	    }, {
-	        id: 'lozko',
-	        state: 2,
-	        roomIndex: 2
-	    }, {
-	        id: 'salon',
-	        state: 3,
-	        roomIndex: 3
-	    }]
-	};
+	exports.GET_CURRENT_LIGHTS_STATE = lightActionDescriptions_1.GET_CURRENT_LIGHTS_STATE;
+	exports.SET_CURRENT_LIGHTS_STATE = lightActionDescriptions_1.SET_CURRENT_LIGHTS_STATE;
 
 /***/ },
 /* 1 */
@@ -137,9 +118,9 @@
 	            data: {}
 	        };
 	    },
-	    SET_CURRENT_LIGHT_STATE: function SET_CURRENT_LIGHT_STATE(state) {
+	    SET_CURRENT_LIGHTS_STATE: function SET_CURRENT_LIGHTS_STATE(state) {
 	        return {
-	            type: lightActionDescriptions_1.SET_CURRENT_LIGHT_STATE,
+	            type: lightActionDescriptions_1.SET_CURRENT_LIGHTS_STATE,
 	            data: state
 	        };
 	    }
@@ -159,8 +140,8 @@
 	exports.SET_LIGHT_OFF = 'SET_LIGHT_OFF';
 	exports.SET_ALL_LIGHTS_ON = 'SET_ALL_LIGHTS_ON';
 	exports.SET_ALL_LIGHTS_OFF = 'SET_ALL_LIGHTS_OFF';
-	exports.GET_CURRENT_LIGHT_STATE = 'GET_CURRENT_LIGHT_STATE';
-	exports.SET_CURRENT_LIGHT_STATE = 'SET_CURRENT_LIGHT_STATE';
+	exports.GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
+	exports.SET_CURRENT_LIGHTS_STATE = 'SET_CURRENT_LIGHTS_STATE';
 
 /***/ },
 /* 3 */
@@ -1102,6 +1083,9 @@
 	                    return Object.assign({}, state, { all: _.map(state.all, function (light) {
 	                            light.state = 0;
 	                        }) });
+	                },
+	                SET_CURRENT_LIGHTS_STATE: function SET_CURRENT_LIGHTS_STATE(state, action) {
+	                    return action.data;
 	                }
 	            }, lightsState_1.EMPTY_LIGHTS_STATE);
 	        }
@@ -17959,7 +17943,7 @@
 	})(exports.LightSwitchPosition || (exports.LightSwitchPosition = {}));
 	var LightSwitchPosition = exports.LightSwitchPosition;
 	;
-	exports.EMPTY_LIGHTS_STATE = { all: {} };
+	exports.EMPTY_LIGHTS_STATE = { all: [] };
 
 /***/ }
 /******/ ]);

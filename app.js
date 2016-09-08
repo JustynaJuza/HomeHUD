@@ -40,13 +40,6 @@ app.use(function (req, res, next) {
     next(err);
 });
 
-
-signalR.on('CONNECTED',function(){
-    console.log('connected');
-    // setInterval(function () {
-    //     signalR.send({time:new Date()});
-    // },1000)
-});
 // error handlers
 
 // development error handler

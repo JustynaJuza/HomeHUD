@@ -15,4 +15,4 @@ export interface ILightsState {
     all: Array<ILightSwitchState>;
 };
 
-export const EMPTY_LIGHTS_STATE = <ILightsState>{ all: {} };
+export const EMPTY_LIGHTS_STATE = <ILightsState>{ all: [] };

@@ -11,8 +11,8 @@ import {
     SET_LIGHT_OFF,
     SET_ALL_LIGHTS_ON,
     SET_ALL_LIGHTS_OFF,
-    GET_CURRENT_LIGHT_STATE,
-    SET_CURRENT_LIGHT_STATE
+    GET_CURRENT_LIGHTS_STATE,
+    SET_CURRENT_LIGHTS_STATE
 } from './lights/lightActionDescriptions';
 
 export interface IControlHub {
@@ -40,7 +40,6 @@ export class ControlHub implements IControlHub {
 
         this.setClientEventHandlers();
         this.startConnection();
-            console.log('continue')
     }
 
     private setClientEventHandlers(): void {
@@ -60,8 +59,9 @@ export class ControlHub implements IControlHub {
             store.dispatch(lightActions.SET_ALL_LIGHTS_ON())
             console.log('all lights switched off on client')
         })
-        this.proxy.on(SET_CURRENT_LIGHT_STATE, (state: SET_CURRENT_LIGHT_STATE) => {
-            store.dispatch(lightActions.SET_CURRENT_LIGHT_STATE(state))
+        this.proxy.on(SET_CURRENT_LIGHTS_STATE, (state: ILightsState) => {
+            console.log(state)
+            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(state))
             console.log('setting current light state on client')
         })
     }
@@ -69,7 +69,8 @@ export class ControlHub implements IControlHub {
     private startConnection(): void {
             this.connection.start()
                 .done(() => {
-                    this.proxy.invoke(GET_CURRENT_LIGHT_STATE);
+                  //this.trySetLightOn('234');
+                    this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
                 })
                 .fail(() => {})
                 .always(() => { console.log('started'); });
@@ -79,7 +80,7 @@ export class ControlHub implements IControlHub {
     //     return <ILightsState>{ all: {} };
     // }
 
-    public trySetLightOn(id: TRY_SET_LIGHT_OFF): void {
+    public trySetLightOn(id: TRY_SET_LIGHT_ON): void {
         this.proxy.invoke(TRY_SET_LIGHT_ON, id);
     }
 

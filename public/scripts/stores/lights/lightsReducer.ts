@@ -14,7 +14,7 @@ import {
     SET_LIGHT_OFF,
     SET_ALL_LIGHTS_ON,
     SET_ALL_LIGHTS_OFF,
-    SET_CURRENT_LIGHT_STATE } from './lightActionDescriptions';
+    SET_CURRENT_LIGHTS_STATE } from './lightActionDescriptions';
 
 interface ILightsReducer {
   get: () => any;
@@ -116,8 +116,8 @@ export class LightsReducer implements ILightsReducer {
                 { all: state.all.map((light) => { light.state = 0; }) });
         },
 
-        SET_CURRENT_LIGHT_STATE:
-        (state: ILightsState, action: IAction<SET_CURRENT_LIGHT_STATE>) => {
+        SET_CURRENT_LIGHTS_STATE:
+        (state: ILightsState, action: IAction<SET_CURRENT_LIGHTS_STATE>) => {
 
             return action.data;
         }

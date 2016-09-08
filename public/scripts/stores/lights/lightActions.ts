@@ -8,7 +8,7 @@ import {
     SET_LIGHT_OFF,
     SET_ALL_LIGHTS_ON,
     SET_ALL_LIGHTS_OFF,
-    SET_CURRENT_LIGHT_STATE } from './lightActionDescriptions';
+    SET_CURRENT_LIGHTS_STATE } from './lightActionDescriptions';
 
 export const lightActions = {
     TRY_SET_LIGHT_ON:
@@ -61,10 +61,10 @@ export const lightActions = {
             data: {}
         }),
 
-    SET_CURRENT_LIGHT_STATE:
-    (state: SET_CURRENT_LIGHT_STATE) =>
-        (<IAction<SET_CURRENT_LIGHT_STATE>>{
-            type: SET_CURRENT_LIGHT_STATE,
+    SET_CURRENT_LIGHTS_STATE:
+    (state: SET_CURRENT_LIGHTS_STATE) =>
+        (<IAction<SET_CURRENT_LIGHTS_STATE>>{
+            type: SET_CURRENT_LIGHTS_STATE,
             data: state
         }),
 }

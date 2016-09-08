@@ -103,7 +103,7 @@ const config = [{
 		output: {
         filename: 'server.bundle.js'
 		},
-		externals: /^[a-z\-0-9]+$/,
+		//externals: /^[a-z\-0-9]+$/,
 		module: {
 			loaders:
       [{
@@ -114,7 +114,7 @@ const config = [{
 		},
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
-    },
+    }
 }
 ];
 
