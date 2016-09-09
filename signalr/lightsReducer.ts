@@ -64,8 +64,6 @@ export class LightsReducer implements ILightsReducer {
             SET_LIGHT_ON:
             (state: ILightsState, action: IAction<SET_LIGHT_ON>) => {
 
-                //database.setLightState(action.data, 1);
-
                 return Object.assign({}, state, {
                     all: _.map(state.all, (light) => {
                         if (light.id === action.data) {

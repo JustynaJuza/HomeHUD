@@ -4,11 +4,11 @@ var url = 'mongodb://localhost:27017/homeHud';
 //
 // const mongoClient = mongodb.MongoClient;
 
-function execute(collectionName, operation) {
+function execute(collectionName, operation, params) {
     var db = mongo(url);
 
     var collection = db.collection(collectionName);
-    return operation(collection).then((results) => {
+    return operation(collection, params).then((results) => {
         db.close();
         return results;
     });
@@ -70,7 +70,10 @@ function find(collection, id) {
 }
 
 function update(collection, options){
-    return collection.update(options.selector, options.changes);
+    return collection.update(options.selector, options.changes)
+    .then(() => {
+        return execute('lights', getAll).then(mapToLightSwitchStates).then((result) => console.log(result));
+      });
 }
 
 var mapToLightSwitchStates = (all) => {
@@ -88,6 +91,7 @@ module.exports = {
         return execute('lights', getAll).then(mapToLightSwitchStates);
     },
     setLightState: function(lightId, lightState) {
-        //return execute('lights', update, { selector: { id: lightId }, changes: { state: lightState }});
+        return execute('lights', update,
+        { selector: { id: lightId }, changes: { $set: { state: lightState }} });
     }
 }
