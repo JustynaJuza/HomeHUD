@@ -32,7 +32,8 @@ const config = [{
     entry: ['babel-polyfill', paths.app + '/components/index.tsx'],
     output: {
         path: paths.build,
-        filename: 'client.bundle.js'
+        filename: 'client.bundle.js',
+        publicPath: 'scripts/dist/'
     },
     module: {
         loaders: [{
@@ -57,7 +58,23 @@ const config = [{
             test: /\.scss$/,
             loaders: ['style', 'css', 'sass'],
             include: paths.style
-        }],
+        },
+        {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loaders: [
+          'url?limit=10000&name=[name].[ext]?[hash:7]',
+          'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+        ]
+      }
+        // {
+        //   test: /\.png$/,
+        //   loader: "url-loader?limit=100000"
+        // },
+        // {
+        //   test: /\.jpg$/,
+        //   loader: "file-loader"
+        // }
+      ],
         preLoaders: [{
             test: /\.js$/,
             loader: 'source-map-loader'

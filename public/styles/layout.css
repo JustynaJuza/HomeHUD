@@ -36,10 +36,10 @@ body {
 }
 
 .content{
-height: calc(100% - $nav_height - $header_height);
-	min-width: 360px;
-    max-width: 1080px;
+    height: calc(100% - $nav_height - $header_height);
+    width: 100%;
     margin: 0 auto;
     padding: 2em 0;
-    	background: $content_color;
+    background: $content_background;
+    background-size: cover;
 }

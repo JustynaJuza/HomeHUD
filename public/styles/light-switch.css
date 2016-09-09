@@ -12,13 +12,16 @@
     &.on .switcher {
         right: 0;
         left: auto;
-        background-color: $color_accent_yellow;
+        box-shadow: inset 0px 0px 6px #fff;
+        border: 1px solid #5ea617;
+        border-radius: 10px;
+        background: linear-gradient(to bottom, #8DD297, #398525);
+        background: #8DD297
     }
 
     &.off .switcher {
         right: auto;
         left: 0;
-        background-color: $color_accent_dark;
     }
 
     &.on .icon {

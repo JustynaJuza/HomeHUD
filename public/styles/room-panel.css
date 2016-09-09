@@ -1,8 +1,13 @@
 @import './variables.css';
 
 .switches{
-    width: 80%;
+    width: 40%;
+    min-width: 300px;
+    max-width: 430px;
     margin: 0 auto;
+    background: #fff;
+    border-radius: 15px;
+    padding: 10px;
 
     display: flex;
     flex-direction: column;
