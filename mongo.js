@@ -70,10 +70,11 @@ function find(collection, id) {
 }
 
 function update(collection, options){
-    return collection.update(options.selector, options.changes)
-    .then(() => {
-        return execute('lights', getAll).then(mapToLightSwitchStates).then((result) => console.log(result));
-      });
+    return collection.update(options.selector, options.changes);
+}
+
+function updateAll(collection, changes){
+    return collection.update({}, changes, { multi: true })
 }
 
 var mapToLightSwitchStates = (all) => {
@@ -93,5 +94,8 @@ module.exports = {
     setLightState: function(lightId, lightState) {
         return execute('lights', update,
         { selector: { id: lightId }, changes: { $set: { state: lightState }} });
+    },
+    setAllLights: function(lightState) {
+        return execute('lights', updateAll, { $set: { state: lightState } });
     }
 }
