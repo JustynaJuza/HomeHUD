@@ -1045,14 +1045,20 @@
 	                    });
 	                },
 	                TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON(state, action) {
-	                    return Object.assign({}, state, { all: _.map(state.all, function (light) {
-	                            light.state = 2;
-	                        }) });
+	                    return Object.assign({}, state, {
+	                        all: state.all.map(function (light) {
+	                            light.state = 1;
+	                            return light;
+	                        })
+	                    });
 	                },
 	                TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF(state, action) {
-	                    return Object.assign({}, state, { all: _.map(state.all, function (light) {
-	                            light.state = 3;
-	                        }) });
+	                    return Object.assign({}, state, {
+	                        all: state.all.map(function (light) {
+	                            light.state = 0;
+	                            return light;
+	                        })
+	                    });
 	                },
 	                SET_LIGHT_ON: function SET_LIGHT_ON(state, action) {
 	                    return Object.assign({}, state, {
@@ -1075,14 +1081,20 @@
 	                    });
 	                },
 	                SET_ALL_LIGHTS_ON: function SET_ALL_LIGHTS_ON(state, action) {
-	                    return Object.assign({}, state, { all: _.map(state.all, function (light) {
+	                    return Object.assign({}, state, {
+	                        all: state.all.map(function (light) {
 	                            light.state = 1;
-	                        }) });
+	                            return light;
+	                        })
+	                    });
 	                },
 	                SET_ALL_LIGHTS_OFF: function SET_ALL_LIGHTS_OFF(state, action) {
-	                    return Object.assign({}, state, { all: _.map(state.all, function (light) {
+	                    return Object.assign({}, state, {
+	                        all: state.all.map(function (light) {
 	                            light.state = 0;
-	                        }) });
+	                            return light;
+	                        })
+	                    });
 	                },
 	                SET_CURRENT_LIGHTS_STATE: function SET_CURRENT_LIGHTS_STATE(state, action) {
 	                    return action.data;

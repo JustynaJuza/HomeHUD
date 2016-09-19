@@ -42,4 +42,5 @@ body {
     padding: 2em 0;
     background: $content_background;
     background-size: cover;
+    /* background-size: 100% 100%; */
 }

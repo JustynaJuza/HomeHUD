@@ -6,8 +6,8 @@ const signalR = SignalR();
 
 var currentLightsState;
 database.getLightsState().then(function(state){
-  console.log(state)
   currentLightsState = { all: state };
+  server.store.dispatch(server.lightActions.SET_CURRENT_LIGHTS_STATE(currentLightsState));
 });
 
 signalR.hub('controlHub', {
@@ -37,10 +37,10 @@ signalR.hub('controlHub', {
   },
   GET_CURRENT_LIGHTS_STATE: function() {
     //await database.getLightsState().then((state) => {
-      console.log(currentLightsState)
+      console.log(server.store.getState())
       //var currentLightsState = { all: state };
       //server.store.dispatch(server.lightActions.SET_CURRENT_LIGHTS_STATE(currentLightsState));
-      this.clients.all.invoke(server.SET_CURRENT_LIGHTS_STATE).withArgs([currentLightsState]);
+      this.clients.all.invoke(server.SET_CURRENT_LIGHTS_STATE).withArgs([server.store.getState()]);
     //});
   }
 })

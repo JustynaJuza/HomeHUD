@@ -48,16 +48,26 @@ export class LightsReducer implements ILightsReducer {
                 });
             },
             TRY_SET_ALL_LIGHTS_ON:
-            (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_ON>) => {
+            (state: ILightsState, action: IAction<SET_ALL_LIGHTS_ON>) => {
 
                 return Object.assign({}, state,
-                    { all: _.map(state.all, (light) => { light.state = 2; }) });
+                    {
+                        all: state.all.map((light) => {
+                            light.state = 1;
+                            return light;
+                        })
+                    });
             },
             TRY_SET_ALL_LIGHTS_OFF:
-            (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_OFF>) => {
+            (state: ILightsState, action: IAction<SET_ALL_LIGHTS_OFF>) => {
 
                 return Object.assign({}, state,
-                    { all: _.map(state.all, (light) => { light.state = 3; }) });
+                    {
+                        all: state.all.map((light) => {
+                            light.state = 0;
+                            return light;
+                        })
+                    });
             },
 
             // signalR callback functions
@@ -92,13 +102,23 @@ export class LightsReducer implements ILightsReducer {
             (state: ILightsState, action: IAction<SET_ALL_LIGHTS_ON>) => {
 
                 return Object.assign({}, state,
-                    { all: _.map(state.all, (light) => { light.state = 1; }) });
+                    {
+                        all: state.all.map((light) => {
+                            light.state = 1;
+                            return light;
+                        })
+                    });
             },
             SET_ALL_LIGHTS_OFF:
             (state: ILightsState, action: IAction<SET_ALL_LIGHTS_OFF>) => {
 
                 return Object.assign({}, state,
-                    { all: _.map(state.all, (light) => { light.state = 0; }) });
+                    {
+                        all: state.all.map((light) => {
+                            light.state = 0;
+                            return light;
+                        })
+                    });
             },
 
             SET_CURRENT_LIGHTS_STATE:
