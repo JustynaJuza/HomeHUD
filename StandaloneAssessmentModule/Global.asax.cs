@@ -12,6 +12,8 @@ namespace StandaloneAssessmentModule
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ReactConfig.Configure();
         }
     }
 }

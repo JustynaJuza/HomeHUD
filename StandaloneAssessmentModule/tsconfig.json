@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "./Scripts/app/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "preserve"
+  },
+  "files": [
+    "./typings/index.d.ts",
+    "./Scripts/app/components/app.tsx"
+  ]
+}
