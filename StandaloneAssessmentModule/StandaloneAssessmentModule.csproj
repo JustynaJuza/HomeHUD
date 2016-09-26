@@ -28,6 +28,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -284,18 +285,15 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="README.md" />
-    <Content Include="Scripts\app\app.js.map" />
-    <Content Include="Scripts\app\app.jsx" />
-    <Content Include="Scripts\app\app.jsx.map" />
-    <Content Include="Scripts\app\bundle.js" />
+    <Content Include="Scripts\app\client.bundle.js" />
+    <Content Include="Scripts\app\server.bundle.js" />
     <Content Include="Scripts\react-dom-v15.js" />
     <Content Include="Scripts\react-v15.js" />
     <Content Include="webpack.config.js" />
     <Content Include=".babelrc" />
     <Content Include="package.json" />
-    <Content Include="Scripts\app\bundle.js.map" />
+    <Content Include="Scripts\app\client.bundle.js.map" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
-    <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.1.0.js" />
@@ -375,6 +373,8 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\app\components\app.tsx" />
+    <Content Include="Scripts\app\server\expose.js" />
+    <TypeScriptCompile Include="Scripts\app\server\server.ts" />
     <TypeScriptCompile Include="typings\globals\classnames\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\jquery\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\lodash\index.d.ts" />
@@ -404,7 +404,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54121</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

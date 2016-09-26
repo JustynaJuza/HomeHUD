@@ -1,7 +1,6 @@
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./Scripts/app/",
     "sourceMap": true,
     "noImplicitAny": true,
     "removeComments": true,
@@ -11,7 +10,6 @@
   },
   "files": [
     "./typings/index.d.ts",
-    "./Scripts/app/components/app.tsx",
-    "./Scripts/app/components/sever.ts"
+    "./Scripts/app/components/app.tsx"
   ]
 }

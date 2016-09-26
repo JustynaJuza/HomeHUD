@@ -32,7 +32,7 @@ const config = [{
     entry: [paths.app + 'components/app.tsx'],
     output: {
         path: paths.build,
-        filename: 'bundle.js'
+        filename: 'client.bundle.js'
         //publicPath: 'Scripts/dist/'
     },
     module: {
@@ -115,13 +115,12 @@ const config = [{
 },
 {
     name: 'server',
-    entry: [paths.app + 'components/server.ts'],
-    target: "node",
+    entry: [paths.app + 'server/expose.js'],
+    //target: "node",
     output: {
         path: paths.build,
         filename: 'server.bundle.js'
     },
-    externals: /^[a-z\-0-9]+$/,
     module: {
         loaders:
   [{
@@ -132,6 +131,10 @@ const config = [{
     },
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
+    },
+    externals: {
+        'react': 'React',
+        'react-dom': 'ReactDOM'
     }
 }
 ];

@@ -4,10 +4,12 @@
 
 <div id="content"></div>
 
-@Html.React("App", new { a = "Test" }, clientOnly: false)
-
-<script src="https://fb.me/react-15.0.1.js"></script>
-<script src="https://fb.me/react-dom-15.0.1.js"></script>
-<script src="~/Scripts/app/bundle.js"></script>
+@Html.React("Components.App", new { a = "Test" }, clientOnly: false)
 
 @Html.ReactInitJavaScript()
+
+@section Scripts{
+    <script src="https://fb.me/react-15.0.1.js"></script>
+    <script src="https://fb.me/react-dom-15.0.1.js"></script>
+    @Scripts.Render("~/Scripts/app/client.bundle.js")
+}

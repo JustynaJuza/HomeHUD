@@ -13,15 +13,16 @@ namespace StandaloneAssessmentModule
             // your components as well as all of their dependencies.
             // See http://reactjs.net/ for more information. Example:
             ReactSiteConfiguration.Configuration
-                .AddScript("~/Scripts/app/app.jsx");
+                .SetLoadBabel(false)
+                .AddScriptWithoutTransform("~/Scripts/app/server.bundle.js");
 
             // If you use an external build too (for example, Babel, Webpack,
             // Browserify or Gulp), you can improve performance by disabling 
             // ReactJS.NET's version of Babel and loading the pre-transpiled 
             // scripts. Example:
-            //            ReactSiteConfiguration.Configuration
-            //                .SetLoadBabel(false)
-            //                .AddScriptWithoutTransform("~/Scripts/app/app.js");
+            ReactSiteConfiguration.Configuration
+                .SetLoadBabel(false)
+                .AddScriptWithoutTransform("~/Scripts/app/client.bundle.js");
         }
     }
 }
