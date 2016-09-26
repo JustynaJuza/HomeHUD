@@ -66,14 +66,6 @@ const config = [{
               'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
             ]
         }
-        // {
-        //   test: /\.png$/,
-        //   loader: "url-loader?limit=100000"
-        // },
-        // {
-        //   test: /\.jpg$/,
-        //   loader: "file-loader"
-        // }
         ],
         preLoaders: [{
             test: /\.js$/,
@@ -122,12 +114,37 @@ const config = [{
         filename: 'server.bundle.js'
     },
     module: {
-        loaders:
-  [{
-      test: /\.ts(x?)$/,
-      loader: 'babel-loader!ts-loader',
-      exclude: /node_modules/
-  }]
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: {
+                presets: ['es2015', 'react']
+            }
+        }, {
+            test: /\.ts(x?)$/,
+            loader: 'babel-loader!ts-loader',
+            exclude: /node_modules/
+        }, {
+            test: /\.css$/,
+            loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+        }, {
+            test: /\.less$/,
+            loaders: ['style', 'css', 'less'],
+            include: paths.styles
+        }, {
+            test: /\.scss$/,
+            loaders: ['style', 'css', 'sass'],
+            include: paths.style
+        },
+        {
+            test: /\.(jpe?g|png|gif|svg)$/i,
+            loaders: [
+              'url?limit=10000&name=[name].[ext]?[hash:7]',
+              'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+            ]
+        }
+        ]
     },
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']

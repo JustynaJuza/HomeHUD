@@ -7,3 +7,4 @@
 /// <reference path="globals/redux-actions/index.d.ts" />
 /// <reference path="globals/redux/index.d.ts" />
 /// <reference path="globals/signalr/index.d.ts" />
+/// <reference path="globals/object-assign/index.d.ts" />
