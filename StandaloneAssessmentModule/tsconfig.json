@@ -7,10 +7,11 @@
     "removeComments": true,
     "module": "commonjs",
     "target": "es5",
-    "jsx": "preserve"
+    "jsx": "react"
   },
   "files": [
     "./typings/index.d.ts",
-    "./Scripts/app/components/app.tsx"
+    "./Scripts/app/components/app.tsx",
+    "./Scripts/app/components/sever.ts"
   ]
 }

@@ -8,7 +8,7 @@ const paths = {
 };
 
 const postcssConfig = {
-    import: function(webpack) {
+    import: function (webpack) {
         return require('postcss-import')({
             path: paths.styles,
             addDependencyTo: webpack
@@ -60,12 +60,12 @@ const config = [{
             include: paths.style
         },
         {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'url?limit=10000&name=[name].[ext]?[hash:7]',
-          'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
-        ]
-      }
+            test: /\.(jpe?g|png|gif|svg)$/i,
+            loaders: [
+              'url?limit=10000&name=[name].[ext]?[hash:7]',
+              'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+            ]
+        }
         // {
         //   test: /\.png$/,
         //   loader: "url-loader?limit=100000"
@@ -74,13 +74,13 @@ const config = [{
         //   test: /\.jpg$/,
         //   loader: "file-loader"
         // }
-      ],
+        ],
         preLoaders: [{
             test: /\.js$/,
             loader: 'source-map-loader'
         }]
     },
-    postcss: function(webpack) {
+    postcss: function (webpack) {
         return [
             postcssConfig.import(webpack),
             postcssConfig.fonts,
@@ -112,27 +112,28 @@ const config = [{
         'react': 'React',
         'react-dom': 'ReactDOM'
     }
+},
+{
+    name: 'server',
+    entry: [paths.app + 'components/server.ts'],
+    target: "node",
+    output: {
+        path: paths.build,
+        filename: 'server.bundle.js'
+    },
+    externals: /^[a-z\-0-9]+$/,
+    module: {
+        loaders:
+  [{
+      test: /\.ts(x?)$/,
+      loader: 'babel-loader!ts-loader',
+      exclude: /node_modules/
+  }]
+    },
+    resolve: {
+        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
+    }
 }
-//{
-//  name: 'server',
-//        entry: "./signalR/index.ts",
-//        target: "node",
-//        output: {
-//        filename: 'server.bundle.js'
-//        },
-//        //externals: /^[a-z\-0-9]+$/,
-//        module: {
-//            loaders:
-//      [{
-//          test: /\.ts(x?)$/,
-//          loader: 'babel-loader!ts-loader',
-//          exclude: /node_modules/
-//      }]
-//        },
-//    resolve: {
-//        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
-//    }
-//}
 ];
 
 module.exports = config;
