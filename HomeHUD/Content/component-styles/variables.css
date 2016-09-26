@@ -1,0 +1,49 @@
+@custom-media --medium-viewport (min-width: 768px) and (max-width: 992px);
+@custom-media --phone (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)
+
+$base_font_size: 12px;
+$mobile_font_size: 20px;
+
+$content_background: url('../images/background.jpg');
+
+$header_height: 4.5em;
+$nav_height: 5em;
+$nav_tab_line_height: 1em;
+
+$white: #efefef;
+
+$color_accent_green: #BBFF33;
+$color_accent_yellow: #FFC300;
+$color_accent_dark: #3E3A2D;
+$color_accent_lime: #DAF7A6;
+$color_accent_orange: #FF5733;
+$color_accent_rose: #C70039;
+$color_accent_blue: #1F3E6F;
+$color_accent_black: #1B1B1B;
+
+$color_background_purple: #900C3F;
+$color_background_plum: #581845;
+$color_background_2: #acacac;
+$color_background_3: #c3c3c3;
+$color_background_4: #f1f1f1;
+$color_text_dark: #ccc;
+$color_text_black: #333;
+
+$body_color: #fff;
+$content_color: #fff;
+
+$header_text_color: $color_accent_blue;
+$header_color: #fff;
+$header_border_color: $color_accent_blue;
+
+$nav_color: $color_background_4;
+$nav_text_color: $color_text_black;
+$nav_border_color: $color_text_dark;
+
+$nav_active_color: #081017;
+$nav_active_text_color: $white;
+
+$nav_hover_color: $color_background_3;
+$nav_hover_text_color: inherit;
+$nav_active_hover_color: #333;
+$nav_active_hover_text_color: $white;
