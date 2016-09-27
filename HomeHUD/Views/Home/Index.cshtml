@@ -2,14 +2,15 @@
     ViewBag.Title = "Home Page";
 }
 
-<div id="content"></div>
+@Styles.Render("~/Scripts/app/styles.css")
 
-@Html.React("Components.App", new { a = "Test" }, clientOnly: false)
+@Html.React("Components.App", new { a = "Test" }, containerId: "page")
 
-@Html.ReactInitJavaScript()
 
 @section Scripts{
     <script src="https://fb.me/react-15.0.1.js"></script>
     <script src="https://fb.me/react-dom-15.0.1.js"></script>
+
     @Scripts.Render("~/Scripts/app/client.bundle.js")
+    @Html.ReactInitJavaScript()
 }

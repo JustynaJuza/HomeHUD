@@ -1,4 +1,4 @@
-import { ControlHub } from './controlHub';
+//import { ControlHub } from './controlHub';
 
 import { combineReducers, createStore } from 'redux';
 
@@ -11,12 +11,12 @@ export interface IAppState {
 	lights: ILightsState;
 }
 
-const hub = new ControlHub();
+//const hub = new ControlHub();
 //hub.init();
 
 export const app = combineReducers({
   navigation: navigationReducer,
-  lights: new LightsReducer(hub).get()
+  lights: new LightsReducer().get()
 });
 
 export const store = createStore(app);

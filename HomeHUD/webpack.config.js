@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const paths = {
     app: path.join(__dirname, 'Scripts/app/'),
@@ -29,11 +30,10 @@ const postcssConfig = {
 
 const config = [{
     name: 'client',
-    entry: [paths.app + 'components/app.tsx'],
+    entry: [paths.app + 'client/expose.js'],
     output: {
         path: paths.build,
         filename: 'client.bundle.js'
-        //publicPath: 'Scripts/dist/'
     },
     module: {
         loaders: [{
@@ -49,7 +49,7 @@ const config = [{
             exclude: /node_modules/
         }, {
             test: /\.css$/,
-            loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+            loader: ExtractTextPlugin.extract('css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
         }, {
             test: /\.less$/,
             loaders: ['style', 'css', 'less'],
@@ -98,7 +98,8 @@ const config = [{
             'process.env': {
                 NODE_ENV: '"development"'
             }
-        })
+        }),
+        new ExtractTextPlugin('styles.css')
     ],
     externals: {
         'react': 'React',
@@ -127,7 +128,7 @@ const config = [{
             exclude: /node_modules/
         }, {
             test: /\.css$/,
-            loader: "style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader"
+            loader: ExtractTextPlugin.extract('css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader')
         }, {
             test: /\.less$/,
             loaders: ['style', 'css', 'less'],
@@ -146,6 +147,16 @@ const config = [{
         }
         ]
     },
+        postcss: function (webpack) {
+            return [
+                postcssConfig.import(webpack),
+                postcssConfig.fonts,
+                postcssConfig.precss,
+            ].concat(postcssConfig.processors);
+        },
+    plugins: [
+        new ExtractTextPlugin('styles.css')
+    ],
     resolve: {
         extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
     },

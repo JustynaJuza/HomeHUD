@@ -5,11 +5,11 @@ import { IAction } from '../action';
 import { SELECT_NAVIGATION_TAB } from './navigationActions';
 
 export interface INavigationState {
-	selectedNavigationTab: number;
+    selectedNavigationTab: number;
 }
 
 const initialState : INavigationState = {
-	selectedNavigationTab: 0
+    selectedNavigationTab: 0
 };
 
 export const navigationReducer = handleActions(<any> {
