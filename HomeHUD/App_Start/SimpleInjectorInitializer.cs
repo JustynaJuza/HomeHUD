@@ -12,6 +12,7 @@ using SimpleInjector;
 using SimpleInjector.Advanced;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
+using HomeHUD.Models.DbContext;
 
 namespace HomeHUD
 {

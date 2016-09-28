@@ -6,6 +6,7 @@ using Owin;
 using SimpleInjector;
 using System;
 using HomeHUD.Models;
+using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Users;
 
 namespace HomeHUD
