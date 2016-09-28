@@ -315,6 +315,7 @@
     <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
     <Content Include="Scripts\react-dom-15.0.1.js" />
     <Content Include="Scripts\react-15.0.1.js" />
+    <Content Include="webpack.config.settings.js" />
     <Content Include="webpack.config.js" />
     <Content Include=".babelrc" />
     <Content Include="package.json" />
