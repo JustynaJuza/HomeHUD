@@ -11,6 +11,7 @@ namespace HomeHUD
         {
             var container = SimpleInjectorInitializer.Initialize(app);
             ConfigureAuth(app, container);
+            SignalRConfig.Configure(app, container);
         }
     }
 }
