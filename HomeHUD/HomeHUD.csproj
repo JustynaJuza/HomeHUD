@@ -276,7 +276,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\ControlHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\JsonCamelCaseResult.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -422,6 +424,7 @@
     <TypeScriptCompile Include="Scripts\app\server\server.ts" />
     <TypeScriptCompile Include="Scripts\app\state\action.ts" />
     <TypeScriptCompile Include="Scripts\app\state\app.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\controlHub.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActionDescriptions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightsReducer.ts" />

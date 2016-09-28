@@ -21,24 +21,24 @@ export class HomeHud {
 			{ index: 1, name: 'Bbbbbbb', hash: 'gaming',
 				lights: <Array<ILightSwitch>>[
 				{
-					id: 'biurkoBartka',
+					id: 111,
 					name: 'Biurko Bartka'
 				},{
-					id: 'biurkoJustyny',
+					id: 112,
 					name: 'Biurko Justyny'
 				}]
 			},
 			{ index: 2, name: 'Cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc', hash: 'bed',
 				lights: <Array<ILightSwitch>>[
 				{
-					id: 'lozko',
+					id: 222,
 					name: 'Lampki pod lozkiem'
 				}]
 			},
 			{ index: 3, name: 'Dddd dddddd dddd ddd', hash: 'living',
 				lights: <Array<ILightSwitch>>[
 				{
-					id: 'salon',
+					id: 333,
 					name: 'Lampa stojaca'
 				}]
 			}
