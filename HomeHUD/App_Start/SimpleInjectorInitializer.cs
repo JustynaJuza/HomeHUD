@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
+using HomeHUD.Hubs;
 using HomeHUD.Models;
 using HomeHUD.Models.Users;
 using Microsoft.AspNet.Identity;
@@ -12,6 +9,10 @@ using SimpleInjector;
 using SimpleInjector.Advanced;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
 using HomeHUD.Models.DbContext;
 
 namespace HomeHUD
@@ -53,6 +54,10 @@ namespace HomeHUD
             container.RegisterPerWebRequest(() => container.IsVerifying()
                 ? new OwinContext(new Dictionary<string, object>()).Authentication
                 : HttpContext.Current.GetOwinContext().Authentication);
+
+
+            // Services
+            container.Register<ILightSwitchService, LightSwitchService>();
         }
     }
 }
