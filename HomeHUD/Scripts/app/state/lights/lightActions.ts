@@ -1,5 +1,6 @@
 import { IAction } from '../action';
 import {
+    SET_LIGHT_STATE,
     TRY_SET_LIGHT_ON,
     TRY_SET_LIGHT_OFF,
     TRY_SET_ALL_LIGHTS_ON,
@@ -11,6 +12,12 @@ import {
     SET_CURRENT_LIGHTS_STATE } from './lightActionDescriptions';
 
 export const lightActions = {
+    SET_LIGHT_STATE:
+    (data: SET_LIGHT_STATE) =>
+        (<IAction<SET_LIGHT_STATE>>{
+            type: SET_LIGHT_STATE,
+            data: data
+        }),
     TRY_SET_LIGHT_ON:
     (id: TRY_SET_LIGHT_ON) =>
         (<IAction<TRY_SET_LIGHT_ON>>{

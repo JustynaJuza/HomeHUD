@@ -22,6 +22,9 @@ export type SET_LIGHT_OFF = string | number;
 export type SET_ALL_LIGHTS_ON = {};
 export type SET_ALL_LIGHTS_OFF = {};
 
+export const SET_LIGHT_STATE = 'SET_LIGHT_STATUS';
+export type SET_LIGHT_STATE = { lightId: string | number, state: number };
+
 export const GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
 export type GET_CURRENT_LIGHTS_STATE = {};
 export const SET_CURRENT_LIGHTS_STATE = 'SET_CURRENT_LIGHTS_STATE';

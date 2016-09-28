@@ -6,6 +6,7 @@ import { IControlHub } from '../controlHub';
 import { ILightsState, EMPTY_LIGHTS_STATE } from './lightsState';
 import { IAction } from '../action';
 import {
+    SET_LIGHT_STATE,
     TRY_SET_LIGHT_ON,
     TRY_SET_LIGHT_OFF,
     TRY_SET_ALL_LIGHTS_ON,
@@ -29,59 +30,38 @@ export class LightsReducer implements ILightsReducer {
                 TRY_SET_LIGHT_ON:
                 (state: ILightsState, action: IAction<TRY_SET_LIGHT_ON>) => {
 
-                    this.hub.trySetLightOn(action.data);
-
-                    return Object.assign({}, state, {
-                        all: state.all.map((light) => {
-                            if (light.id === action.data) {
-                                light.state = 2;
-                            }
-                            return light;
-                        })
-                    });
+                    this.hub.setLightOn(action.data);
                 },
                 TRY_SET_LIGHT_OFF:
                 (state: ILightsState, action: IAction<TRY_SET_LIGHT_OFF>) => {
 
-                    this.hub.trySetLightOff(action.data);
+                    this.hub.setLightOff(action.data);
+                },
+                TRY_SET_ALL_LIGHTS_ON:
+                (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_ON>) => {
+
+                    this.hub.setAllLightsOn();
+                },
+                TRY_SET_ALL_LIGHTS_OFF:
+                (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_OFF>) => {
+
+                    this.hub.setAllLightsOff();
+                },
+
+                // signalR callback functions
+                SET_LIGHT_STATE:
+                (state: ILightsState, action: IAction<SET_LIGHT_STATE>) => {
 
                     return Object.assign({}, state, {
                         all: state.all.map((light) => {
-                            if (light.id === action.data) {
-                                light.state = 3;
+                            if (light.id === action.data.lightId) {
+                                light.state = action.data.state;
                             }
                             return light;
                         })
                     });
                 },
-                TRY_SET_ALL_LIGHTS_ON:
-                (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_ON>) => {
 
-                    this.hub.trySetAllLightsOn();
-
-                    return Object.assign({}, state,
-                    {
-                        all: state.all.map((light) => {
-                            light.state = 2;
-                            return light;
-                        })
-                    });
-                },
-                TRY_SET_ALL_LIGHTS_OFF:
-                (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_OFF>) => {
-
-                    this.hub.trySetAllLightsOff();
-
-                    return Object.assign({}, state,
-                    {
-                        all: state.all.map((light) => {
-                            light.state = 3;
-                            return light;
-                        })
-                    });
-                },
-
-                // signalR callback functions
                 SET_LIGHT_ON:
                 (state: ILightsState, action: IAction<SET_LIGHT_ON>) => {
 

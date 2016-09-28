@@ -19027,20 +19027,20 @@
 
 	        this.rooms = [{ index: 0, name: 'Aaaaaaaaaaaaaaa', hash: 'control', lights: [] }, { index: 1, name: 'Bbbbbbb', hash: 'gaming',
 	            lights: [{
-	                id: 111,
+	                id: 1,
 	                name: 'Biurko Bartka'
 	            }, {
-	                id: 112,
+	                id: 2,
 	                name: 'Biurko Justyny'
 	            }]
 	        }, { index: 2, name: 'Cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc', hash: 'bed',
 	            lights: [{
-	                id: 222,
+	                id: 3,
 	                name: 'Lampki pod lozkiem'
 	            }]
 	        }, { index: 3, name: 'Dddd dddddd dddd ddd', hash: 'living',
 	            lights: [{
-	                id: 333,
+	                id: 4,
 	                name: 'Lampa stojaca'
 	            }]
 	        }];
@@ -19332,6 +19332,12 @@
 
 	var lightActionDescriptions_1 = __webpack_require__(48);
 	exports.lightActions = {
+	    SET_LIGHT_STATE: function SET_LIGHT_STATE(data) {
+	        return {
+	            type: lightActionDescriptions_1.SET_LIGHT_STATE,
+	            data: data
+	        };
+	    },
 	    TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(id) {
 	        return {
 	            type: lightActionDescriptions_1.TRY_SET_LIGHT_ON,
@@ -19402,6 +19408,7 @@
 	exports.SET_LIGHT_OFF = 'SET_LIGHT_OFF';
 	exports.SET_ALL_LIGHTS_ON = 'SET_ALL_LIGHTS_ON';
 	exports.SET_ALL_LIGHTS_OFF = 'SET_ALL_LIGHTS_OFF';
+	exports.SET_LIGHT_STATE = 'SET_LIGHT_STATUS';
 	exports.GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
 	exports.SET_CURRENT_LIGHTS_STATE = 'SET_CURRENT_LIGHTS_STATE';
 
@@ -19598,7 +19605,10 @@
 	    }, {
 	        key: 'setClientEventHandlers',
 	        value: function setClientEventHandlers() {
-	            this.proxy.on(lightActionDescriptions_1.SET_LIGHT_ON, function (id) {
+	            this.proxy.on('SetLightState', function (data) {
+	                app_1.store.dispatch(lightActions_1.lightActions.SET_LIGHT_STATE(data));
+	                console.log('switching' + data.lightId + 'to ' + data.state + ' on client');
+	            }), this.proxy.on(lightActionDescriptions_1.SET_LIGHT_ON, function (id) {
 	                app_1.store.dispatch(lightActions_1.lightActions.SET_LIGHT_ON(id));
 	                console.log(id + ' switched on on client');
 	            }), this.proxy.on(lightActionDescriptions_1.SET_LIGHT_OFF, function (id) {
@@ -19628,24 +19638,24 @@
 	            });
 	        }
 	    }, {
-	        key: 'trySetLightOn',
-	        value: function trySetLightOn(id) {
-	            this.proxy.invoke(lightActionDescriptions_1.TRY_SET_LIGHT_ON, id);
+	        key: 'setLightOn',
+	        value: function setLightOn(id) {
+	            this.proxy.invoke('SetLightOn', id);
 	        }
 	    }, {
-	        key: 'trySetLightOff',
-	        value: function trySetLightOff(id) {
-	            this.proxy.invoke(lightActionDescriptions_1.TRY_SET_LIGHT_OFF, id);
+	        key: 'setLightOff',
+	        value: function setLightOff(id) {
+	            this.proxy.invoke('SetLightOff', id);
 	        }
 	    }, {
-	        key: 'trySetAllLightsOn',
-	        value: function trySetAllLightsOn() {
-	            this.proxy.invoke(lightActionDescriptions_1.TRY_SET_ALL_LIGHTS_ON);
+	        key: 'setAllLightsOn',
+	        value: function setAllLightsOn() {
+	            this.proxy.invoke('SetAllLightsOn');
 	        }
 	    }, {
-	        key: 'trySetAllLightsOff',
-	        value: function trySetAllLightsOff() {
-	            this.proxy.invoke(lightActionDescriptions_1.TRY_SET_ALL_LIGHTS_OFF);
+	        key: 'setAllLightsOff',
+	        value: function setAllLightsOff() {
+	            this.proxy.invoke('SetAllLightsOff');
 	        }
 	    }]);
 
@@ -24937,8 +24947,6 @@
 	var LightsReducer = function () {
 	    function LightsReducer() {
 	        _classCallCheck(this, LightsReducer);
-
-	        console.log('creating reducer');
 	    }
 
 	    _createClass(LightsReducer, [{
@@ -24948,41 +24956,23 @@
 
 	            return redux_actions_1.handleActions({
 	                TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(state, action) {
-	                    _this.hub.trySetLightOn(action.data);
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            if (light.id === action.data) {
-	                                light.state = 2;
-	                            }
-	                            return light;
-	                        })
-	                    });
+	                    _this.hub.setLightOn(action.data);
 	                },
 	                TRY_SET_LIGHT_OFF: function TRY_SET_LIGHT_OFF(state, action) {
-	                    _this.hub.trySetLightOff(action.data);
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            if (light.id === action.data) {
-	                                light.state = 3;
-	                            }
-	                            return light;
-	                        })
-	                    });
+	                    _this.hub.setLightOff(action.data);
 	                },
 	                TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON(state, action) {
-	                    _this.hub.trySetAllLightsOn();
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            light.state = 2;
-	                            return light;
-	                        })
-	                    });
+	                    _this.hub.setAllLightsOn();
 	                },
 	                TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF(state, action) {
-	                    _this.hub.trySetAllLightsOff();
+	                    _this.hub.setAllLightsOff();
+	                },
+	                SET_LIGHT_STATE: function SET_LIGHT_STATE(state, action) {
 	                    return Object.assign({}, state, {
 	                        all: state.all.map(function (light) {
-	                            light.state = 3;
+	                            if (light.id === action.data.lightId) {
+	                                light.state = action.data.state;
+	                            }
 	                            return light;
 	                        })
 	                    });
