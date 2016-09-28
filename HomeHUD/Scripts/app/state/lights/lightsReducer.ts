@@ -21,13 +21,7 @@ export interface ILightsReducer {
 }
 
 export class LightsReducer implements ILightsReducer {
-    private hub: IControlHub;
-
-    constructor() {
-        //this.hub = hub;
-        // console.log('creating reducer')
-        // this.serverState = hub.getCurrentLightsState();
-    }
+    public hub: IControlHub;
 
     public get(): any {
         return handleActions(<any> {
