@@ -1,1 +1,1 @@
-﻿var Components = require('expose?Components!./server');
+﻿var Components = require('expose?Components!./client');

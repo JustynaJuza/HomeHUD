@@ -311,15 +311,16 @@
     <Content Include="Scripts\app\client\expose.js" />
     <Content Include="Scripts\app\server.bundle.js" />
     <Content Include="Scripts\app\styles.css" />
-    <Content Include="Scripts\react-dom-v15.js" />
-    <Content Include="Scripts\react-v15.js" />
     <Content Include="Scripts\jquery.signalR-2.2.1.js" />
     <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
+    <Content Include="Scripts\react-dom-15.0.1.js" />
+    <Content Include="Scripts\react-15.0.1.js" />
     <Content Include="webpack.config.js" />
     <Content Include=".babelrc" />
     <Content Include="package.json" />
     <Content Include="Scripts\app\client.bundle.js.map" />
     <Content Include="Scripts\app\styles.css.map" />
+    <Content Include="README.md" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -391,7 +392,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
   </ItemGroup>
@@ -417,13 +417,12 @@
     <TypeScriptCompile Include="Scripts\app\components\page\layout.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\page\navigation-tab.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\page\navigation.tsx" />
-    <TypeScriptCompile Include="Scripts\app\client\server.ts" />
+    <TypeScriptCompile Include="Scripts\app\client\client.ts" />
     <TypeScriptCompile Include="Scripts\app\server\server.ts" />
     <TypeScriptCompile Include="Scripts\app\state\action.ts" />
     <TypeScriptCompile Include="Scripts\app\state\app.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActionDescriptions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActions.ts" />
-    <TypeScriptCompile Include="Scripts\app\state\lights\lightActionTypes.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightsReducer.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightsState.ts" />
     <TypeScriptCompile Include="Scripts\app\state\navigation\navigationActions.ts" />
