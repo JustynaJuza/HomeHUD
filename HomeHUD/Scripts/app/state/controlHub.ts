@@ -5,23 +5,17 @@ import { ILightsState, ILightSwitchState, ILightsState as LightsState } from './
 import { lightActions } from './lights/lightActions';
 import {
     SET_LIGHT_STATE,
-    TRY_SET_LIGHT_ON,
-    TRY_SET_LIGHT_OFF,
-    TRY_SET_ALL_LIGHTS_ON,
-    TRY_SET_ALL_LIGHTS_OFF,
-    SET_LIGHT_ON,
-    SET_LIGHT_OFF,
-    SET_ALL_LIGHTS_ON,
-    SET_ALL_LIGHTS_OFF,
+    SET_ALL_LIGHTS_STATE,
     GET_CURRENT_LIGHTS_STATE,
-    SET_CURRENT_LIGHTS_STATE
+    SET_CURRENT_LIGHTS_STATE,
+
+    SET_LIGHT
 } from './lights/lightActionDescriptions';
 
 export interface IControlHub {
     init: () => void;
-    //getCurrentLightsState: () => ILightsState;
-    setLightOn: (id: string | number) => void;
-    setLightOff: (id: string | number) => void;
+    setLightOn: (id: SET_LIGHT) => void;
+    setLightOff: (id: SET_LIGHT) => void;
     setAllLightsOn: () => void;
     setAllLightsOff: () => void;
 }
@@ -42,50 +36,19 @@ export class ControlHub implements IControlHub {
 
     private setClientEventHandlers(): void {
 
-        this.proxy.on('SetLightState', (data: SET_LIGHT_STATE) => {
+        this.proxy.on(SET_LIGHT_STATE, (data: SET_LIGHT_STATE) => {
             store.dispatch(lightActions.SET_LIGHT_STATE(data));
             console.log('switching' + data.lightId + 'to ' + data.state + ' on client');
         }),
-            this.proxy.on(SET_LIGHT_ON, (id: SET_LIGHT_ON) => {
-                store.dispatch(lightActions.SET_LIGHT_ON(id));
-                console.log(id + ' switched on on client');
-            }),
-            this.proxy.on(SET_LIGHT_OFF, (id: SET_LIGHT_OFF) => {
-                store.dispatch(lightActions.SET_LIGHT_OFF(id));
-                console.log(id + ' switched off on client');
-            }),
-            this.proxy.on(SET_ALL_LIGHTS_ON, () => {
-                store.dispatch(lightActions.SET_ALL_LIGHTS_ON());
-                console.log('all lights switched on on client');
-            }),
-            this.proxy.on(SET_ALL_LIGHTS_OFF, () => {
-                store.dispatch(lightActions.SET_ALL_LIGHTS_OFF());
-                console.log('all lights switched off on client');
-            }),
-            this.proxy.on(SET_CURRENT_LIGHTS_STATE, (state: LightsState) => {
-
-            //var state = <ILightsState>{ all: [] };
-//            _.forEach(lights,
-//                (light) => {
-//                    var map : ILightSwitchState;
-//                    var keys = Object.keys(light);
-//                    _.forEach(keys, (key: string) => {
-//                        var z = key.charAt(0).toLowerCase() + key.slice(1);
-//                        map[z] = light[key];
-//                    });
-//
-//
-//                        _.transform(light,
-//                            (l: ILightSwitchState, value: any, key: string) => { l[key.toLowerCase()] = value })
-//                        state.all.push(x);
-//                    });
-
-                
-
-                console.log(state);
-                store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(state));
-                console.log('setting current light state on client');
-            });
+        this.proxy.on(SET_ALL_LIGHTS_STATE, (id: SET_ALL_LIGHTS_STATE) => {
+            store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(id));
+            console.log(id + ' switched off on client');
+        }),
+        this.proxy.on(SET_CURRENT_LIGHTS_STATE, (state: LightsState) => {
+            console.log(state);
+            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(state));
+            console.log('setting current light state on client');
+        });
     }
 
     private startConnection(): void {
@@ -97,11 +60,11 @@ export class ControlHub implements IControlHub {
             .always(() => { console.log('started'); });
     }
 
-    public setLightOn(id: SET_LIGHT_ON): void {
+    public setLightOn(id: SET_LIGHT): void {
         this.proxy.invoke('SetLightOn', id);
     }
 
-    public setLightOff(id: SET_LIGHT_ON): void {
+    public setLightOff(id: SET_LIGHT): void {
         this.proxy.invoke('SetLightOff', id);
     }
 

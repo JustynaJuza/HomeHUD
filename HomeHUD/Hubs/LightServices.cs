@@ -7,8 +7,9 @@ namespace HomeHUD.Hubs
 {
     public interface ILightSwitchService
     {
-        Task<int> SetLightState(int lightId, LightSwitchState state);
         LightsState GetCurrentLightsState();
+        Task<int> SetLightState(int lightId, LightSwitchState state);
+        Task<int> SetAllLightsState(LightSwitchState state);
     }
 
     //[Authorize]
@@ -40,6 +41,15 @@ namespace HomeHUD.Hubs
         {
             var switchedLight = await _context.Set<Light>().FindAsync(lightId);
             switchedLight.State = state;
+            return await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> SetAllLightsState(LightSwitchState state)
+        {
+            _context.Set<Light>()
+                .ToList()
+                .ForEach(x => x.State = state);
+
             return await _context.SaveChangesAsync();
         }
     }

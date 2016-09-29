@@ -11,19 +11,13 @@ export type TRY_SET_LIGHT_OFF = string | number;
 export type TRY_SET_ALL_LIGHTS_ON = {};
 export type TRY_SET_ALL_LIGHTS_OFF = {};
 
-// signalR callback functions
-export const SET_LIGHT_ON = 'SET_LIGHT_ON';
-export const SET_LIGHT_OFF = 'SET_LIGHT_OFF';
-export const SET_ALL_LIGHTS_ON = 'SET_ALL_LIGHTS_ON';
-export const SET_ALL_LIGHTS_OFF = 'SET_ALL_LIGHTS_OFF';
+export const SET_LIGHT = 'SET_LIGHT';
+export type SET_LIGHT = string | number;
 
-export type SET_LIGHT_ON = string | number;
-export type SET_LIGHT_OFF = string | number;
-export type SET_ALL_LIGHTS_ON = {};
-export type SET_ALL_LIGHTS_OFF = {};
-
-export const SET_LIGHT_STATE = 'SET_LIGHT_STATUS';
+export const SET_LIGHT_STATE = 'SET_LIGHT_STATE';
 export type SET_LIGHT_STATE = { lightId: string | number, state: number };
+export const SET_ALL_LIGHTS_STATE = 'SET_ALL_LIGHTS_STATE';
+export type SET_ALL_LIGHTS_STATE = { state: number };
 
 export const GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
 export type GET_CURRENT_LIGHTS_STATE = {};

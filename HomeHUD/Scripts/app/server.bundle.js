@@ -19332,12 +19332,6 @@
 
 	var lightActionDescriptions_1 = __webpack_require__(48);
 	exports.lightActions = {
-	    SET_LIGHT_STATE: function SET_LIGHT_STATE(data) {
-	        return {
-	            type: lightActionDescriptions_1.SET_LIGHT_STATE,
-	            data: data
-	        };
-	    },
 	    TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(id) {
 	        return {
 	            type: lightActionDescriptions_1.TRY_SET_LIGHT_ON,
@@ -19362,28 +19356,16 @@
 	            data: {}
 	        };
 	    },
-	    SET_LIGHT_ON: function SET_LIGHT_ON(id) {
+	    SET_LIGHT_STATE: function SET_LIGHT_STATE(data) {
 	        return {
-	            type: lightActionDescriptions_1.SET_LIGHT_ON,
-	            data: id
+	            type: lightActionDescriptions_1.SET_LIGHT_STATE,
+	            data: data
 	        };
 	    },
-	    SET_LIGHT_OFF: function SET_LIGHT_OFF(id) {
+	    SET_ALL_LIGHTS_STATE: function SET_ALL_LIGHTS_STATE(data) {
 	        return {
-	            type: lightActionDescriptions_1.SET_LIGHT_OFF,
-	            data: id
-	        };
-	    },
-	    SET_ALL_LIGHTS_ON: function SET_ALL_LIGHTS_ON() {
-	        return {
-	            type: lightActionDescriptions_1.SET_ALL_LIGHTS_ON,
-	            data: {}
-	        };
-	    },
-	    SET_ALL_LIGHTS_OFF: function SET_ALL_LIGHTS_OFF() {
-	        return {
-	            type: lightActionDescriptions_1.SET_ALL_LIGHTS_OFF,
-	            data: {}
+	            type: lightActionDescriptions_1.SET_ALL_LIGHTS_STATE,
+	            data: data
 	        };
 	    },
 	    SET_CURRENT_LIGHTS_STATE: function SET_CURRENT_LIGHTS_STATE(state) {
@@ -19404,11 +19386,9 @@
 	exports.TRY_SET_LIGHT_OFF = 'TRY_SET_LIGHT_OFF';
 	exports.TRY_SET_ALL_LIGHTS_ON = 'TRY_SET_ALL_LIGHTS_ON';
 	exports.TRY_SET_ALL_LIGHTS_OFF = 'TRY_SET_ALL_LIGHTS_OFF';
-	exports.SET_LIGHT_ON = 'SET_LIGHT_ON';
-	exports.SET_LIGHT_OFF = 'SET_LIGHT_OFF';
-	exports.SET_ALL_LIGHTS_ON = 'SET_ALL_LIGHTS_ON';
-	exports.SET_ALL_LIGHTS_OFF = 'SET_ALL_LIGHTS_OFF';
-	exports.SET_LIGHT_STATE = 'SET_LIGHT_STATUS';
+	exports.SET_LIGHT = 'SET_LIGHT';
+	exports.SET_LIGHT_STATE = 'SET_LIGHT_STATE';
+	exports.SET_ALL_LIGHTS_STATE = 'SET_ALL_LIGHTS_STATE';
 	exports.GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
 	exports.SET_CURRENT_LIGHTS_STATE = 'SET_CURRENT_LIGHTS_STATE';
 
@@ -19605,21 +19585,12 @@
 	    }, {
 	        key: 'setClientEventHandlers',
 	        value: function setClientEventHandlers() {
-	            this.proxy.on('SetLightState', function (data) {
+	            this.proxy.on(lightActionDescriptions_1.SET_LIGHT_STATE, function (data) {
 	                app_1.store.dispatch(lightActions_1.lightActions.SET_LIGHT_STATE(data));
 	                console.log('switching' + data.lightId + 'to ' + data.state + ' on client');
-	            }), this.proxy.on(lightActionDescriptions_1.SET_LIGHT_ON, function (id) {
-	                app_1.store.dispatch(lightActions_1.lightActions.SET_LIGHT_ON(id));
-	                console.log(id + ' switched on on client');
-	            }), this.proxy.on(lightActionDescriptions_1.SET_LIGHT_OFF, function (id) {
-	                app_1.store.dispatch(lightActions_1.lightActions.SET_LIGHT_OFF(id));
+	            }), this.proxy.on(lightActionDescriptions_1.SET_ALL_LIGHTS_STATE, function (id) {
+	                app_1.store.dispatch(lightActions_1.lightActions.SET_ALL_LIGHTS_STATE(id));
 	                console.log(id + ' switched off on client');
-	            }), this.proxy.on(lightActionDescriptions_1.SET_ALL_LIGHTS_ON, function () {
-	                app_1.store.dispatch(lightActions_1.lightActions.SET_ALL_LIGHTS_ON());
-	                console.log('all lights switched on on client');
-	            }), this.proxy.on(lightActionDescriptions_1.SET_ALL_LIGHTS_OFF, function () {
-	                app_1.store.dispatch(lightActions_1.lightActions.SET_ALL_LIGHTS_OFF());
-	                console.log('all lights switched off on client');
 	            }), this.proxy.on(lightActionDescriptions_1.SET_CURRENT_LIGHTS_STATE, function (state) {
 	                console.log(state);
 	                app_1.store.dispatch(lightActions_1.lightActions.SET_CURRENT_LIGHTS_STATE(state));
@@ -24957,15 +24928,19 @@
 	            return redux_actions_1.handleActions({
 	                TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(state, action) {
 	                    _this.hub.setLightOn(action.data);
+	                    return state;
 	                },
 	                TRY_SET_LIGHT_OFF: function TRY_SET_LIGHT_OFF(state, action) {
 	                    _this.hub.setLightOff(action.data);
+	                    return state;
 	                },
-	                TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON(state, action) {
+	                TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON(state) {
 	                    _this.hub.setAllLightsOn();
+	                    return state;
 	                },
-	                TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF(state, action) {
+	                TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF(state) {
 	                    _this.hub.setAllLightsOff();
+	                    return state;
 	                },
 	                SET_LIGHT_STATE: function SET_LIGHT_STATE(state, action) {
 	                    return Object.assign({}, state, {
@@ -24977,38 +24952,10 @@
 	                        })
 	                    });
 	                },
-	                SET_LIGHT_ON: function SET_LIGHT_ON(state, action) {
+	                SET_ALL_LIGHTS_STATE: function SET_ALL_LIGHTS_STATE(state, action) {
 	                    return Object.assign({}, state, {
 	                        all: state.all.map(function (light) {
-	                            if (light.id === action.data) {
-	                                light.state = 1;
-	                            }
-	                            return light;
-	                        })
-	                    });
-	                },
-	                SET_LIGHT_OFF: function SET_LIGHT_OFF(state, action) {
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            if (light.id === action.data) {
-	                                light.state = 0;
-	                            }
-	                            return light;
-	                        })
-	                    });
-	                },
-	                SET_ALL_LIGHTS_ON: function SET_ALL_LIGHTS_ON(state, action) {
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            light.state = 1;
-	                            return light;
-	                        })
-	                    });
-	                },
-	                SET_ALL_LIGHTS_OFF: function SET_ALL_LIGHTS_OFF(state, action) {
-	                    return Object.assign({}, state, {
-	                        all: state.all.map(function (light) {
-	                            light.state = 0;
+	                            light.state = action.data.state;
 	                            return light;
 	                        })
 	                    });

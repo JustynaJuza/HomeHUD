@@ -1,17 +1,15 @@
 using HomeHUD.Models;
 using Microsoft.AspNet.SignalR;
+using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace HomeHUD.Hubs
 {
     public interface IControlHub
     {
-        void SET_LIGHT_STATE(int lightId, LightSwitchState state);
-
-        void SET_LIGHT_ON(int lightSwitchId);
-        void SET_LIGHT_OFF(int lightSwitchId);
-        void SET_ALL_LIGHTS_ON();
-        void SET_ALL_LIGHTS_OFF();
-        void SET_CURRENT_LIGHTS_STATE(LightsState lightState);
+        void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
+        void SET_LIGHT_STATE(LightStateViewModel singleLightState);
+        void SET_ALL_LIGHTS_STATE(LightSwitchState allLightsState);
     }
 
     //[Authorize]
@@ -30,46 +28,91 @@ namespace HomeHUD.Hubs
         }
 
 
-        public async void SetLightOn(int lightId)
+        public async Task<int> SetLightOn(int lightId)
+        {
+            return await SetLightState(lightId, LightSwitchState.On);
+        }
+
+        public async Task<int> SetLightOff(int lightId)
+        {
+            return await SetLightState(lightId, LightSwitchState.Off);
+        }
+
+        public async Task<int> SetAllLightsOn()
+        {
+            return await SetAllLightsState(LightSwitchState.On);
+        }
+
+
+        public async Task<int> SetAllLightsOff()
+        {
+            return await SetAllLightsState(LightSwitchState.Off);
+        }
+
+
+        private async Task<int> SetLightState(int lightId, LightSwitchState state)
         {
             // send request to set light
-
             // save changing state to db
-            var switchingOn = _lightSwitchService.SetLightState(lightId, LightSwitchState.SwitchingOn);
-
             // trigger light changing on all clients
-            Clients.All.SET_LIGHT_STATE(lightId, LightSwitchState.SwitchingOn);
-
             //await response for light on
-
-            await switchingOn;
             // save new state to db
-            var switchedOn = _lightSwitchService.SetLightState(lightId, LightSwitchState.On);
-
             // trigger light changed on all clients
-            Clients.All.SET_LIGHT_STATE(lightId, LightSwitchState.On);
 
-            await switchedOn;
+            var transition = GetLightSwitchTransition(state);
 
+            var switching = _lightSwitchService.SetLightState(lightId, transition[0]);
+            Clients.All.SET_LIGHT_STATE(new LightStateViewModel
+            {
+                LightId = lightId,
+                State = transition[0]
+            });
+
+
+            await switching;
+            var switched = _lightSwitchService.SetLightState(lightId, transition[1]);
+            Clients.All.SET_LIGHT_STATE(new LightStateViewModel
+            {
+                LightId = lightId,
+                State = transition[1]
+            });
+
+            return await switched;
         }
 
-        public void SetLightOff(int lightId)
+        private async Task<int> SetAllLightsState(LightSwitchState state)
         {
+            // send request to set light
+            // save changing state to db
+            // trigger light changing on all clients
+            //await response for light on
+            // save new state to db
+            // trigger light changed on all clients
+
+            var transition = GetLightSwitchTransition(state);
+
+            var switching = _lightSwitchService.SetAllLightsState(transition[0]);
+            Clients.All.SET_ALL_LIGHTS_STATE(transition[0]);
 
 
+            await switching;
+            var switched = _lightSwitchService.SetAllLightsState(transition[1]);
+            Clients.All.SET_ALL_LIGHTS_STATE(transition[1]);
+
+            return await switched;
         }
 
-        public void SetAllLightsOn()
+        private LightSwitchState[] GetLightSwitchTransition(LightSwitchState state)
         {
+            switch (state)
+            {
+                case LightSwitchState.On:
+                    return new[] { LightSwitchState.SwitchingOn, LightSwitchState.On };
+                case LightSwitchState.Off:
+                    return new[] { LightSwitchState.SwitchingOff, LightSwitchState.Off };
+            }
 
-
-        }
-
-
-        public void SetAllLightsOff()
-        {
-
-
+            throw new InvalidEnumArgumentException(nameof(state), (int) state, typeof(LightSwitchState));
         }
     }
 }

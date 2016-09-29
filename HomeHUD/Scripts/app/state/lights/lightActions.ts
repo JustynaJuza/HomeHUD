@@ -1,23 +1,17 @@
 import { IAction } from '../action';
 import {
     SET_LIGHT_STATE,
+    SET_ALL_LIGHTS_STATE,
+    SET_CURRENT_LIGHTS_STATE,
+
     TRY_SET_LIGHT_ON,
     TRY_SET_LIGHT_OFF,
     TRY_SET_ALL_LIGHTS_ON,
-    TRY_SET_ALL_LIGHTS_OFF,
-    SET_LIGHT_ON,
-    SET_LIGHT_OFF,
-    SET_ALL_LIGHTS_ON,
-    SET_ALL_LIGHTS_OFF,
-    SET_CURRENT_LIGHTS_STATE } from './lightActionDescriptions';
+    TRY_SET_ALL_LIGHTS_OFF
+} from './lightActionDescriptions';
 
 export const lightActions = {
-    SET_LIGHT_STATE:
-    (data: SET_LIGHT_STATE) =>
-        (<IAction<SET_LIGHT_STATE>>{
-            type: SET_LIGHT_STATE,
-            data: data
-        }),
+
     TRY_SET_LIGHT_ON:
     (id: TRY_SET_LIGHT_ON) =>
         (<IAction<TRY_SET_LIGHT_ON>>{
@@ -43,35 +37,23 @@ export const lightActions = {
             data: {}
         }),
 
-    SET_LIGHT_ON:
-    (id: SET_LIGHT_ON) =>
-        (<IAction<SET_LIGHT_ON>>{
-            type: SET_LIGHT_ON,
-            data: id
-        }),
-    SET_LIGHT_OFF:
-    (id: SET_LIGHT_OFF) =>
-        (<IAction<SET_LIGHT_OFF>>{
-            type: SET_LIGHT_OFF,
-            data: id
-        }),
-    SET_ALL_LIGHTS_ON:
-    () =>
-        (<IAction<SET_ALL_LIGHTS_ON>>{
-            type: SET_ALL_LIGHTS_ON,
-            data: {}
-        }),
-    SET_ALL_LIGHTS_OFF:
-    () =>
-        (<IAction<SET_ALL_LIGHTS_OFF>>{
-            type: SET_ALL_LIGHTS_OFF,
-            data: {}
-        }),
+    SET_LIGHT_STATE:
+    (data: SET_LIGHT_STATE) => <IAction<SET_LIGHT_STATE>>
+        {
+            type: SET_LIGHT_STATE,
+            data: data
+        },
+    SET_ALL_LIGHTS_STATE:
+    (data: SET_ALL_LIGHTS_STATE) => <IAction<SET_ALL_LIGHTS_STATE>>
+        {
+            type: SET_ALL_LIGHTS_STATE,
+            data: data
+        },
 
     SET_CURRENT_LIGHTS_STATE:
-    (state: SET_CURRENT_LIGHTS_STATE) =>
-        (<IAction<SET_CURRENT_LIGHTS_STATE>>{
+    (state: SET_CURRENT_LIGHTS_STATE) => <IAction<SET_CURRENT_LIGHTS_STATE>>
+        {
             type: SET_CURRENT_LIGHTS_STATE,
             data: state
-        }),
+        }
 }
