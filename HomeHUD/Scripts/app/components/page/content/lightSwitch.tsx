@@ -12,13 +12,7 @@ interface ILightSwitchProps {
 }
 
 export class LightSwitch extends React.Component<ILightSwitchProps, {}> {
-
-    private onSwitchChange(id: string | number){
-        return this.props.state === 1
-            ? this.props.onSwitchOff(id)
-            : this.props.onSwitchOn(id)
-    }
-
+    
     public render() {
             console.log( this.props.id,  this.props.state)
         var lightClasses = classNames({
@@ -30,10 +24,17 @@ export class LightSwitch extends React.Component<ILightSwitchProps, {}> {
             })
 
         return (
-                    <div className={lightClasses}>
-            <div className={style.light_switcher} onClick={this.onSwitchChange.bind(this, this.props.id)}>
-                <button className={style.switcher}></button>
-            </div>
+            <div className={lightClasses}>
+
+                <div className={style.light_switcher}
+                    onClick={this.props.state === 1
+                        ? this.props.onSwitchOff
+                        : this.props.onSwitchOn}>
+
+                    <button className={style.switcher}></button>
+
+                </div>
+
             <span className={style.icon}></span>
         </div>
         );

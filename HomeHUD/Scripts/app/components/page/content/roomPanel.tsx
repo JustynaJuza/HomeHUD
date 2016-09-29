@@ -14,32 +14,20 @@ import { LightSwitch } from './lightSwitch';
 import * as style from '../../../../../content/component-styles/room-panel.css';
 
 interface IRoomPanelProps {
-    dispatch: Dispatch<any>;
     id: number;
+    name: string;
     lights: Array<ILightSwitchState>;
-    onSwitchChange: (id : number) => void;
+    onSwitchOn: (id: string | number) => void;
+    onSwitchOff: (id: string | number) => void;
 }
 
 class RoomPanel extends React.Component<IRoomPanelProps, {}> {
-
-    private handlers : any;
-
-    constructor(props : IRoomPanelProps){
-        super(props);
-        this.handlers = this.createHandlers(this.props.dispatch);
-    }
-
-    private createHandlers(dispatch : Dispatch<any>){
-        return {
-            onSwitchOn: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_ON(id)),
-            onSwitchOff: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_OFF(id))
-        }
-    }
+    
     private renderLightSwitch = (entry: ILightSwitchState, index: number) => {
         return (
             <LightSwitch key={index} id={entry.id} state={entry.state}
-            onSwitchOn={this.handlers.onSwitchOn}
-            onSwitchOff={this.handlers.onSwitchOff}/>
+                onSwitchOn={() => this.props.onSwitchOn(entry.id)}
+                onSwitchOff={() => this.props.onSwitchOff(entry.id)}/>
         )
     }
 
@@ -66,4 +54,9 @@ const mapStateToProps = (state: IAppState) => {
     }
 };
 
-export default connect(mapStateToProps)(RoomPanel);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    onSwitchOn(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_ON(id)); },
+    onSwitchOff(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_OFF(id)); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomPanel);
