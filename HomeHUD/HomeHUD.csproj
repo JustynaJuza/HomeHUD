@@ -317,6 +317,9 @@
     <Content Include="Scripts\app\client.bundle.js" />
     <Content Include="Scripts\app\client\expose.js" />
     <Content Include="Scripts\app\server.bundle.js" />
+    <Content Include="typings\globals\whatwg-fetch\typings.json" />
+    <Content Include="typings\globals\whatwg-streams\typings.json" />
+    <TypeScriptCompile Include="Scripts\app\state\api.ts" />
     <Content Include="Scripts\app\styles.css" />
     <Content Include="Scripts\jquery.signalR-2.2.1.js" />
     <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
@@ -444,6 +447,8 @@
     <TypeScriptCompile Include="typings\globals\redux-actions\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\redux\index.d.ts" />
     <TypeScriptCompile Include="typings\globals\signalr\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\whatwg-fetch\index.d.ts" />
+    <TypeScriptCompile Include="typings\globals\whatwg-streams\index.d.ts" />
     <TypeScriptCompile Include="typings\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
