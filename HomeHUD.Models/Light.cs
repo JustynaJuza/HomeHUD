@@ -46,4 +46,11 @@ namespace HomeHUD.Models
     {
         public ICollection<LightViewModel> All { get; set; }
     }
+
+    public class RoomViewModel
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public IEnumerable<int> lights { get; set; }
+    }
 }

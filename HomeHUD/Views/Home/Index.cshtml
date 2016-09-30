@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<RoomViewModel>
+
+@{
     ViewBag.Title = "HomeHUD";
 }
 
@@ -9,4 +11,4 @@
 
 @Styles.Render("~/Scripts/app/styles.css")
 
-@Html.ReactWithInit("Components.App", new { a = "Test" }, containerId: "page")
+@Html.ReactWithInit("Components.App", new { config = Model }, containerId: "page")
