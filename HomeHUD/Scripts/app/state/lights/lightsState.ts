@@ -8,11 +8,19 @@ export enum LightSwitchPosition {
 export interface ILightSwitchState {
     id: string | number;
     state: LightSwitchPosition;
-    roomIndex: number;
+    roomId: number;
 }
 
 export interface ILightsState {
     all: Array<ILightSwitchState>;
 };
+
+//export interface ILightsState {
+//    [key: number]: IRoomState;
+//};
+
+//export interface IRoomState {
+//    lights: Array<ILightSwitchState>;
+//};
 
 export const EMPTY_LIGHTS_STATE = <ILightsState>{ all: [] };

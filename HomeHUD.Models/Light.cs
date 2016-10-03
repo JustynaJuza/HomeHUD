@@ -33,7 +33,7 @@ namespace HomeHUD.Models
         public int Id { get; set; }
         public LightSwitchState State { get; set; }
         public string Color { get; set; }
-        public int RoomIndex { get; set; }
+        public int RoomId { get; set; }
     }
 
     public class LightStateViewModel

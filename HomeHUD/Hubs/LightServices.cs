@@ -32,7 +32,7 @@ namespace HomeHUD.Hubs
                         Id = x.Id,
                         State = x.State,
                         Color = x.Color,
-                        RoomIndex = x.RoomId
+                        RoomId = x.RoomId
                     }).ToList()
             };
         }
