@@ -1,33 +1,35 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import * as classNames from 'classnames';
 import * as _ from 'lodash';
 
-import { homeHudConfig as config } from "../../homeHud";
+//import { homeHudConfig as config } from "../../homeHud";
 
+//import { IRoomConfig } from '../../../state/config/configState';
 import { IAppState } from '../../../state/app';
 import { ILightSwitchState } from '../../../state/lights/lightsState';
 import { lightActions } from '../../../state/lights/lightActions';
 
-import { LightSwitch } from './lightSwitch';
+import LightSwitch from './lightSwitch';
 
 import * as style from '../../../../../content/component-styles/room-panel.css';
 
-interface IRoomPanelProps {
+export interface IRoomPanelPublicProps {
     id: number;
+    showName: boolean;
+}
+
+interface IRoomPanelProps extends IRoomPanelPublicProps {
     name: string;
     lights: Array<ILightSwitchState>;
-    onSwitchOn: (id: string | number) => void;
-    onSwitchOff: (id: string | number) => void;
 }
 
 class RoomPanel extends React.Component<IRoomPanelProps, {}> {
-    
+
     private renderLightSwitch = (entry: ILightSwitchState, index: number) => {
         return (
-            <LightSwitch key={index} id={entry.id} state={entry.state}
-                onSwitchOn={() => this.props.onSwitchOn(entry.id)}
-                onSwitchOff={() => this.props.onSwitchOff(entry.id)}/>
+            <LightSwitch key={index} id={entry.id} />
         )
     }
 
@@ -37,26 +39,32 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 
     public render() {
 
+        var panelClasses = classNames({
+            [style.hidden]: !this.props.showName,
+        })
+
         return (
             <div className={style.switches}>
+                <h2 className={panelClasses}>{this.props.name}</h2>
+
                 { this.renderLightSwitches() }
             </div>
         );
     }
 }
 
-const mapStateToProps = (state: IAppState) => {
-    return {
-        lights: _.intersectionBy(
-            state.lights.all,
-            config.getRoomLights(state.navigation.selectedNavigationTab),
-            'id')
+const mapStateToProps = (state: IAppState, publicProps: IRoomPanelPublicProps) => {
+    var configEntry = _.filter(state.config.rooms, (room) => { return room.id === publicProps.id })[0];
+    if (!configEntry) {
+        throw Error("Invalid room config, lightId " + publicProps.id + " is expected to have an entry in the config.");
     }
-};
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onSwitchOn(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_ON(id)); },
-    onSwitchOff(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_OFF(id)); }
-});
+    return {
+        name: configEntry.name,
+        lights: _.filter(state.lights.all, (light) => {
+            return _.indexOf(configEntry.lights, light.id) > -1;
+        })
+    };
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomPanel);
+export default connect(mapStateToProps)(RoomPanel);

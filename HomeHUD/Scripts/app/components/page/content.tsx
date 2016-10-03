@@ -17,8 +17,8 @@ class Content extends React.Component<IContentProps, {}> {
 
     public render() {
     	var content = this.props.selectedNavigationTab === 0
-        ? <ControlPanel />
-        : <RoomPanel />;
+            ? <ControlPanel />
+            : <RoomPanel showName={false} id={this.props.selectedNavigationTab} />;
 
         return (
             <div className={style.content}>
@@ -30,7 +30,7 @@ class Content extends React.Component<IContentProps, {}> {
 
 const mapStateToProps = (state: IAppState) => {
     return {
-        selectedNavigationTab: state.navigation.selectedNavigationTab
+        selectedNavigationTab: state.navigation.selectedNavigationTab        
     }
 };
 
