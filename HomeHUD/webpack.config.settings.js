@@ -50,8 +50,11 @@ const loaders = {
     }
 };
 
+const handledExtensions = ['', '.js', '.json', '.jsx', '.ts', '.tsx'];
+
 module.exports = {
     paths,
     postcssConfig,
-    loaders
+    loaders,
+    handledExtensions
 };

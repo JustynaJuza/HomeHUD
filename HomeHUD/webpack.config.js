@@ -21,7 +21,7 @@ const config = [{
             loader: 'source-map-loader'
         }]
     },
-    postcss: function (webpack) {
+    postcss: function(webpack) {
         return [
             settings.postcssConfig.import(webpack),
             settings.postcssConfig.fonts,
@@ -31,7 +31,7 @@ const config = [{
     modulesDirectories: settings.paths.app,
     devtool: 'source-map',
     resolve: {
-        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
+        extensions: settings.handledExtensions
     },
     plugins: [
         // minify code
@@ -76,7 +76,7 @@ const config = [{
             settings.loaders.images
         ]
     },
-    postcss: function (webpack) {
+    postcss: function(webpack) {
         return [
             settings.postcssConfig.import(webpack),
             settings.postcssConfig.fonts,
@@ -90,7 +90,7 @@ const config = [{
         new ExtractTextPlugin('styles.css')
     ],
     resolve: {
-        extensions: ['', '.js', '.json', '.jsx', '.ts', '.tsx', '.webpack.js', '.web.js']
+        extensions: settings.handledExtensions
     },
     externals: {
         'react': 'React',
