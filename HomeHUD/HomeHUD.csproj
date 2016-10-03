@@ -430,6 +430,9 @@
     <TypeScriptCompile Include="Scripts\app\server\server.ts" />
     <TypeScriptCompile Include="Scripts\app\state\action.ts" />
     <TypeScriptCompile Include="Scripts\app\state\app.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\config\configActions.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\config\configState.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\config\configReducer.ts" />
     <TypeScriptCompile Include="Scripts\app\state\controlHub.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActionDescriptions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActions.ts" />
