@@ -1,28 +1,32 @@
-﻿import * as React from 'react';
-import { connect } from 'react-redux';
+﻿// react
+import * as React from 'react'
 
-import { Layout } from './page/layout';
+// redux
 import { Provider } from 'react-redux';
 import { store } from '../state/app';
-
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IAppState } from '../state/app';
 import { configActions } from '../state/config/configActions';
 
+// props
+import { IRoomConfig } from '../state/config/configState';
+
+// components
+import { Layout } from './page/layout';
+
+// component ---------------------------------------------------------------------------------
+
 export interface IAppProps {
     config: IRoomConfig[];
-}
-
-interface IRoomConfig {
-    id: number;
-    name: string;
-    lights: number[];
 }
 
 export class App extends React.Component<IAppProps, {}> {
 
     constructor(props: IAppProps) {
         super(props);
-        
+
+        // set initial config on store        
         store.dispatch(configActions.SET_CONFIG_STATE(props.config));
     }
 
@@ -34,6 +38,8 @@ export class App extends React.Component<IAppProps, {}> {
         );
     }
 }
+
+// redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState) => {
     return {
