@@ -35,7 +35,7 @@ const loaders = {
     tsx: {
         test: /\.ts(x?)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader!ts-loader'
+        loader: 'babel-loader?presets[]=es2015,presets[]=react!ts-loader'
     },
     css: {
         test: /\.css$/,

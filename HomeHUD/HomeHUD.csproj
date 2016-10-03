@@ -327,7 +327,6 @@
     <Content Include="Scripts\react-15.0.1.js" />
     <Content Include="webpack.config.settings.js" />
     <Content Include="webpack.config.js" />
-    <Content Include=".babelrc" />
     <Content Include="package.json" />
     <Content Include="Scripts\app\client.bundle.js.map" />
     <Content Include="Scripts\app\styles.css.map" />
