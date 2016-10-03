@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-import * as _ from 'lodash';
 
 import { IAction } from '../action';
 import { SET_CONFIG_STATE } from './configActions';

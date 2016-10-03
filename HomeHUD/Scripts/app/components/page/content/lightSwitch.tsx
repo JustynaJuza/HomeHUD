@@ -1,16 +1,20 @@
+// react
 import * as React from 'react'
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import * as classNames from 'classnames';
 
-//import { homeHudConfig as config } from "../../homeHud";
-
+// redux
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/app';
-import { ILightSwitchState } from '../../../state/lights/lightsState';
 import { lightActions } from '../../../state/lights/lightActions';
 
+// props
 import { LightSwitchPosition } from '../../../state/lights/lightsState';
+
+// style
 import * as style from '../../../../../content/component-styles/light-switch.css';
+
+// component ---------------------------------------------------------------------------------
 
 interface ILightSwitchPublicProps {
     id: string | number;
@@ -30,21 +34,30 @@ class LightSwitch extends React.Component<ILightSwitchProps, {}> {
             : this.props.onSwitchOn(this.props.id)
     }
 
+    private getSwitchStyleFromState() {
+        switch (this.props.state) {
+            case 0:
+                return style.off;
+            case 1:
+                return style.on;
+            case 2:
+                return style.switching_on;
+            case 3:
+                return style.switching_off;
+            default:
+                return '';
+        }
+    }
+
     public render() {
-        console.log(this.props.id, this.props.state)
-        var lightClasses = classNames({
-            [style.light]: true,
-            [style.off]: this.props.state === 0,
-            [style.on]: this.props.state === 1,
-            [style.switching_on]: this.props.state === 2,
-            [style.switching_off]: this.props.state === 3,
-        })
+
+        var lightClasses = classNames(style.light, this.getSwitchStyleFromState())
 
         return (
             <div className={lightClasses}>
 
                 <div className={style.light_switcher}
-                    onClick={this.onSwitchChange.bind(this)}>
+                    onClick={() => this.onSwitchChange()}>
 
                     <button className={style.switcher}></button>
 
@@ -55,6 +68,8 @@ class LightSwitch extends React.Component<ILightSwitchProps, {}> {
         );
     }
 }
+
+// redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (appState: IAppState, publicProps: ILightSwitchPublicProps) => {
 

@@ -1,13 +1,19 @@
-import * as React from 'react';
-import * as classNames from 'classnames';
-import { connect } from 'react-redux';
+// react
+import * as React from 'react'
 
+// redux
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { IAppState } from '../../state/app';
 
-import ControlPanel from './content/controlPanel';
+// components
 import RoomPanel from './content/roomPanel';
+import ControlPanel from './content/controlPanel';
 
+// style
 import * as style from '../../../../content/component-styles/layout.css';
+
+// component ---------------------------------------------------------------------------------
 
 interface IContentProps {
     selectedNavigationTab: number;
@@ -27,6 +33,8 @@ class Content extends React.Component<IContentProps, {}> {
         );
     }
 }
+
+// redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState) => {
     return {

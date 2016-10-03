@@ -1,5 +1,10 @@
+// react
 import * as React from 'react';
+
+// style
 import * as style from '../../../../content/component-styles/header.css';
+
+// component ---------------------------------------------------------------------------------
 
 interface IHeaderProps {
 }

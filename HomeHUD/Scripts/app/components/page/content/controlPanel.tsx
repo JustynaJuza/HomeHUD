@@ -1,17 +1,26 @@
-import * as React from 'react';
+import * as _map from 'lodash/map';
+import * as _groupBy from 'lodash/groupBy';
+
+// react
+import * as React from 'react'
+
+// redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import * as _ from 'lodash';
-
-//import { homeHudConfig as config } from "../../homeHud";
-
 import { IAppState } from '../../../state/app';
-import { ILightSwitchState } from '../../../state/lights/lightsState';
 import { lightActions } from '../../../state/lights/lightActions';
 
+// props
+import { ILightSwitchState } from '../../../state/lights/lightsState';
+
+// components
+import LightSwitch from './lightSwitch';
 import RoomPanel from './roomPanel';
 
+// style
 import * as style from '../../../../../content/component-styles/control-panel.css';
+
+// component ---------------------------------------------------------------------------------
 
 interface IControlPanelProps {
     dispatch: Dispatch<any>;
@@ -37,8 +46,8 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
     }
 
     private renderRooms = () => {
-        var groupedByRoom = _.groupBy(this.props.lights, (entry: ILightSwitchState) => entry.roomId);
-        _.map([1, 2, 3], this.renderRoom)
+        var groupedByRoom = _groupBy(this.props.lights, (entry: ILightSwitchState) => entry.roomId);
+        _map([1, 2, 3], this.renderRoom)
     }
 
 
@@ -49,7 +58,6 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
     }
 
     public render() {
-        console.log(this.props.lights)
 
         return (
             <div className={style.switches}>
@@ -61,6 +69,8 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
         );
     }
 }
+
+// redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState) => {
     return {
