@@ -20,7 +20,7 @@ interface INavigationTabPublicProps {
 
 interface INavigationTabProps extends INavigationTabPublicProps {
     isActive: boolean;
-    onSelectTab: (id : number) => void;
+    onSelectTab: (e: any, id: number) => void;
 }
 
 export class NavigationTab extends React.Component<INavigationTabProps, {}> {
@@ -33,7 +33,7 @@ export class NavigationTab extends React.Component<INavigationTabProps, {}> {
 
         return (
             <li className={tabClasses}>
-                <a href={`#${this.props.hash}`} onClick={() => this.props.onSelectTab(this.props.id)} className={style.link}>
+                <a href={`/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
                     <span className={style.name}>
                         {this.props.children}
                     </span>
@@ -51,8 +51,13 @@ const mapStateToProps = (state: IAppState, publicProps: INavigationTabPublicProp
     }
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onSelectTab(id: number) { dispatch(navigationActions.SELECT_NAVIGATION_TAB(id)); }
+const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTabPublicProps) => ({
+    onSelectTab(e: any, id: number) {
+        e.preventDefault();
+        history.pushState(null, null, publicProps.hash);
+
+        dispatch(navigationActions.SELECT_NAVIGATION_TAB(id));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationTab);
