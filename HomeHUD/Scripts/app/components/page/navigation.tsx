@@ -1,6 +1,6 @@
 import * as _map from "lodash/map";
+import * as _filter from "lodash/filter";
 import * as _sortBy from "lodash/sortBy";
-import * as _flow from "lodash/flow";
 
 // react
 import * as React from 'react'
@@ -9,6 +9,9 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/app';
+
+// props
+import { IRoomConfig } from '../../state/config/configState';
 
 // components
 import NavigationTab from './navigation-tab';
@@ -27,12 +30,7 @@ interface IRoomDisplay {
 interface INavigationProps {
     dispatch: Dispatch<any>;
     selectedNavigationTab: number;
-    rooms: IRoomDisplay[];
-}
-
-interface ILightSwitch {
-    id: string | number;
-    name: string;
+    rooms: IRoomConfig[];
 }
 
 //interface IControlPanelTab {
@@ -53,12 +51,10 @@ class Navigation extends React.Component<INavigationProps, {}> {
         )
     }
 
-    private renderRoomTab = (entry: IRoomDisplay, index: number) => {
-
-        var isActive = this.props.selectedNavigationTab === entry.id;
+    private renderRoomTab = (room: IRoomConfig, index: number) => {        
         return (
-            <NavigationTab key={index+1} id={entry.id} hash={entry.id.toString()}>
-                {entry.name}
+            <NavigationTab key={index + 1} id={room.id} hash={room.hash}>
+                {room.name}
             </NavigationTab>
         )
     }
@@ -72,10 +68,7 @@ class Navigation extends React.Component<INavigationProps, {}> {
     //}
 
     private renderRoomTabs = () => {
-        //return _flow(
-        //    this.mapToComponents,
-        //    this.sortByIndex);
-        return _map(this.props.rooms, this.renderRoomTab);
+        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoomTab);
     }
 
     public render() {
@@ -93,7 +86,7 @@ class Navigation extends React.Component<INavigationProps, {}> {
 const mapStateToProps = (state: IAppState) => {
     return {
         selectedNavigationTab: state.navigation.selectedNavigationTab,
-        rooms: _map(state.config.rooms, (room) => { return { id: room.id, name: room.name } })
+        rooms: _filter(state.config.rooms, room => room.lights.length > 0)
     }
 };
 

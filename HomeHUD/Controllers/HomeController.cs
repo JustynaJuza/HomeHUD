@@ -23,14 +23,9 @@ namespace HomeHUD.Controllers
                    {
                        id = x.Id,
                        name = x.Name,
+                       hash = x.Hash,
+                       sortWeight = x.SortWeight,
                        lights = x.Lights.Select(y => y.Id)
-                       //                    Lights = x.Lights.Select(y => new LightViewModel
-                       //                    {
-                       //                        Id = y.Id,
-                       //                        Color = y.Color,
-                       //                        RoomId = y.RoomId,
-                       //                        State = y.State
-                       //                    })
                    }).ToList();
 
             return View(rooms);

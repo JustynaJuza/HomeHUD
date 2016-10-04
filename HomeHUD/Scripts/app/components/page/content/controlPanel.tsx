@@ -1,4 +1,6 @@
 import * as _map from 'lodash/map';
+import * as _filter from "lodash/filter";
+import * as _sortBy from "lodash/sortBy";
 import * as _groupBy from 'lodash/groupBy';
 
 // react
@@ -12,6 +14,7 @@ import { lightActions } from '../../../state/lights/lightActions';
 
 // props
 import { ILightSwitchState } from '../../../state/lights/lightsState';
+import { IRoomConfig } from '../../../state/config/configState';
 
 // components
 import LightSwitch from './lightSwitch';
@@ -26,6 +29,7 @@ interface IControlPanelProps {
     dispatch: Dispatch<any>;
     lights: Array<ILightSwitchState>;
     onSwitchChange: (id: number) => void;
+    rooms: IRoomConfig[];
 }
 
 export class ControlPanel extends React.Component<IControlPanelProps, {}> {
@@ -45,18 +49,16 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
         }
     }
 
-    private renderRooms = () => {
-        var groupedByRoom = _groupBy(this.props.lights, (entry: ILightSwitchState) => entry.roomId);
-        _map([1, 2, 3], this.renderRoom)
-    }
-
-
-    private renderRoom = (entry: ILightSwitchState, index: number) => {
+    private renderRoom = (room: IRoomConfig, index: number) => {
         return (
-            <RoomPanel key={index} showName={true} id={0} />
+            <RoomPanel key={index} id={room.id} showName={true} />
         )
     }
 
+    private renderRooms = () => {
+        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoom);
+    }
+    
     public render() {
 
         return (
@@ -75,6 +77,7 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 const mapStateToProps = (state: IAppState) => {
     return {
         lights: state.lights.all
+        rooms: _filter(state.config.rooms, room => room.lights.length > 0)
     }
 };
 

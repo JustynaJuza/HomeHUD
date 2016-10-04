@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201609281557512_CreateDatabase.Designer.cs">
       <DependentUpon>201609281557512_CreateDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610031619512_AddingRoomProps.cs" />
+    <Compile Include="Migrations\201610031619512_AddingRoomProps.Designer.cs">
+      <DependentUpon>201610031619512_AddingRoomProps.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\GenerateDateSqlServerMigrationSqlGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,6 +85,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609281557512_CreateDatabase.resx">
       <DependentUpon>201609281557512_CreateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610031619512_AddingRoomProps.resx">
+      <DependentUpon>201610031619512_AddingRoomProps.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
