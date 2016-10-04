@@ -2,13 +2,12 @@ import { ILightsState } from './lightsState';
 
 // interface actions, dispatched to server via signalR
 export const TRY_SET_LIGHT_ON = 'TRY_SET_LIGHT_ON';
-export const TRY_SET_LIGHT_OFF = 'TRY_SET_LIGHT_OFF';
-export const TRY_SET_ALL_LIGHTS_ON = 'TRY_SET_ALL_LIGHTS_ON';
-export const TRY_SET_ALL_LIGHTS_OFF = 'TRY_SET_ALL_LIGHTS_OFF';
-
 export type TRY_SET_LIGHT_ON = string | number;
+export const TRY_SET_LIGHT_OFF = 'TRY_SET_LIGHT_OFF';
 export type TRY_SET_LIGHT_OFF = string | number;
+export const TRY_SET_ALL_LIGHTS_ON = 'TRY_SET_ALL_LIGHTS_ON';
 export type TRY_SET_ALL_LIGHTS_ON = {};
+export const TRY_SET_ALL_LIGHTS_OFF = 'TRY_SET_ALL_LIGHTS_OFF';
 export type TRY_SET_ALL_LIGHTS_OFF = {};
 
 export const SET_LIGHT = 'SET_LIGHT';
