@@ -40,9 +40,9 @@ export class ControlHub implements IControlHub {
             store.dispatch(lightActions.SET_LIGHT_STATE(data));
             console.log('switching' + data.lightId + 'to ' + data.state + ' on client');
         }),
-        this.proxy.on(SET_ALL_LIGHTS_STATE, (id: SET_ALL_LIGHTS_STATE) => {
-            store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(id));
             console.log(id + ' switched off on client');
+        this.proxy.on(SET_ALL_LIGHTS_STATE, (data: SET_ALL_LIGHTS_STATE) => {
+            store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
         }),
         this.proxy.on(SET_CURRENT_LIGHTS_STATE, (state: LightsState) => {
             console.log(state);

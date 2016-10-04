@@ -8,9 +8,6 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/app';
 import { lightActions } from '../../../state/lights/lightActions';
 
-// props
-import { LightSwitchPosition } from '../../../state/lights/lightsState';
-
 // style
 import * as style from '../../../../../content/component-styles/light-switch.css';
 
@@ -21,7 +18,7 @@ interface ILightSwitchPublicProps {
 }
 
 interface ILightSwitchProps extends ILightSwitchPublicProps {
-    state: LightSwitchPosition;
+    state: number;
     onSwitchOn: (id: string | number) => void;
     onSwitchOff: (id: string | number) => void;
 }

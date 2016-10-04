@@ -71,7 +71,7 @@ export class LightsReducer implements ILightsReducer {
                     return Object.assign({}, state,
                     {
                         all: state.all.map((light) => {
-                            light.state = action.data.state;
+                            light.state = action.data;
                             return light;
                         })
                     });
