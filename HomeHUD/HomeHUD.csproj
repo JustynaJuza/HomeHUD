@@ -414,8 +414,6 @@
     <TypeScriptCompile Include="Content\component-styles\variables.css.d.ts" />
     <TypeScriptCompile Include="Scripts\app\components\app.tsx" />
     <Content Include="Scripts\app\server\expose.js" />
-    <TypeScriptCompile Include="Scripts\app\components\homeHud.ts" />
-    <TypeScriptCompile Include="Scripts\app\components\index.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\page\content.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\page\content\controlPanel.tsx" />
     <TypeScriptCompile Include="Scripts\app\components\page\content\lightSwitch.tsx" />

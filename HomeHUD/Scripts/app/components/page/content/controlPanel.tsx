@@ -13,7 +13,6 @@ import { IAppState } from '../../../state/app';
 import { lightActions } from '../../../state/lights/lightActions';
 
 // props
-import { ILightSwitchState } from '../../../state/lights/lightsState';
 import { IRoomConfig } from '../../../state/config/configState';
 
 // components
@@ -27,8 +26,6 @@ import * as style from '../../../../../content/component-styles/control-panel.cs
 
 interface IControlPanelProps {
     dispatch: Dispatch<any>;
-    lights: Array<ILightSwitchState>;
-    onSwitchChange: (id: number) => void;
     rooms: IRoomConfig[];
 }
 
@@ -62,11 +59,14 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
     public render() {
 
         return (
-            <div className={style.switches}>
-                <button onClick={this.handlers.onSwitchAllOn}>Switch all ON</button>
-                <button onClick={this.handlers.onSwitchAllOff}>Switch all OFF</button>
+            <div>
+                <div className={style.switches}>
+                    <button onClick={this.handlers.onSwitchAllOn}>Switch all ON</button>
+                    <button onClick={this.handlers.onSwitchAllOff}>Switch all OFF</button>
+                </div>
 
-                { this.renderRooms() }
+            { this.renderRooms() }
+
             </div>
         );
     }
@@ -76,7 +76,6 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
 const mapStateToProps = (state: IAppState) => {
     return {
-        lights: state.lights.all
         rooms: _filter(state.config.rooms, room => room.lights.length > 0)
     }
 };

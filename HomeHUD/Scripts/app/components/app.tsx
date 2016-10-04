@@ -4,9 +4,6 @@ import * as React from 'react'
 // redux
 import { Provider } from 'react-redux';
 import { store } from '../state/app';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { IAppState } from '../state/app';
 import { configActions } from '../state/config/configActions';
 
 // props
@@ -38,13 +35,3 @@ export class App extends React.Component<IAppProps, {}> {
         );
     }
 }
-
-// redux ---------------------------------------------------------------------------------
-
-const mapStateToProps = (state: IAppState) => {
-    return {
-        config: state.config.rooms
-    }
-};
-
-export default connect(mapStateToProps)(App)

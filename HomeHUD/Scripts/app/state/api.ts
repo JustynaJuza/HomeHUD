@@ -7,24 +7,18 @@ export class Api {
 
     constructor() {
 
-        //var jsonHeaders = new Headers();
-        //jsonHeaders.set('Content-Type', 'application/json');
+        var jsonHeaders = new Headers();
+        jsonHeaders.set('Content-Type', 'application/json');
 
         this.getRequestSettings = {
             method: 'get',
-            headers: {
-                'Content-Type':
-                'application/json'
-            },
+            headers: jsonHeaders,
             cache: 'default'
         };
 
         this.postRequestSettings = {
             method: 'post',
-            headers: {
-                'Content-Type':
-                'application/json'
-            },
+            headers: jsonHeaders,
             credentials: 'include'
         };
     }

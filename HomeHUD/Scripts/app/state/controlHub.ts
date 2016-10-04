@@ -26,7 +26,7 @@ export class ControlHub implements IControlHub {
     private proxy: SignalR.Hub.Proxy;
 
     public init(): void {
-        this.connection = jQuery.hubConnection();
+        this.connection = $.hubConnection();
         this.connection.logging = true;
         this.proxy = this.connection.createHubProxy('controlHub');
 
@@ -38,16 +38,12 @@ export class ControlHub implements IControlHub {
 
         this.proxy.on(SET_LIGHT_STATE, (data: SET_LIGHT_STATE) => {
             store.dispatch(lightActions.SET_LIGHT_STATE(data));
-            console.log('switching' + data.lightId + 'to ' + data.state + ' on client');
         }),
-            console.log(id + ' switched off on client');
         this.proxy.on(SET_ALL_LIGHTS_STATE, (data: SET_ALL_LIGHTS_STATE) => {
             store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
         }),
-        this.proxy.on(SET_CURRENT_LIGHTS_STATE, (state: LightsState) => {
-            console.log(state);
-            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(state));
-            console.log('setting current light state on client');
+        this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
+            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
         });
     }
 

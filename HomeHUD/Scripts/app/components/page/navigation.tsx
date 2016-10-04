@@ -22,28 +22,15 @@ import * as style from '../../../../content/component-styles/navigation.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IRoomDisplay {
-    id: number;
-    name: string;
-}
-
 interface INavigationProps {
     dispatch: Dispatch<any>;
     selectedNavigationTab: number;
     rooms: IRoomConfig[];
 }
 
-//interface IControlPanelTab {
-//    index: number;
-//    hash: string;
-//    name: string;
-//}
-
 class Navigation extends React.Component<INavigationProps, {}> {
 
     private renderControlPanelTab = () => {
-        var isActive = this.props.selectedNavigationTab === 0;
-
         return (
             <NavigationTab key={0} id={0} hash={''}>
                 Control Panel
@@ -58,14 +45,6 @@ class Navigation extends React.Component<INavigationProps, {}> {
             </NavigationTab>
         )
     }
-
-    //private mapToComponents() {
-    //    return _map(this.props.rooms, this.renderRoomTab);
-    //}
-
-    //private sortByIndex(roomTabs: IControlPanelTab[]) {
-    //    return _sortBy(roomTabs, (entry: IControlPanelTab) => entry.index);
-    //}
 
     private renderRoomTabs = () => {
         return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoomTab);
