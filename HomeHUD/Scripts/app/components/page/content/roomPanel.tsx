@@ -46,10 +46,12 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
     }
 
     public render() {
-
-        var panelClasses = classNames({
-            [style.hidden]: !this.props.showName,
-        })
+        
+        var panelClasses = classNames(
+            style.name,
+            {
+                [style.hidden]: !this.props.showName
+            });
 
         return (
             <div className={style.switches}>

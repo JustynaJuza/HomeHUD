@@ -1,12 +1,15 @@
 @import './variables.css';
+
 .switches {
     width: 40%;
     min-width: 300px;
     max-width: 430px;
     margin: 0 auto;
+    margin-bottom: 20px;
     background: #fff;
     border-radius: 15px;
     padding: 10px;
+
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -17,4 +20,10 @@
 
 .hidden {
     display: none;
+}
+
+.name {
+    text-transform: uppercase;
+    font-size: 1.3em;
+    word-wrap: break-word;
 }

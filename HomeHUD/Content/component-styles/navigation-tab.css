@@ -1,4 +1,5 @@
 @import './variables.css';
+
 .tab {
     transition: 0.3s;
     &:hover {
@@ -8,6 +9,7 @@
     width: 100%;
     min-width: 120px;
 }
+
 .link {
     width: 100%;
     height: 100%;
@@ -25,6 +27,7 @@
         background-color: transparent;
     }
 }
+
 .active {
     color: $nav_active_text_color;
     background: $nav_active_color;
@@ -33,6 +36,7 @@
         background: $nav_active_hover_color;
     }
 }
+
 .name {
     max-height: calc(2*$nav_tab_line_height);
     text-transform: uppercase;
