@@ -1,24 +1,46 @@
 import { handleActions } from 'redux-actions';
-import * as _ from 'lodash';
 
 import { IAction } from '../action';
-import { SELECT_NAVIGATION_TAB } from './navigationActions';
+import {
+    SELECT_CONTENT,
+    SHOW_ERROR,
+    UPDATE_ROUTE
+} from './navigationActions';
 
-export interface INavigationState {
-    selectedNavigationTab: number;
-}
+import { INavigationState, SelectedContent } from './navigationState';
 
-const initialState : INavigationState = {
-    selectedNavigationTab: 0
+const initialState: INavigationState = {
+    selectedContent: new SelectedContent('ROOM', 0),
+    errorMessage: '',
+    route: ''
 };
 
-export const navigationReducer = handleActions(<any> {
-        [SELECT_NAVIGATION_TAB]:
-        (state : INavigationState, action : IAction<SELECT_NAVIGATION_TAB>) => {
+export const navigationReducer = handleActions(<any>{
 
-            return Object.assign({}, state, {
-                selectedNavigationTab: action.data
-            });
-        }
+    [SELECT_CONTENT]:
+    (state: INavigationState, action: IAction<SELECT_CONTENT>) => {
+
+        return Object.assign({}, state, {
+            errorMessage: '',
+            selectedContent: action.data
+        });
     },
-initialState);
+
+    [SHOW_ERROR]:
+    (state: INavigationState, action: IAction<SHOW_ERROR>) => {
+
+        return Object.assign({}, state, {
+            selectedContent: new SelectedContent(''),
+            errorMessage: action.data
+        });
+    },
+
+    [UPDATE_ROUTE]:
+    (state: INavigationState, action: IAction<UPDATE_ROUTE>) => {
+        
+        return Object.assign({}, state, {
+            route: action.data
+        });
+    }
+},
+    initialState);

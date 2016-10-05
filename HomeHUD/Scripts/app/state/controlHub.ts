@@ -1,6 +1,8 @@
 import { store } from './app';
 import * as _ from 'lodash';
 
+import { navigationActions } from './navigation/navigationActions';
+
 import { ILightsState, ILightSwitchState, ILightsState as LightsState } from './lights/lightsState';
 import { lightActions } from './lights/lightActions';
 import {
@@ -52,8 +54,11 @@ export class ControlHub implements IControlHub {
             .done(() => {
                 this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
             })
-            .fail(() => { })
-            .always(() => { console.log('started'); });
+            .fail(() => {
+                store.dispatch(navigationActions.SHOW_ERROR(
+                    'You will not be able to switch lights on and off, a connection with the server could not be established.'
+                ));
+            });
     }
 
     public setLightOn(id: SET_LIGHT): void {

@@ -17,9 +17,9 @@ import { Layout } from './page/layout';
 
 // component ---------------------------------------------------------------------------------
 
-export interface IAppProps {
+interface IAppProps {
     config: IRoomConfig[];
-    hash: string;
+    route: string;
 }
 
 export class App extends React.Component<IAppProps, {}> {
@@ -30,12 +30,7 @@ export class App extends React.Component<IAppProps, {}> {
         // set current room config on store        
         store.dispatch(configActions.SET_CONFIG_STATE(props.config));
         // set navigation based on current hash
-        store.dispatch(navigationActions.SELECT_NAVIGATION_TAB(this.resolveHash()));
-    }
-
-    private resolveHash(): number {
-        var matchingRoom = _filter(this.props.config, room => room.hash === this.props.hash)[0];
-        return matchingRoom ? matchingRoom.id : 0;
+        store.dispatch(navigationActions.UPDATE_ROUTE(props.route));
     }
 
     public render() {

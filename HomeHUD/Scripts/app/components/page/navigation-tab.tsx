@@ -16,10 +16,10 @@ import * as style from '../../../../content/component-styles/navigation-tab.css'
 interface INavigationTabPublicProps {
     id: number;
     hash: string;
+    isActive: boolean;
 }
 
 interface INavigationTabProps extends INavigationTabPublicProps {
-    isActive: boolean;
     onSelectTab: (e: any, id: number) => void;
 }
 
@@ -46,9 +46,7 @@ export class NavigationTab extends React.Component<INavigationTabProps, {}> {
 // redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState, publicProps: INavigationTabPublicProps) => {
-    return {
-        isActive: state.navigation.selectedNavigationTab === publicProps.id
-    }
+    return {};
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTabPublicProps) => ({
@@ -56,7 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTab
         e.preventDefault();
         history.pushState(null, null, publicProps.hash);
 
-        dispatch(navigationActions.SELECT_NAVIGATION_TAB(id));
+        dispatch(navigationActions.UPDATE_ROUTE(publicProps.hash));
     }
 });
 

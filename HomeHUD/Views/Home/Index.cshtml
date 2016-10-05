@@ -7,8 +7,9 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jquerysignalR")
 @Scripts.Render("~/bundles/react")
+@Scripts.Render("~/bundles/history")
 @Scripts.Render("~/Scripts/app/client.bundle.js")
 
 @Styles.Render("~/Scripts/app/styles.css")
 
-@Html.ReactWithInit("Components.App", new { config = Model, hash=@Request.Url.AbsolutePath.Substring(1) }, containerId: "page")
+@Html.ReactWithInit("Components.App", new { config = Model, route=@Request.Url.AbsolutePath.Substring(1) }, containerId: "page")

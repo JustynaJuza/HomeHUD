@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/app';
 
+// props
+import { ISelectedContent } from '../../state/navigation/navigationState';
+
 // components
 import RoomPanel from './content/roomPanel';
 import ControlPanel from './content/controlPanel';
@@ -16,19 +19,34 @@ import * as style from '../../../../content/component-styles/layout.css';
 // component ---------------------------------------------------------------------------------
 
 interface IContentProps {
-    selectedNavigationTab: number;
+    selectedContent: ISelectedContent;
+    errorMessage: string;
 }
 
 class Content extends React.Component<IContentProps, {}> {
 
-    public render() {
-    	var content = this.props.selectedNavigationTab === 0
+    private getSelectedRoom(): number {
+        return this.props.selectedContent.type === 'ROOM'
+            ? this.props.selectedContent.id
+            : 0;
+    }
+
+    private getContent() {
+        var roomId = this.getSelectedRoom();
+        return roomId === 0
             ? <ControlPanel />
-            : <RoomPanel showName={false} id={this.props.selectedNavigationTab} />;
+            : <RoomPanel showName={false} id={roomId} />;
+    }
+
+    public render() {
 
         return (
             <div className={style.content}>
-                { content }
+                {
+                    this.props.errorMessage.length
+                        ? <div>{ this.props.errorMessage }</div>
+                        : this.getContent()
+                }
             </div>
         );
     }
@@ -38,7 +56,8 @@ class Content extends React.Component<IContentProps, {}> {
 
 const mapStateToProps = (state: IAppState) => {
     return {
-        selectedNavigationTab: state.navigation.selectedNavigationTab        
+        selectedContent: state.navigation.selectedContent,
+        errorMessage: state.navigation.errorMessage
     }
 };
 
