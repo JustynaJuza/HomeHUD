@@ -3,6 +3,7 @@ declare const includeClientScripts: boolean;
 import * as _filter from "lodash/filter";
 
 import { ControlHub } from './controlHub';
+import { Router } from './router';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
@@ -42,25 +43,7 @@ export const app = combineReducers({
   config: configReducer
 });
 
-const resolveRoute = (store: Redux.Store<{}>) => (next: Redux.Dispatch<any>) => (action: IAction<any>) => {
-    if (action.type !== UPDATE_ROUTE) return next(action);
-    
-    if (action.data.length === 0) {
-        return next(navigationActions.SELECT_CONTENT(new SelectedContent('ROOM', 0)));
-    };
-
-    const state = <IAppState>store.getState();
-
-    const matchingRoom = _filter(state.config.rooms, room => room.hash === action.data)[0];
-    if (matchingRoom) {
-        return next(navigationActions.SELECT_CONTENT(new SelectedContent('ROOM', matchingRoom.id)));
-    }
-    else {
-        return next(navigationActions.SHOW_ERROR('This route is not valid, try selecting a tab from the navigation panel.'));
-    }
-}
-
-export const store = createStore(<any>app, applyMiddleware(resolveRoute));
+export const store = createStore(<any>app, applyMiddleware(Router.resolveRoute));
 
 if (includeClientScripts) {
     

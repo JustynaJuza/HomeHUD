@@ -1,10 +1,6 @@
 import { IAction } from '../action';
 import { ISelectedContent } from './navigationState';
 
-
-export const SELECT_NAVIGATION_TAB = 'SELECT_NAVIGATION_TAB';
-export type SELECT_NAVIGATION_TAB = number;
-
 export const SELECT_CONTENT = 'SELECT_CONTENT';
 export type SELECT_CONTENT = ISelectedContent;
 
@@ -16,11 +12,6 @@ export type UPDATE_ROUTE = string;
 
 
 export const navigationActions = {
-    SELECT_NAVIGATION_TAB:
-    (tabId: SELECT_NAVIGATION_TAB) =>
-        <IAction<SELECT_NAVIGATION_TAB>>
-        { type: SELECT_NAVIGATION_TAB, data: tabId },
-
     SELECT_CONTENT:
     (content: SELECT_CONTENT) =>
         <IAction<SELECT_CONTENT>>
