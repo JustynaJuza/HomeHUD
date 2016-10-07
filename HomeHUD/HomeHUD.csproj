@@ -436,6 +436,9 @@
     <TypeScriptCompile Include="Scripts\app\state\lights\lightActions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightsReducer.ts" />
     <TypeScriptCompile Include="Scripts\app\state\lights\lightsState.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\authentication\authenticationActions.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\authentication\authenticationReducer.ts" />
+    <TypeScriptCompile Include="Scripts\app\state\authentication\authenticationState.ts" />
     <TypeScriptCompile Include="Scripts\app\state\navigation\navigationActions.ts" />
     <TypeScriptCompile Include="Scripts\app\state\navigation\navigationState.ts" />
     <TypeScriptCompile Include="Scripts\app\state\navigation\navigationReducer.ts" />

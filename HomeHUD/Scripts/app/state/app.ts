@@ -17,6 +17,9 @@ import { ILightsState } from './lights/lightsState';
 import { configReducer } from './config/configReducer';
 import { IConfigState } from './config/configState';
 
+import { authenticationReducer } from './authentication/authenticationReducer';
+import { IAuthenticationState } from './authentication/authenticationState';
+
 import { SelectedContent } from '../state/navigation/navigationState';
 
 import { IAction } from './action';
@@ -28,6 +31,7 @@ export interface IAppState {
     navigation: INavigationState;
     lights: ILightsState;
     config: IConfigState;
+    authentication: IAuthenticationState;
 }
 
 var lightsReducer = new LightsReducer();
@@ -40,7 +44,8 @@ if (includeClientScripts) {
 export const app = combineReducers({
   navigation: navigationReducer,
   lights: lightsReducer.get(),
-  config: configReducer
+  config: configReducer,
+  authentication: authenticationReducer
 });
 
 export const store = createStore(<any>app, applyMiddleware(Router.resolveRoute));
