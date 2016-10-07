@@ -1,0 +1,9 @@
+@import './variables.css';
+
+.container {
+    composes: small_rounded_container from './shared-components.css';
+}
+
+.button {
+    composes: button from './shared-components.css';
+}

@@ -1,5 +1,7 @@
 declare const includeClientScripts: boolean;
 
+import * as injectTapEventPlugin from 'react-tap-event-plugin';
+
 import * as _filter from "lodash/filter";
 
 import { ControlHub } from './controlHub';
@@ -59,3 +61,6 @@ if (includeClientScripts) {
         store.dispatch(navigationActions.UPDATE_ROUTE(route));
     }
 }
+
+
+injectTapEventPlugin();

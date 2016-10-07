@@ -25,6 +25,7 @@ import * as style from '../../../../content/component-styles/navigation.css';
 // component ---------------------------------------------------------------------------------
 
 interface INavigationProps {
+    isAuthenticated: boolean;
     selectedContent: ISelectedContent;
     rooms: IRoomConfig[];
 }
@@ -32,7 +33,7 @@ interface INavigationProps {
 class Navigation extends React.Component<INavigationProps, {}> {
 
     private selectedRoomId: number = null;
-    
+
     private setSelectedRoom(): void {
 
         if (this.props.selectedContent.type === 'ROOM') {
@@ -61,6 +62,10 @@ class Navigation extends React.Component<INavigationProps, {}> {
     }
 
     public render() {
+        if (!this.props.isAuthenticated) {
+            return null;
+        }
+
         this.setSelectedRoom();
 
         return (
@@ -77,6 +82,7 @@ class Navigation extends React.Component<INavigationProps, {}> {
 const mapStateToProps = (state: IAppState) => {
 
     return {
+        isAuthenticated: state.authentication.isAuthenticated,
         selectedContent: state.navigation.selectedContent,
         rooms: _filter(state.config.rooms, room => room.lights.length > 0)
     }

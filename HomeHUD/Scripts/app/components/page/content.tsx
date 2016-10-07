@@ -12,6 +12,7 @@ import { ISelectedContent } from '../../state/navigation/navigationState';
 // components
 import RoomPanel from './content/roomPanel';
 import ControlPanel from './content/controlPanel';
+import LoginPanel from './content/loginPanel';
 
 // style
 import * as style from '../../../../content/component-styles/layout.css';
@@ -19,6 +20,7 @@ import * as style from '../../../../content/component-styles/layout.css';
 // component ---------------------------------------------------------------------------------
 
 interface IContentProps {
+    isAuthenticated: boolean;
     selectedContent: ISelectedContent;
     errorMessage: string;
 }
@@ -42,8 +44,10 @@ class Content extends React.Component<IContentProps, {}> {
 
         return (
             <div className={style.content}>
-                {
-                    this.props.errorMessage.length
+
+                { !this.props.isAuthenticated
+                    ? <LoginPanel />
+                    : this.props.errorMessage.length
                         ? <div>{ this.props.errorMessage }</div>
                         : this.getContent()
                 }
@@ -56,6 +60,7 @@ class Content extends React.Component<IContentProps, {}> {
 
 const mapStateToProps = (state: IAppState) => {
     return {
+        isAuthenticated: state.authentication.isAuthenticated,
         selectedContent: state.navigation.selectedContent,
         errorMessage: state.navigation.errorMessage
     }

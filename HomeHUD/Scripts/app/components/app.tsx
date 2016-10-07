@@ -2,6 +2,7 @@
 
 // react
 import * as React from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 // redux
 import { Provider } from 'react-redux';
@@ -25,7 +26,7 @@ interface IAppProps {
 export class App extends React.Component<IAppProps, {}> {
 
     constructor(props: IAppProps) {
-        super(props);        
+        super(props);
 
         // set current room config on store        
         store.dispatch(configActions.SET_CONFIG_STATE(props.config));
@@ -36,7 +37,11 @@ export class App extends React.Component<IAppProps, {}> {
     public render() {
         return (
             <Provider store={store}>
-                <Layout />
+                <MuiThemeProvider>
+
+                    <Layout />
+
+                </MuiThemeProvider>
             </Provider>
         );
     }
