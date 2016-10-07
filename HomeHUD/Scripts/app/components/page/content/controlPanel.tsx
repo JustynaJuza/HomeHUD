@@ -33,7 +33,7 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
     constructor(props: IControlPanelProps) {
         super(props);
-        this.handlers = this.createHandlers(this.props.dispatch);
+        this.handlers = this.createHandlers(props.dispatch);
     }
 
     private createHandlers(dispatch: Dispatch<any>) {
@@ -59,9 +59,9 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
         return (
             <div>
-                <div className={style.switches}>
-                    <button onClick={this.handlers.onSwitchAllOn}>Switch all ON</button>
-                    <button onClick={this.handlers.onSwitchAllOff}>Switch all OFF</button>
+                <div className={style.container}>
+                    <button className={style.button} onClick={this.handlers.onSwitchAllOn}>Switch all ON</button>
+                    <button className={style.button} onClick={this.handlers.onSwitchAllOff}>Switch all OFF</button>
                 </div>
 
             { this.renderRooms() }

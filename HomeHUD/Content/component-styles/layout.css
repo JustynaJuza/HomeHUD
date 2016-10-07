@@ -36,11 +36,11 @@ body {
 }
 
 .content{
-    height: calc(100% - $nav_height - $header_height);
+    height: calc(100% - $header_height);
     width: 100%;
     margin: 0 auto;
     padding: 2em 0;
     background: $content_background;
-    background-size: cover;
-    /* background-size: 100% 100%; */
+    /*background-size: cover;*/
+    background-size: 100% 100%;
 }

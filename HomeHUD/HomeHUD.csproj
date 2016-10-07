@@ -300,6 +300,8 @@
     <Content Include="Content\component-styles\navigation-tab.css" />
     <Content Include="Content\component-styles\navigation.css" />
     <Content Include="Content\component-styles\room-panel.css" />
+    <TypeScriptCompile Include="Content\component-styles\shared-components.d.ts" />
+    <Content Include="Content\component-styles\shared-components.css" />
     <Content Include="Content\component-styles\variables.css" />
     <Content Include="Content\media\background.jpg" />
     <Content Include="favicon.ico" />
@@ -411,7 +413,6 @@
     <TypeScriptCompile Include="Content\component-styles\navigation-tab.css.d.ts" />
     <TypeScriptCompile Include="Content\component-styles\navigation.css.d.ts" />
     <TypeScriptCompile Include="Content\component-styles\room-panel.css.d.ts" />
-    <TypeScriptCompile Include="Content\component-styles\variables.css.d.ts" />
     <TypeScriptCompile Include="Scripts\app\components\app.tsx" />
     <Content Include="Scripts\app\server\expose.js" />
     <TypeScriptCompile Include="Scripts\app\components\page\content.tsx" />

@@ -1,5 +1,9 @@
 @import './variables.css';
 
-.switches {
-    composes: switches from './room-panel.css';
+.container {
+    composes: small_rounded_container from './shared-components.css';
+}
+
+.button {
+    composes: button from './shared-components.css';
 }
