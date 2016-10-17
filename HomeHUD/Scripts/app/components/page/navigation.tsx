@@ -19,7 +19,6 @@ import { ISelectedContent } from '../../state/navigation/navigationState';
 import NavigationTab from './navigation-tab';
 
 // style
-
 import * as style from '../../../../content/component-styles/navigation.css';
 
 // component ---------------------------------------------------------------------------------

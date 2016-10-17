@@ -11,6 +11,7 @@
     overflow: hidden;
     //border-bottom: 1px solid $nav_border_color;
     background-color: $nav_color;
+
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

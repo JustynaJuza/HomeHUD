@@ -57,7 +57,7 @@ $default_button_hover_color: $white;
 
 
 @define-mixin softerEdges {
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 @define-mixin textShadow {
@@ -66,4 +66,9 @@ $default_button_hover_color: $white;
 
 @define-mixin boxShadow $mode {
     box-shadow: $(mode) rgba(0, 0, 0, 0.117647) 0 1px 6px, $(mode) rgba(0, 0, 0, 0.117647) 0 1px 4px;
+}
+
+@define-mixin square $size {
+    width: $(size);
+    height: $(size);
 }

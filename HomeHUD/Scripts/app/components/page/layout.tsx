@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Header } from './header';
 import Navigation from './navigation';
 import Content from './content';
+import ConfigMenu from './configMenu';
 
 // style
 import * as style from '../../../../content/component-styles/layout.css';
@@ -23,6 +24,7 @@ export class Layout extends React.Component<ILayoutProps, {}> {
                 <Header />
                 <Navigation />
                 <Content />
+                <ConfigMenu />
             </div>
         );
     }

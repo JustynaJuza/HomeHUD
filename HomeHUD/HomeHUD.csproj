@@ -293,6 +293,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\component-styles\config-menu.css" />
     <Content Include="Content\component-styles\login-panel.css" />
     <Content Include="Content\component-styles\control-panel.css" />
     <Content Include="Content\component-styles\header.css" />
@@ -301,10 +302,13 @@
     <Content Include="Content\component-styles\navigation-tab.css" />
     <Content Include="Content\component-styles\navigation.css" />
     <Content Include="Content\component-styles\room-panel.css" />
+    <TypeScriptCompile Include="Content\component-styles\config-menu.css.d.ts" />
     <TypeScriptCompile Include="Content\component-styles\shared-components.d.ts" />
     <Content Include="Content\component-styles\shared-components.css" />
     <Content Include="Content\component-styles\variables.css" />
     <Content Include="Content\media\background.jpg" />
+    <Content Include="Content\media\logoff.svg" />
+    <Content Include="Content\media\settings.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -324,6 +328,7 @@
     <Content Include="typings\globals\whatwg-streams\typings.json" />
     <TypeScriptCompile Include="Content\component-styles\login-panel.css.d.ts" />
     <TypeScriptCompile Include="Scripts\app\components\page\content\loginPanel.tsx" />
+    <TypeScriptCompile Include="Scripts\app\components\page\configMenu.tsx" />
     <TypeScriptCompile Include="Scripts\app\state\api.ts" />
     <Content Include="Scripts\app\styles.css" />
     <Content Include="Scripts\jquery.signalR-2.2.1.js" />

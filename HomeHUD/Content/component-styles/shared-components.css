@@ -20,7 +20,8 @@
 
 .uppercase_name {
     @mixin textShadow;
-
+    
+    font-family: 'Roboto';
     text-transform: uppercase;
     font-size: 1.3em;
     line-height: 1em;
