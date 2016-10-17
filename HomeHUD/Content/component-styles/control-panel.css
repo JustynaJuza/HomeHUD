@@ -6,4 +6,6 @@
 
 .button {
     composes: button from './shared-components.css';
+    
+    min-width: 190px;
 }

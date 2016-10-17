@@ -10,6 +10,7 @@ $header_height: 4.5em;
 $nav_height: 5em;
 
 $white: #efefef;
+$default_border: #bcbcbc;
 
 $color_accent_green: #BBFF33;
 $color_accent_yellow: #FFC300;
@@ -26,10 +27,12 @@ $color_background_2: #acacac;
 $color_background_3: #c3c3c3;
 $color_background_4: #f1f1f1;
 $color_text_dark: #ccc;
-$color_text_black: #333;
+$color_text_black: #222;
 
 $body_color: #fff;
 $content_color: #fff;
+
+$focus_outline_color: $color_accent_blue;
 
 $header_text_color: $color_accent_blue;
 $header_color: #fff;
@@ -44,5 +47,23 @@ $nav_active_text_color: $white;
 
 $nav_hover_color: $color_background_3;
 $nav_hover_text_color: inherit;
-$nav_active_hover_color: #333;
+$nav_active_hover_color: $color_text_black;
 $nav_active_hover_text_color: $white;
+
+$default_button_color: #fff;
+$default_button_text_color: $color_text_black;
+$default_button_active_color: $color_background_3;
+$default_button_hover_color: $white;
+
+
+@define-mixin softerEdges {
+    border-radius: 3px;
+}
+
+@define-mixin textShadow {
+    text-shadow: 0 1px 3px rgba(150, 150, 150, 0.5);
+}
+
+@define-mixin boxShadow $mode {
+    box-shadow: $(mode) rgba(0, 0, 0, 0.117647) 0 1px 6px, $(mode) rgba(0, 0, 0, 0.117647) 0 1px 4px;
+}

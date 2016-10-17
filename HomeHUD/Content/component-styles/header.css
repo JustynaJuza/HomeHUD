@@ -1,14 +1,18 @@
 @import './variables.css';
 
 .container {
-	height: $header_height;
-	background: $header_color;
-	color: $header_text_color;
-	padding: 1em 1.25em;
+    width: 100%;
+    height: $header_height;
+
+    background: $header_color;
+    color: $header_text_color;
+    padding: 1em 1.25em;
     border-bottom: 3px solid $header_border_color;
 }
 
 .logo {
-	font-size: 2em;
-	color: $header_text_color;
+    @mixin textShadow;
+
+    font-size: 2em;
+    color: $header_text_color;
 }

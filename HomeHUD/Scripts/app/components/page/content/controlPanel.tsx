@@ -75,7 +75,7 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
 const mapStateToProps = (state: IAppState) => {
     return {
-        rooms: _filter(state.config.rooms, room => room.lights.length > 0)
+        rooms: _filter(state.config.rooms, (room) => room.lights.length > 0)
     }
 };
 

@@ -7,14 +7,12 @@
     justify-content: space-around;
     align-items: center;
     align-content: stretch;
+
     &.on .switcher {
         right: 0;
         left: auto;
-        box-shadow: inset 0px 0px 6px #fff;
         border: 1px solid #5ea617;
-        border-radius: 10px;
-        background: linear-gradient(to bottom, #8DD297, #398525);
-        background: #8DD297
+        background: #8DD297;
     }
     &.off .switcher {
         right: auto;
@@ -34,24 +32,36 @@
     }
 }
 .light_switcher {
+    @mixin softerEdges;
+    @mixin boxShadow inset;
+
     position: relative;
     width: 10em;
     height: 5em;
     margin: 1em;
-    background: #efefef;
+    background: $white;
 }
+
 .switcher {
+    @mixin softerEdges;
+
     width: 50%;
     padding: 0;
     margin: 0.2em;
-    border: 1px solid #white;
+    border: 1px solid $default_border;
+    /*background-color: $default_button_color;*/
     position: absolute;
     cursor: pointer;
     top: 0;
     bottom: 0;
     transition: .4s;
     outline-color: transparent;
+    
+    &:hover {
+        background-color: $default_button_hover_color;
+    }
 }
+
 .icon {
     height: 50px;
     width: 50px;

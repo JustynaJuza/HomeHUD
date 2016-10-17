@@ -7,7 +7,7 @@
         background: $nav_hover_color;
     }
     width: 100%;
-    min-width: 120px;
+    min-width: 150px;
 }
 
 .link {

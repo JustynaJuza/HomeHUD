@@ -1,6 +1,10 @@
 @import './variables.css';
 .list {
+    flex-shrink: 0;
+
+    width: 100%;
     height: $nav_height;
+
     list-style-type: none;
     margin: 0;
     padding: 0;
