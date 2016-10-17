@@ -44,4 +44,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     login() { dispatch(authenticationActions.LOGIN({ userName: 'juza' })); }
 });
 
-export default connect(mapStateToProps)(LoginPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPanel);
