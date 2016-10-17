@@ -49,6 +49,12 @@ namespace HomeHUD.Models
         public LightSwitchState State { get; set; }
     }
 
+    public class SwitchAllLightsViewModel
+    {
+        public int[] LightIds { get; set; }
+        public LightSwitchState State { get; set; }
+    }
+
     public class LightsState
     {
         public ICollection<LightViewModel> All { get; set; }

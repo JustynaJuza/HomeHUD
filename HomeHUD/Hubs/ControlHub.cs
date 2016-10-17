@@ -1,6 +1,7 @@
 using HomeHUD.Models;
 using Microsoft.AspNet.SignalR;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Hubs
@@ -9,7 +10,7 @@ namespace HomeHUD.Hubs
     {
         void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
         void SET_LIGHT_STATE(LightStateViewModel singleLightState);
-        void SET_ALL_LIGHTS_STATE(LightSwitchState allLightsState);
+        void SET_ALL_LIGHTS_STATE(SwitchAllLightsViewModel lightsStateData);
     }
 
     //[Authorize]
@@ -89,15 +90,28 @@ namespace HomeHUD.Hubs
             // save new state to db
             // trigger light changed on all clients
 
+            var lightsToSwitch = _lightSwitchService.GetLightsToSwitch(state);
+
+            // if nothing needs switching return a completed task
+            if (!lightsToSwitch.Any())
+                return await Task.FromResult(1);
+
             var transition = GetLightSwitchTransition(state);
 
             var switching = _lightSwitchService.SetAllLightsState(transition[0]);
-            Clients.All.SET_ALL_LIGHTS_STATE(transition[0]);
+
+            var lightsStateData = new SwitchAllLightsViewModel
+            {
+                LightIds = lightsToSwitch,
+                State = transition[0]
+            };
+            Clients.All.SET_ALL_LIGHTS_STATE(lightsStateData);
 
 
             await switching;
             var switched = _lightSwitchService.SetAllLightsState(transition[1]);
-            Clients.All.SET_ALL_LIGHTS_STATE(transition[1]);
+            lightsStateData.State = transition[1];
+            Clients.All.SET_ALL_LIGHTS_STATE(lightsStateData);
 
             return await switched;
         }
