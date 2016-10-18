@@ -8,6 +8,7 @@
 /// <reference path="globals/react-tap-event-plugin/index.d.ts" />
 /// <reference path="globals/react/index.d.ts" />
 /// <reference path="globals/redux-actions/index.d.ts" />
+/// <reference path="globals/redux-form/index.d.ts" />
 /// <reference path="globals/redux/index.d.ts" />
 /// <reference path="globals/signalr/index.d.ts" />
 /// <reference path="globals/whatwg-fetch/index.d.ts" />

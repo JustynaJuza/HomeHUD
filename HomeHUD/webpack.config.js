@@ -12,6 +12,7 @@ const config = [{
     },
     module: {
         loaders: [
+            settings.loaders.jsx,
             settings.loaders.tsx,
             settings.loaders.css,
             settings.loaders.images
@@ -44,8 +45,10 @@ const config = [{
             }
         }),
         new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"development"'
+            process: {
+                env: {
+                    NODE_ENV: '"development"'
+                }
             },
             includeClientScripts: true
         }),
@@ -71,6 +74,7 @@ const config = [{
     },
     module: {
         loaders: [
+            settings.loaders.jsx,
             settings.loaders.tsx,
             settings.loaders.css,
             settings.loaders.images
@@ -80,11 +84,16 @@ const config = [{
         return [
             settings.postcssConfig.import(webpack),
             settings.postcssConfig.fonts,
-            settings.postcssConfig.precss,
+            settings.postcssConfig.precss
         ].concat(settings.postcssConfig.processors);
     },
     plugins: [
         new webpack.DefinePlugin({
+            process: {
+                env: {
+                    NODE_ENV: '"development"'
+                }
+            },
             includeClientScripts: false
         }),
         new ExtractTextPlugin('styles.css')

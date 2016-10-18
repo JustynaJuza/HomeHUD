@@ -8,6 +8,7 @@ import { ControlHub } from './controlHub';
 import { Router } from './router';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 import { navigationReducer } from './navigation/navigationReducer';
 import { INavigationState } from './navigation/navigationState';
@@ -47,7 +48,8 @@ export const app = combineReducers({
   navigation: navigationReducer,
   lights: lightsReducer.get(),
   config: configReducer,
-  authentication: authenticationReducer
+  authentication: authenticationReducer,
+  form: formReducer
 });
 
 export const store = createStore(<any>app, applyMiddleware(Router.resolveRoute));
@@ -61,6 +63,5 @@ if (includeClientScripts) {
         store.dispatch(navigationActions.UPDATE_ROUTE(route));
     }
 }
-
 
 injectTapEventPlugin();

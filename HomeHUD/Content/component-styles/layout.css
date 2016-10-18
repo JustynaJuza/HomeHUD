@@ -12,6 +12,7 @@ html{
 }
 
 input, button, select, a {
+    font-family: 'Roboto';
     &:focus {
         outline-color: $focus_outline_color;
     }

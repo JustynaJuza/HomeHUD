@@ -7,3 +7,34 @@
 .button {
     composes: button from './shared-components.css';
 }
+
+.field {
+    padding: 8px;
+    width: 70%;
+    min-width: 250px;
+    max-width: 300px;
+}
+
+.input {
+    @mixin boxShadow inset;
+
+    width: 100%;
+    padding: 14px 10px 8px 10px;
+    border: none;
+
+    /* height: 3em; */
+    /* line-height: 2em; */
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.label {
+    composes: uppercase_name from './shared-components.css';
+    
+    @mixin textShadow;
+
+    font-size: .7em;
+    letter-spacing: 1px;
+    margin-bottom: -5px;
+    margin-top: 10px;
+}

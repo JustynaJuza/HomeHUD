@@ -39,7 +39,7 @@ class ConfigMenu extends React.Component<IConfigMenuProps, {}> {
                 </li>
                 <li>
                     <button className={style.button} title="Log off" onClick={() => this.props.logoff()}>
-                        <div className={style.logout}></div>
+                        <div className={style.logoff}></div>
                         <span className={style.title}>Log off</span>
                     </button>
                 </li>

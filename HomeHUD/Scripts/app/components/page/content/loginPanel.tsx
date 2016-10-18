@@ -8,6 +8,8 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/app';
 import { authenticationActions } from '../../../state/authentication/authenticationActions';
 
+import LoginForm from '../form/loginForm';
+
 // style
 import * as style from '../../../../../content/component-styles/login-panel.css';
 
@@ -18,17 +20,23 @@ interface ILoginPanelProps {
 }
 
 export class LoginPanel extends React.Component<ILoginPanelProps, {}> {
-    
+        
+    private submit() {
+
+    }
+
     public render() {
 
         return (
-            <div>
-                <div className={style.container}>
-                    <TextField hintText="" floatingLabelText="Username" />
-                    <TextField type="password" hintText="" floatingLabelText="Password" />
-                    <button className={style.button} onClick={() => this.props.login()}>Log in</button>
-                </div>
-            </div>
+            <LoginForm onSubmit={() => this.props.login()}/>
+
+            //<div>
+            //    <div className={style.container}>
+            //        <TextField hintText="" floatingLabelText="Username" />
+            //        <TextField type="password" hintText="" floatingLabelText="Password" />
+            //        <button className={style.button} onClick={() => this.props.login()}>Log in</button>
+            //    </div>
+            //</div>
         );
     }
 }
