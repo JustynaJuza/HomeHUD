@@ -1,9 +1,8 @@
-﻿using HomeHUD.Models;
+﻿using HomeHUD.Models.Configurables;
 using HomeHUD.Models.DbContext;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using HomeHUD.Models.Configurables;
 
 namespace HomeHUD
 {
@@ -29,7 +28,7 @@ namespace HomeHUD
                 var customRoutes = context.Set<Room>().Select(x => new { x.Name, x.Hash }).ToList();
                 foreach (var route in customRoutes)
                 {
-                    routes.MapRoute(route.Name, route.Hash);
+                    routes.MapRoute(route.Name, route.Hash, new { controller = "Home", action = "Index" });
                 }
             }
         }

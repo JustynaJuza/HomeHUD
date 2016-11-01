@@ -28,13 +28,14 @@ export class App extends React.Component<IAppProps, {}> {
     constructor(props: IAppProps) {
         super(props);
 
-        // set navigation based on current hash
-        store.dispatch(navigationActions.UPDATE_ROUTE(props.route));        
-
         if (props.config) {
             // set current room config on store        
             store.dispatch(configActions.SET_CONFIG_STATE(props.config));
         }
+
+        // set navigation based on current hash
+        store.dispatch(navigationActions.UPDATE_ROUTE(props.route));        
+
     }
 
     public render() {
