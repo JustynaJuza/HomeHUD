@@ -23,7 +23,7 @@ export class Api {
         };
     }
 
-    private processStatus(response: any): any {
+    private processStatus(response: Response): any {
         if (response.status === 200 || response.status === 0) {
             return response;
         } else {
@@ -31,15 +31,17 @@ export class Api {
         }
     }
 
-    public getJson(url: string): any {
+    public getJson(url: string): Promise<any> {
         return fetch(url, this.getRequestSettings)
-            .then(this.processStatus);
+            .then(this.processStatus)
+            .then(response => response.json());
     }
 
-    public postJson(url: string, data: any): void {
+    public postJson(url: string, data: any): Promise<any> {
         this.postRequestSettings.body = JSON.stringify(data);
 
-        fetch(url, this.postRequestSettings)
-            .then(this.processStatus);
+        return fetch(url, this.postRequestSettings)
+            .then(this.processStatus)
+            .then(response => response.json());;
     }
 }

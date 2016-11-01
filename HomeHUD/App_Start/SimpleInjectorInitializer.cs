@@ -1,5 +1,6 @@
 using HomeHUD.Hubs;
 using HomeHUD.Models;
+using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Users;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -13,7 +14,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using HomeHUD.Models.DbContext;
 
 namespace HomeHUD
 {
@@ -55,9 +55,9 @@ namespace HomeHUD
                 ? new OwinContext(new Dictionary<string, object>()).Authentication
                 : HttpContext.Current.GetOwinContext().Authentication);
 
-
             // Services
             container.Register<ILightSwitchService, LightSwitchService>();
+            container.Register<IAppSettingsService, AppSettingsService>();
         }
     }
 }

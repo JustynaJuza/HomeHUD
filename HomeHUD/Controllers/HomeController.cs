@@ -1,7 +1,13 @@
 ﻿using HomeHUD.Models;
+using HomeHUD.Models.Configurables;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Models.Json;
+using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
+using System.Web;
 using System.Web.Mvc;
 
 namespace HomeHUD.Controllers
@@ -9,10 +15,13 @@ namespace HomeHUD.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAppSettingsService _appSettings;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context,
+            IAppSettingsService appSettings)
         {
             _context = context;
+            _appSettings = appSettings;
         }
 
         public ActionResult Index()
@@ -31,18 +40,40 @@ namespace HomeHUD.Controllers
             return View(rooms);
         }
 
-        public ActionResult About()
+        public ActionResult Login(LoginViewModel data)
         {
-            ViewBag.Message = "Your application description page.";
+            var result = new JsonFormResult();
 
-            return View();
-        }
+            if (!ModelState.IsValid)
+            {
+                result.MapErrorsFromModelState(ModelState);
+                return Json(result);
+            }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+            var password = _appSettings.Get("genericPassword");
 
-            return View();
+            if (!data.Password.Equals(password))
+            {
+                result.errors.Add(new FormError
+                {
+                    errorMessage = "Nope, what you entered will not allow you to log in."
+                });
+                return Json(result);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, data.UserName)
+            };
+
+            var id = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+
+            var ctx = Request.GetOwinContext();
+            var authenticationManager = ctx.Authentication;
+            authenticationManager.SignIn(id);
+
+            result.success = true;
+            return Json(result);
         }
 
         public ActionResult GetConfigSettings()

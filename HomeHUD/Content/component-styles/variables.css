@@ -31,6 +31,7 @@ $color_text_black: #222;
 
 $body_color: #fff;
 $content_color: #fff;
+$error_color: #C70039;
 
 $focus_outline_color: $color_accent_blue;
 

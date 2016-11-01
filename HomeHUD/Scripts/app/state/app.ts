@@ -6,6 +6,7 @@ import * as _filter from "lodash/filter";
 
 import { ControlHub } from './controlHub';
 import { Router } from './router';
+import { Api } from './api';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { reducer as formReducer } from 'redux-form';
@@ -37,11 +38,20 @@ export interface IAppState {
     authentication: IAuthenticationState;
 }
 
+export interface IFormError {
+    fieldName: string;
+    errorMessage: string;
+}
+
 var lightsReducer = new LightsReducer();
+
+var requestHandler: Api;
 
 if (includeClientScripts) {
     lightsReducer.hub = new ControlHub();
     lightsReducer.hub.init();
+
+    requestHandler = new Api();
 }
 
 export const app = combineReducers({
@@ -53,6 +63,7 @@ export const app = combineReducers({
 });
 
 export const store = createStore(<any>app, applyMiddleware(Router.resolveRoute));
+export const api = requestHandler;
 
 if (includeClientScripts) {
     

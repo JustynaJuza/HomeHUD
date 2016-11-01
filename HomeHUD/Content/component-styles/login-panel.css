@@ -9,10 +9,7 @@
 }
 
 .field {
-    padding: 8px;
-    width: 70%;
-    min-width: 250px;
-    max-width: 300px;
+    composes: small_container_item_spacing from './shared-components.css';
 }
 
 .input {
@@ -22,8 +19,6 @@
     padding: 14px 10px 8px 10px;
     border: none;
 
-    /* height: 3em; */
-    /* line-height: 2em; */
     font-size: 1.1em;
     text-align: center;
 }
@@ -37,4 +32,20 @@
     letter-spacing: 1px;
     margin-bottom: -5px;
     margin-top: 10px;
+}
+
+.field_error {
+    composes: label;
+
+    color: $error_color;
+}
+
+.form_error{
+    composes: label;
+    composes: small_container_item_spacing from './shared-components.css';
+
+    color: $error_color;
+    font-size: 0.85em;
+    text-align: center;
+    margin: 0;
 }

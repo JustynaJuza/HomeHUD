@@ -11,7 +11,7 @@ import { authenticationActions } from '../../../state/authentication/authenticat
 
 // props
 import { Api } from '../../../state/api';
-import LoginForm, { handleLoginFailure } from '../form/loginForm';
+import LoginForm from '../form/loginForm';
 
 // style
 import * as style from '../../../../../content/component-styles/login-panel.css';
@@ -35,9 +35,9 @@ export class LoginPanel extends React.Component<ILoginPanelProps, {}> {
     //}
 
     //private submit(values: any) {
+        //api.postJson('/Home/Login', values)
+        //    .then(this.processLoginResponse);
 
-    //    api.postJson('/Home/Login', values)
-    //        .then(this.processLoginResponse);
     //}
 
     public render() {

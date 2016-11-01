@@ -18,6 +18,13 @@
     align-content: stretch;
 }
 
+.small_container_item_spacing {
+    padding: 8px;
+    width: 70%;
+    min-width: 250px;
+    max-width: 300px;
+}
+
 .uppercase_name {
     @mixin textShadow;
     
