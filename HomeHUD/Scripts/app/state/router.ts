@@ -28,7 +28,7 @@ export class Router {
             return next(navigationActions.SELECT_CONTENT(new SelectedContent('ROOM', matchingRoom.id)));
         }
         else {
-            return next(navigationActions.SHOW_ERROR('This route is not valid, try selecting a tab from the navigation panel.'));
+            return next(navigationActions.SHOW_ERROR({ code: '404', message: 'This route is not valid, try selecting a tab from the navigation panel.' }));
         }
     }
 }

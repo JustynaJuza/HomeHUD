@@ -3,6 +3,11 @@ export interface ISelectedContent {
     id?: number;
 }
 
+export interface IError {
+    code?: string;
+    message: string;
+}
+
 export class SelectedContent implements ISelectedContent{
 
     public type: string;
@@ -17,6 +22,6 @@ export class SelectedContent implements ISelectedContent{
 
 export interface INavigationState {
     selectedContent: ISelectedContent;
-    errorMessage: string;
+    error: IError;
     route: string;
 }

@@ -11,7 +11,7 @@ import { INavigationState, SelectedContent } from './navigationState';
 
 const initialState: INavigationState = {
     selectedContent: new SelectedContent('ROOM', 0),
-    errorMessage: '',
+    error: null,
     route: ''
 };
 
@@ -21,8 +21,8 @@ export const navigationReducer = handleActions(<any>{
     (state: INavigationState, action: IAction<SELECT_CONTENT>) => {
 
         return Object.assign({}, state, {
-            errorMessage: '',
-            selectedContent: action.data
+            selectedContent: action.data,
+            error: null
         });
     },
 
@@ -31,7 +31,7 @@ export const navigationReducer = handleActions(<any>{
 
         return Object.assign({}, state, {
             selectedContent: new SelectedContent(''),
-            errorMessage: action.data
+            error: action.data
         });
     },
 

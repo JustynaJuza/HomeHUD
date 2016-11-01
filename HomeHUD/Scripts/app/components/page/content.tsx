@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../state/app';
 
 // props
-import { ISelectedContent } from '../../state/navigation/navigationState';
+import { ISelectedContent, IError } from '../../state/navigation/navigationState';
 
 // components
 import RoomPanel from './content/roomPanel';
@@ -22,7 +22,7 @@ import * as style from '../../../../content/component-styles/layout.css';
 interface IContentProps {
     isAuthenticated: boolean;
     selectedContent: ISelectedContent;
-    errorMessage: string;
+    error: IError;
 }
 
 class Content extends React.Component<IContentProps, {}> {
@@ -45,11 +45,13 @@ class Content extends React.Component<IContentProps, {}> {
         return (
             <div className={style.content}>
 
-                { !this.props.isAuthenticated
-                    ? <LoginPanel />
-                    : this.props.errorMessage.length
-                        ? <div>{ this.props.errorMessage }</div>
-                        : this.getContent()
+                { this.props.error
+                    ? this.props.isAuthenticated
+                        ? <div>{ this.props.error.message }</div>
+                        : <div>{ this.props.error.message }</div>
+                    : this.props.isAuthenticated
+                        ? this.getContent()
+                        : <LoginPanel />
                 }
             </div>
         );
@@ -62,7 +64,7 @@ const mapStateToProps = (state: IAppState) => {
     return {
         isAuthenticated: state.authentication.isAuthenticated,
         selectedContent: state.navigation.selectedContent,
-        errorMessage: state.navigation.errorMessage
+        error: state.navigation.error
     }
 };
 

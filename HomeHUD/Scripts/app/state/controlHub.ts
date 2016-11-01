@@ -42,7 +42,6 @@ export class ControlHub implements IControlHub {
             store.dispatch(lightActions.SET_LIGHT_STATE(data));
         }),
             this.proxy.on(SET_ALL_LIGHTS_STATE, (data: SET_ALL_LIGHTS_STATE) => {
-            console.log(data)
             store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
         }),
         this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
@@ -56,9 +55,9 @@ export class ControlHub implements IControlHub {
                 this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
             })
             .fail(() => {
-                store.dispatch(navigationActions.SHOW_ERROR(
-                    'You will not be able to switch lights on and off, a connection with the server could not be established.'
-                ));
+                store.dispatch(navigationActions.SHOW_ERROR({
+                        message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
+                    }));
             });
     }
 

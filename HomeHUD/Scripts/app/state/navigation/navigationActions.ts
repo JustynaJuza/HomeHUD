@@ -1,11 +1,11 @@
 import { IAction } from '../action';
-import { ISelectedContent } from './navigationState';
+import { ISelectedContent, IError } from './navigationState';
 
 export const SELECT_CONTENT = 'SELECT_CONTENT';
 export type SELECT_CONTENT = ISelectedContent;
 
 export const SHOW_ERROR = 'SHOW_ERROR';
-export type SHOW_ERROR = string;
+export type SHOW_ERROR = IError;
 
 export const UPDATE_ROUTE = 'UPDATE_ROUTE';
 export type UPDATE_ROUTE = string;
