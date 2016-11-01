@@ -1,6 +1,7 @@
 ﻿using HomeHUD.Models.Users;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
+using HomeHUD.Models.Configurables;
 
 namespace HomeHUD.Models.DbContext
 {

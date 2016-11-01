@@ -1,6 +1,7 @@
 using HomeHUD.Models.DbContext;
 using System.Collections.Generic;
 using System.Linq;
+using HomeHUD.Models.Configurables;
 
 namespace HomeHUD.Models.Migrations
 {

@@ -2,6 +2,7 @@ using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using System.Linq;
 using System.Threading.Tasks;
+using HomeHUD.Models.Configurables;
 
 namespace HomeHUD.Hubs
 {
