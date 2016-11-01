@@ -22,14 +22,12 @@
 
 .settings {
     composes: icon;
-
-    background: url('../media/settings.svg') no-repeat;
+    background: url('../media/settings.svg') no-repeat; 
 }
 
 .logoff {
     composes: icon;
-
-    background: url('../media/logoff.svg') no-repeat;
+    background: url('../media/logoff.svg') no-repeat; 
 }
 
 .title {
