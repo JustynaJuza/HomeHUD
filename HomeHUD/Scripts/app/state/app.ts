@@ -38,11 +38,6 @@ export interface IAppState {
     authentication: IAuthenticationState;
 }
 
-export interface IFormError {
-    fieldName: string;
-    errorMessage: string;
-}
-
 var lightsReducer = new LightsReducer();
 
 var requestHandler: Api;

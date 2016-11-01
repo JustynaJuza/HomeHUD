@@ -1,6 +1,6 @@
 // react
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import LoginForm from './loginForm.processing';
+import loginForm, { LoginForm } from './loginForm.processing';
 
 // redux
 import { connect } from 'react-redux';
@@ -10,8 +10,6 @@ import * as style from '../../../../../content/component-styles/login-panel.css'
 
 // component ---------------------------------------------------------------------------------
 
-var loginForm = new LoginForm();
-
 export const formatSubmitErrors = (formErrors) => {
 
     var errorSummary = {};
@@ -20,19 +18,26 @@ export const formatSubmitErrors = (formErrors) => {
         var formError = formErrors[i];
         errorSummary[formError.fieldName ? formError.fieldName.toLowerCase() : '_error'] = formError.errorMessage;
     }
-
+    
     return Promise.reject(new SubmissionError(errorSummary));
 }
 
-const form = (props) => {
-    const { error, handleSubmit, pristine, reset, submitting } = props;
+//export const resetFields = (form) => {
+    
+//    form.props.change('password','');
+//    form.props.untouch('password');
+
+//}
+
+export const render = (form) => {
+    const { error, handleSubmit, pristine, reset, submitting } = form.props;
 
     return (
-        <form onSubmit={handleSubmit(loginForm.submit.bind(loginForm))} className={style.container}>
+        <form onSubmit={handleSubmit(form.submit.bind(form))} className={style.container}>
 
-            <Field className={style.input} name="username" type="text" component={loginForm.renderField} label="Name" />
+            <Field className={style.input} name="username" type="text" component={form.renderField} label="Name" />
 
-            <Field className={style.input} name="password" type="password" component={loginForm.renderField} label="Password" />
+            <Field className={style.input} name="password" type="password" component={form.renderField} label="Password" />
 
             { error && <span className={style.form_error}>{error}</span> }
 
@@ -47,6 +52,6 @@ const form = (props) => {
 export default
         reduxForm({
             form: 'login',
-            validate: loginForm.validate
+            validate: LoginForm.validate
         })
-    (connect(loginForm.mapStateToProps, loginForm.mapDispatchToProps)(form));
+    (loginForm);

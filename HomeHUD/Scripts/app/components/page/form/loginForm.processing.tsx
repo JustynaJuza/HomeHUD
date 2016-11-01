@@ -10,7 +10,7 @@ import { authenticationActions } from '../../../state/authentication/authenticat
 
 // props
 import { Api } from '../../../state/api';
-import { formatSubmitErrors } from './loginForm';
+import { formatSubmitErrors, render } from './loginForm';
 
 // style
 import * as style from '../../../../../content/component-styles/login-panel.css';
@@ -33,7 +33,11 @@ interface IField {
     meta: any;
 }
 
-export default class LoginForm extends React.Component<ILoginFormProps, {}> {
+export class LoginForm extends React.Component<ILoginFormProps, {}> {
+
+    public render() {
+        return render(this);
+    }
 
     public processResponse(formResult: IFormResult) {
         if (formResult.success) {
@@ -47,11 +51,11 @@ export default class LoginForm extends React.Component<ILoginFormProps, {}> {
 
     public submit(values: any) {
         return api.postJson('/Home/Login', values)
-            .then(this.processResponse)
+            .then(this.processResponse.bind(this))
             .catch(formatSubmitErrors);
     }
 
-    public validate(values: ILoginForm) {
+    public static validate(values: ILoginForm) {
         const errors: ILoginForm = {};
 
         if (!values.username) {
@@ -77,14 +81,17 @@ export default class LoginForm extends React.Component<ILoginFormProps, {}> {
             </div>
         );
     }
-
-    // redux ---------------------------------------------------------------------------------
-    public mapStateToProps = (state: IAppState) => {
-        return {
-        }
-    };
-
-    public mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-        login() { dispatch(authenticationActions.LOGIN({ userName: 'juza' })); }
-    });
 }
+
+
+// redux ---------------------------------------------------------------------------------
+const mapStateToProps = (state: IAppState) => {
+    return {
+    }
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    login() { dispatch(authenticationActions.LOGIN({ userName: 'juza' })); }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
