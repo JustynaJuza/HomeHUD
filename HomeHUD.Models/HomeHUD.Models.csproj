@@ -64,6 +64,7 @@
     <Compile Include="DbContext\DbContext.cs" />
     <Compile Include="DbContext\DbContext.Conventions.cs" />
     <Compile Include="DbContext\DbContext.EntityConfig.cs" />
+    <Compile Include="Extensions\QueryableExtensions.cs" />
     <Compile Include="Migrations\201609281557512_CreateDatabase.cs" />
     <Compile Include="Migrations\201609281557512_CreateDatabase.Designer.cs">
       <DependentUpon>201609281557512_CreateDatabase.cs</DependentUpon>

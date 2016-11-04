@@ -1,17 +1,18 @@
-using HomeHUD.Models;
+using HomeHUD.Models.Configurables;
 using HomeHUD.Models.DbContext;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HomeHUD.Models.Configurables;
+using HomeHUD.Models.Extensions;
 
 namespace HomeHUD.Hubs
 {
     public interface ILightSwitchService
     {
         LightsState GetCurrentLightsState();
-        int[] GetLightsToSwitch(LightSwitchState state);
+        int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState);
         Task<int> SetLightState(int lightId, LightSwitchState state);
-        Task<int> SetAllLightsState(LightSwitchState state);
+        Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state);
     }
 
     //[Authorize]
@@ -39,10 +40,11 @@ namespace HomeHUD.Hubs
             };
         }
 
-        public int[] GetLightsToSwitch(LightSwitchState state)
+        public int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState)
         {
             return _context.Set<Light>()
-                   .Where(x => x.State != state)
+                   .Where(x => x.State != expectedLightsState.State)
+                   .FilterBy(expectedLightsState.LightIds, x => x.Id)
                    .Select(x => x.Id)
                    .ToArray();
         }
@@ -50,18 +52,35 @@ namespace HomeHUD.Hubs
         public async Task<int> SetLightState(int lightId, LightSwitchState state)
         {
             var switchedLight = await _context.Set<Light>().FindAsync(lightId);
-            switchedLight.State = state;
-            return await _context.SaveChangesAsync();
+            if (switchedLight.State != state)
+            {
+                switchedLight.State = state;
+                return await _context.SaveChangesAsync();
+            }
+
+            return await Task.FromResult(1);
         }
 
-        public async Task<int> SetAllLightsState(LightSwitchState state)
+        public async Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state)
         {
             _context.Set<Light>()
                 .Where(x => x.State != state)
+                .FilterBy(lightIds, x => x.Id)
                 .ToList()
                 .ForEach(x => x.State = state);
 
             return await _context.SaveChangesAsync();
         }
+
+        //public async Task<int> SetAllLightsState(LightSwitchState state)
+        //{
+        //    _context.Set<Light>()
+        //        .Where(x => x.State != state)
+        //        .ToList()
+        //        .ForEach(x => x.State = state);
+
+        //    return await _context.SaveChangesAsync();
+        //}
+
     }
 }

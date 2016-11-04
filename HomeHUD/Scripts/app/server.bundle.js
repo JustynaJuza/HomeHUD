@@ -11550,24 +11550,14 @@
 	            });
 	        }
 	    }, {
-	        key: 'setLightOn',
-	        value: function setLightOn(id) {
-	            this.proxy.invoke('SetLightOn', id);
+	        key: 'trySetLightState',
+	        value: function trySetLightState(lightState) {
+	            this.proxy.invoke(lightActionDescriptions_1.SET_LIGHT_STATE, lightState);
 	        }
 	    }, {
-	        key: 'setLightOff',
-	        value: function setLightOff(id) {
-	            this.proxy.invoke('SetLightOff', id);
-	        }
-	    }, {
-	        key: 'setAllLightsOn',
-	        value: function setAllLightsOn() {
-	            this.proxy.invoke('SetAllLightsOn');
-	        }
-	    }, {
-	        key: 'setAllLightsOff',
-	        value: function setAllLightsOff() {
-	            this.proxy.invoke('SetAllLightsOff');
+	        key: 'trySetAllLightsState',
+	        value: function trySetAllLightsState(allLightsState) {
+	            this.proxy.invoke(lightActionDescriptions_1.SET_ALL_LIGHTS_STATE, allLightsState);
 	        }
 	    }]);
 
@@ -11605,17 +11595,11 @@
 
 	var lightActionDescriptions_1 = __webpack_require__(203);
 	exports.lightActions = {
-	    TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(id) {
-	        return { type: lightActionDescriptions_1.TRY_SET_LIGHT_ON, data: id };
+	    TRY_SET_LIGHT_STATE: function TRY_SET_LIGHT_STATE(id) {
+	        return { type: lightActionDescriptions_1.TRY_SET_LIGHT_STATE, data: id };
 	    },
-	    TRY_SET_LIGHT_OFF: function TRY_SET_LIGHT_OFF(id) {
-	        return { type: lightActionDescriptions_1.TRY_SET_LIGHT_OFF, data: id };
-	    },
-	    TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON() {
-	        return { type: lightActionDescriptions_1.TRY_SET_ALL_LIGHTS_ON, data: {} };
-	    },
-	    TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF() {
-	        return { type: lightActionDescriptions_1.TRY_SET_ALL_LIGHTS_OFF, data: {} };
+	    TRY_SET_ALL_LIGHTS_STATE: function TRY_SET_ALL_LIGHTS_STATE(data) {
+	        return { type: lightActionDescriptions_1.TRY_SET_ALL_LIGHTS_STATE, data: data };
 	    },
 	    SET_LIGHT_STATE: function SET_LIGHT_STATE(data) {
 	        return { type: lightActionDescriptions_1.SET_LIGHT_STATE, data: data };
@@ -11634,11 +11618,8 @@
 
 	"use strict";
 
-	exports.TRY_SET_LIGHT_ON = 'TRY_SET_LIGHT_ON';
-	exports.TRY_SET_LIGHT_OFF = 'TRY_SET_LIGHT_OFF';
-	exports.TRY_SET_ALL_LIGHTS_ON = 'TRY_SET_ALL_LIGHTS_ON';
-	exports.TRY_SET_ALL_LIGHTS_OFF = 'TRY_SET_ALL_LIGHTS_OFF';
-	exports.SET_LIGHT = 'SET_LIGHT';
+	exports.TRY_SET_LIGHT_STATE = 'TRY_SET_LIGHT_STATE';
+	exports.TRY_SET_ALL_LIGHTS_STATE = 'TRY_SET_ALL_LIGHTS_STATE';
 	exports.SET_LIGHT_STATE = 'SET_LIGHT_STATE';
 	exports.SET_ALL_LIGHTS_STATE = 'SET_ALL_LIGHTS_STATE';
 	exports.GET_CURRENT_LIGHTS_STATE = 'GET_CURRENT_LIGHTS_STATE';
@@ -23154,26 +23135,22 @@
 	            var _this = this;
 
 	            return redux_actions_1.handleActions({
-	                TRY_SET_LIGHT_ON: function TRY_SET_LIGHT_ON(state, action) {
-	                    _this.hub.setLightOn(action.data);
+	                TRY_SET_LIGHT_STATE: function TRY_SET_LIGHT_STATE(state, action) {
+	                    console.log('dispatching');
+	                    _this.hub.trySetLightState(action.data);
 	                    return state;
 	                },
-	                TRY_SET_LIGHT_OFF: function TRY_SET_LIGHT_OFF(state, action) {
-	                    _this.hub.setLightOff(action.data);
-	                    return state;
-	                },
-	                TRY_SET_ALL_LIGHTS_ON: function TRY_SET_ALL_LIGHTS_ON(state) {
-	                    _this.hub.setAllLightsOn();
-	                    return state;
-	                },
-	                TRY_SET_ALL_LIGHTS_OFF: function TRY_SET_ALL_LIGHTS_OFF(state) {
-	                    _this.hub.setAllLightsOff();
+	                TRY_SET_ALL_LIGHTS_STATE: function TRY_SET_ALL_LIGHTS_STATE(state, action) {
+	                    console.log('dispatching');
+	                    _this.hub.trySetAllLightsState(action.data);
 	                    return state;
 	                },
 	                SET_LIGHT_STATE: function SET_LIGHT_STATE(state, action) {
+	                    var needsSwitching;
 	                    return Object.assign({}, state, {
 	                        all: _map(state.all, function (light) {
-	                            if (light.id === action.data.lightId) {
+	                            needsSwitching = light.id === action.data.lightId && light.state !== action.data.state;
+	                            if (needsSwitching) {
 	                                light.state = action.data.state;
 	                            }
 	                            return light;
@@ -23181,9 +23158,10 @@
 	                    });
 	                },
 	                SET_ALL_LIGHTS_STATE: function SET_ALL_LIGHTS_STATE(state, action) {
+	                    var needsSwitching;
 	                    return Object.assign({}, state, {
 	                        all: _map(state.all, function (light) {
-	                            var needsSwitching = _indexOf(action.data.lightIds, light.id) > -1;
+	                            needsSwitching = _indexOf(action.data.lightIds, light.id) > -1;
 	                            if (needsSwitching) {
 	                                light.state = action.data.state;
 	                            }
@@ -23344,6 +23322,10 @@
 
 	"use strict";
 
+	exports.LIGHT_SWITCH_STATE = {
+	    OFF: 0,
+	    ON: 1
+	};
 	;
 	exports.EMPTY_LIGHTS_STATE = { all: [] };
 
@@ -24299,7 +24281,7 @@
 	        key: 'getContent',
 	        value: function getContent() {
 	            var roomId = this.getSelectedRoom();
-	            return roomId === 0 ? React.createElement(controlPanel_1.default, null) : React.createElement(roomPanel_1.default, { showName: false, id: roomId });
+	            return roomId === 0 ? React.createElement(controlPanel_1.default, null) : React.createElement(roomPanel_1.default, { id: roomId, showName: false, showBulkSwitches: true });
 	        }
 	    }, {
 	        key: 'render',
@@ -24343,6 +24325,8 @@
 	var React = __webpack_require__(5);
 	var classNames = __webpack_require__(458);
 	var react_redux_1 = __webpack_require__(151);
+	var lightActions_1 = __webpack_require__(202);
+	var lightsState_1 = __webpack_require__(431);
 	var lightSwitch_1 = __webpack_require__(464);
 	var style = __webpack_require__(466);
 
@@ -24366,8 +24350,15 @@
 	    _createClass(RoomPanel, [{
 	        key: 'render',
 	        value: function render() {
-	            var panelClasses = classNames(style.name, _defineProperty({}, style.hidden, !this.props.showName));
-	            return React.createElement("div", { className: style.switches }, React.createElement("h2", { className: panelClasses }, this.props.name), this.renderLightSwitches());
+	            var _this2 = this;
+
+	            var nameClasses = classNames(style.name, _defineProperty({}, style.hidden, !this.props.showName));
+	            var switchesClasses = classNames(style.container, _defineProperty({}, style.hidden, !this.props.showBulkSwitches));
+	            return React.createElement("div", null, React.createElement("div", { className: switchesClasses }, React.createElement("button", { className: style.button, onClick: function onClick() {
+	                    return _this2.props.onSwitchAllOn(_this2.props.lights);
+	                } }, "Switch all ON"), React.createElement("button", { className: style.button, onClick: function onClick() {
+	                    return _this2.props.onSwitchAllOff(_this2.props.lights);
+	                } }, "Switch all OFF")), React.createElement("div", { className: style.container }, React.createElement("h2", { className: nameClasses }, this.props.name), this.renderLightSwitches()));
 	        }
 	    }]);
 
@@ -24388,8 +24379,22 @@
 	        })
 	    };
 	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        onSwitchAllOn: function onSwitchAllOn(lights) {
+	            dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: _map(lights, function (light) {
+	                    return light.id;
+	                }), state: lightsState_1.LIGHT_SWITCH_STATE.ON }));
+	        },
+	        onSwitchAllOff: function onSwitchAllOff(lights) {
+	            dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: _map(lights, function (light) {
+	                    return light.id;
+	                }), state: lightsState_1.LIGHT_SWITCH_STATE.OFF }));
+	        }
+	    };
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = react_redux_1.connect(mapStateToProps)(RoomPanel);
+	exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(RoomPanel);
 
 /***/ },
 /* 464 */
@@ -24409,6 +24414,7 @@
 	var classNames = __webpack_require__(458);
 	var react_redux_1 = __webpack_require__(151);
 	var lightActions_1 = __webpack_require__(202);
+	var lightsState_1 = __webpack_require__(431);
 	var style = __webpack_require__(465);
 
 	var LightSwitch = function (_React$Component) {
@@ -24470,10 +24476,10 @@
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	    return {
 	        onSwitchOn: function onSwitchOn(id) {
-	            dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_ON(id));
+	            dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: lightsState_1.LIGHT_SWITCH_STATE.ON }));
 	        },
 	        onSwitchOff: function onSwitchOff(id) {
-	            dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_OFF(id));
+	            dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: lightsState_1.LIGHT_SWITCH_STATE.OFF }));
 	        }
 	    };
 	};
@@ -24492,7 +24498,7 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
-	module.exports = {"switches":"room-panel__switches___Yk9_a shared-components__small_rounded_container___ZtP56","hidden":"room-panel__hidden___3Ro5u","name":"room-panel__name___2PWU5 shared-components__uppercase_name___2fiYd"};
+	module.exports = {"container":"room-panel__container___1dXzY shared-components__small_rounded_container___ZtP56","hidden":"room-panel__hidden___3Ro5u","name":"room-panel__name___2PWU5 shared-components__uppercase_name___2fiYd","button":"room-panel__button___OPahY shared-components__button___2RI4M"};
 
 /***/ },
 /* 467 */
@@ -24514,51 +24520,39 @@
 	var React = __webpack_require__(5);
 	var react_redux_1 = __webpack_require__(151);
 	var lightActions_1 = __webpack_require__(202);
+	var lightsState_1 = __webpack_require__(431);
 	var roomPanel_1 = __webpack_require__(463);
 	var style = __webpack_require__(468);
 
 	var ControlPanel = function (_React$Component) {
 	    _inherits(ControlPanel, _React$Component);
 
-	    function ControlPanel(props) {
+	    function ControlPanel() {
 	        _classCallCheck(this, ControlPanel);
 
-	        var _this = _possibleConstructorReturn(this, (ControlPanel.__proto__ || Object.getPrototypeOf(ControlPanel)).call(this, props));
+	        var _this = _possibleConstructorReturn(this, (ControlPanel.__proto__ || Object.getPrototypeOf(ControlPanel)).apply(this, arguments));
 
 	        _this.renderRoom = function (room, index) {
-	            return React.createElement(roomPanel_1.default, { key: index, id: room.id, showName: true });
+	            return React.createElement(roomPanel_1.default, { key: index, id: room.id, showName: true, showBulkSwitches: false });
 	        };
 	        _this.renderRooms = function () {
 	            return _map(_sortBy(_this.props.rooms, function (room) {
 	                return room.sortWeight;
 	            }), _this.renderRoom);
 	        };
-	        _this.handlers = _this.createHandlers(props.dispatch);
 	        return _this;
 	    }
 
 	    _createClass(ControlPanel, [{
-	        key: "createHandlers",
-	        value: function createHandlers(dispatch) {
-	            return {
-	                onSwitchAllOn: function onSwitchAllOn() {
-	                    return dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_ON());
-	                },
-	                onSwitchAllOff: function onSwitchAllOff() {
-	                    return dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_OFF());
-	                },
-	                onSwitchOn: function onSwitchOn(id) {
-	                    return dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_ON(id));
-	                },
-	                onSwitchOff: function onSwitchOff(id) {
-	                    return dispatch(lightActions_1.lightActions.TRY_SET_LIGHT_OFF(id));
-	                }
-	            };
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
-	            return React.createElement("div", null, React.createElement("div", { className: style.container }, React.createElement("button", { className: style.button, onClick: this.handlers.onSwitchAllOn }, "Switch all ON"), React.createElement("button", { className: style.button, onClick: this.handlers.onSwitchAllOff }, "Switch all OFF")), this.renderRooms());
+	            var _this2 = this;
+
+	            return React.createElement("div", null, React.createElement("div", { className: style.container }, React.createElement("button", { className: style.button, onClick: function onClick() {
+	                    return _this2.props.onSwitchAllOn();
+	                } }, "Switch all ON"), React.createElement("button", { className: style.button, onClick: function onClick() {
+	                    return _this2.props.onSwitchAllOff();
+	                } }, "Switch all OFF")), this.renderRooms());
 	        }
 	    }]);
 
@@ -24573,8 +24567,18 @@
 	        })
 	    };
 	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	    return {
+	        onSwitchAllOn: function onSwitchAllOn() {
+	            dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: lightsState_1.LIGHT_SWITCH_STATE.ON }));
+	        },
+	        onSwitchAllOff: function onSwitchAllOff() {
+	            dispatch(lightActions_1.lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: lightsState_1.LIGHT_SWITCH_STATE.OFF }));
+	        }
+	    };
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = react_redux_1.connect(mapStateToProps)(ControlPanel);
+	exports.default = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(ControlPanel);
 
 /***/ },
 /* 468 */
@@ -24651,11 +24655,6 @@
 
 	// component ---------------------------------------------------------------------------------
 
-	//export const resetFields = () => {
-	//    console.log(this)
-	//    this.props.dispatch(change('login','password',''));
-	//}
-
 	// redux
 	// react
 	var formatSubmitErrors = exports.formatSubmitErrors = function formatSubmitErrors(formErrors) {
@@ -24670,7 +24669,12 @@
 	    return Promise.reject(new _reduxForm.SubmissionError(errorSummary));
 	};
 
-	//var loginForm = new LoginForm();
+	//export const resetFields = (form) => {
+
+	//    form.props.change('password','');
+	//    form.props.untouch('password');
+
+	//}
 
 	// style
 	var render = exports.render = function render(form) {

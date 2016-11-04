@@ -13,7 +13,7 @@ import { IAppState } from '../../../state/app';
 import { lightActions } from '../../../state/lights/lightActions';
 
 // props
-import { ILightSwitchState } from '../../../state/lights/lightsState';
+import { LIGHT_SWITCH_STATE, ILightSwitchState } from '../../../state/lights/lightsState';
 
 // components
 import LightSwitch from './lightSwitch';
@@ -26,10 +26,13 @@ import * as style from '../../../../../content/component-styles/room-panel.css';
 export interface IRoomPanelPublicProps {
     id: number;
     showName: boolean;
+    showBulkSwitches: boolean;
 }
 
 interface IRoomPanelProps extends IRoomPanelPublicProps {
     name: string;
+    onSwitchAllOn: (lights: Array<ILightSwitchState>) => void;
+    onSwitchAllOff: (lights: Array<ILightSwitchState>) => void;
     lights: Array<ILightSwitchState>;
 }
 
@@ -46,18 +49,31 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
     }
 
     public render() {
-        
-        var panelClasses = classNames(
+
+        var nameClasses = classNames(
             style.name,
             {
                 [style.hidden]: !this.props.showName
             });
 
-        return (
-            <div className={style.switches}>
-                <h2 className={panelClasses}>{this.props.name}</h2>
+        var switchesClasses = classNames(
+            style.container,
+            {
+                [style.hidden]: !this.props.showBulkSwitches
+            });
 
-                { this.renderLightSwitches() }
+        return (
+            <div>
+
+                <div className={switchesClasses}>
+                    <button className={style.button} onClick={() => this.props.onSwitchAllOn(this.props.lights) }>Switch all ON</button>
+                    <button className={style.button} onClick={() => this.props.onSwitchAllOff(this.props.lights)}>Switch all OFF</button>
+                </div>
+                <div className={style.container}>
+                    <h2 className={nameClasses}>{this.props.name}</h2>
+
+                    { this.renderLightSwitches() }
+                </div>
             </div>
         );
     }
@@ -79,4 +95,15 @@ const mapStateToProps = (state: IAppState, publicProps: IRoomPanelPublicProps) =
     };
 }
 
-export default connect(mapStateToProps)(RoomPanel);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    onSwitchAllOn(lights: Array<ILightSwitchState>) {
+        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE(
+            { lightIds: _map(lights, light => light.id), state: LIGHT_SWITCH_STATE.ON }));
+    },
+    onSwitchAllOff(lights: Array<ILightSwitchState>) {
+        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE(
+            { lightIds: _map(lights, light => light.id), state: LIGHT_SWITCH_STATE.OFF }));
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomPanel);

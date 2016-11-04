@@ -37,7 +37,7 @@ class Content extends React.Component<IContentProps, {}> {
         var roomId = this.getSelectedRoom();
         return roomId === 0
             ? <ControlPanel />
-            : <RoomPanel showName={false} id={roomId} />;
+            : <RoomPanel id={roomId} showName={false} showBulkSwitches={true}/>;
     }
 
     public render() {

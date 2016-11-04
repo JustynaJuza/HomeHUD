@@ -13,6 +13,7 @@ import { lightActions } from '../../../state/lights/lightActions';
 
 // props
 import { IRoomConfig } from '../../../state/config/configState';
+import { LIGHT_SWITCH_STATE } from '../../../state/lights/lightsState';
 
 // components
 import LightSwitch from './lightSwitch';
@@ -26,28 +27,15 @@ import * as style from '../../../../../content/component-styles/control-panel.cs
 interface IControlPanelProps {
     dispatch: Dispatch<any>;
     rooms: IRoomConfig[];
+    onSwitchAllOn: () => void;
+    onSwitchAllOff: () => void;
 }
 
 export class ControlPanel extends React.Component<IControlPanelProps, {}> {
-    private handlers: any;
-
-    constructor(props: IControlPanelProps) {
-        super(props);
-        this.handlers = this.createHandlers(props.dispatch);
-    }
-
-    private createHandlers(dispatch: Dispatch<any>) {
-        return {
-            onSwitchAllOn: () => dispatch(lightActions.TRY_SET_ALL_LIGHTS_ON()),
-            onSwitchAllOff: () => dispatch(lightActions.TRY_SET_ALL_LIGHTS_OFF()),
-            onSwitchOn: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_ON(id)),
-            onSwitchOff: (id: string | number) => dispatch(lightActions.TRY_SET_LIGHT_OFF(id))
-        }
-    }
-
+    
     private renderRoom = (room: IRoomConfig, index: number) => {
         return (
-            <RoomPanel key={index} id={room.id} showName={true} />
+            <RoomPanel key={index} id={room.id} showName={true} showBulkSwitches={false}/>
         )
     }
 
@@ -60,8 +48,8 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
         return (
             <div>
                 <div className={style.container}>
-                    <button className={style.button} onClick={this.handlers.onSwitchAllOn}>Switch all ON</button>
-                    <button className={style.button} onClick={this.handlers.onSwitchAllOff}>Switch all OFF</button>
+                    <button className={style.button} onClick={() => this.props.onSwitchAllOn()}>Switch all ON</button>
+                    <button className={style.button} onClick={() => this.props.onSwitchAllOff()}>Switch all OFF</button>
                 </div>
 
             { this.renderRooms() }
@@ -79,4 +67,13 @@ const mapStateToProps = (state: IAppState) => {
     }
 };
 
-export default connect(mapStateToProps)(ControlPanel);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    onSwitchAllOn() {
+        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: LIGHT_SWITCH_STATE.ON }));
+    },
+    onSwitchAllOff() {
+        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: LIGHT_SWITCH_STATE.OFF }));
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

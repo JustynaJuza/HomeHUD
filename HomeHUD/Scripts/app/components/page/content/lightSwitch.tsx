@@ -8,6 +8,9 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/app';
 import { lightActions } from '../../../state/lights/lightActions';
 
+// props
+import { LIGHT_SWITCH_STATE } from '../../../state/lights/lightsState';
+
 // style
 import * as style from '../../../../../content/component-styles/light-switch.css';
 
@@ -19,6 +22,7 @@ interface ILightSwitchPublicProps {
 
 interface ILightSwitchProps extends ILightSwitchPublicProps {
     state: number;
+    description: string;
     onSwitchOn: (id: string | number) => void;
     onSwitchOff: (id: string | number) => void;
 }
@@ -83,8 +87,12 @@ const mapStateToProps = (appState: IAppState, publicProps: ILightSwitchPublicPro
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    onSwitchOn(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_ON(id)); },
-    onSwitchOff(id: string | number) { dispatch(lightActions.TRY_SET_LIGHT_OFF(id)); }
+    onSwitchOn(id: string | number) {
+        dispatch(lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: LIGHT_SWITCH_STATE.ON }));
+    },
+    onSwitchOff(id: string | number) {
+        dispatch(lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: LIGHT_SWITCH_STATE.OFF }));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LightSwitch);

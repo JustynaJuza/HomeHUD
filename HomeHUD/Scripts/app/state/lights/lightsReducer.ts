@@ -8,14 +8,12 @@ import { IControlHub } from '../controlHub';
 import { ILightsState, EMPTY_LIGHTS_STATE } from './lightsState';
 import { IAction } from '../action';
 import {
+    TRY_SET_LIGHT_STATE,
+    TRY_SET_ALL_LIGHTS_STATE,
+
     SET_LIGHT_STATE,
     SET_ALL_LIGHTS_STATE,
-    SET_CURRENT_LIGHTS_STATE,
-
-    TRY_SET_LIGHT_ON,
-    TRY_SET_LIGHT_OFF,
-    TRY_SET_ALL_LIGHTS_ON,
-    TRY_SET_ALL_LIGHTS_OFF
+    SET_CURRENT_LIGHTS_STATE
 } from './lightActionDescriptions';
 
 export interface ILightsReducer {
@@ -28,40 +26,34 @@ export class LightsReducer implements ILightsReducer {
     public get(): any {
         return handleActions(<any>{
             // interface actions, dispatched to server via signalR
-            TRY_SET_LIGHT_ON:
-            (state: ILightsState, action: IAction<TRY_SET_LIGHT_ON>) => {
-
-                this.hub.setLightOn(action.data);
+            TRY_SET_LIGHT_STATE:
+            (state: ILightsState, action: IAction<TRY_SET_LIGHT_STATE>) => {
+                console.log('dispatching')
+                this.hub.trySetLightState(action.data);
                 return state;
             },
-            TRY_SET_LIGHT_OFF:
-            (state: ILightsState, action: IAction<TRY_SET_LIGHT_OFF>) => {
 
-                this.hub.setLightOff(action.data);
-                return state;
-            },
-            TRY_SET_ALL_LIGHTS_ON:
-            (state: ILightsState) => {
+            TRY_SET_ALL_LIGHTS_STATE:
+            (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_STATE>) => {
 
-                this.hub.setAllLightsOn();
-                return state;
-            },
-            TRY_SET_ALL_LIGHTS_OFF:
-            (state: ILightsState) => {
-
-                this.hub.setAllLightsOff();
+                console.log('dispatching')
+                this.hub.trySetAllLightsState(action.data);
                 return state;
             },
 
             // signalR callback functions
             SET_LIGHT_STATE:
             (state: ILightsState, action: IAction<SET_LIGHT_STATE>) => {
+                var needsSwitching: boolean;
 
                 return Object.assign({}, state, {
                     all: _map(state.all, (light) => {
-                        if (light.id === action.data.lightId) {
+
+                        needsSwitching = light.id === action.data.lightId && light.state !== action.data.state;
+                        if (needsSwitching) {
                             light.state = action.data.state;
                         }
+
                         return light;
                     })
                 });
@@ -69,12 +61,13 @@ export class LightsReducer implements ILightsReducer {
 
             SET_ALL_LIGHTS_STATE:
             (state: ILightsState, action: IAction<SET_ALL_LIGHTS_STATE>) => {
-                
+                var needsSwitching: boolean;
+
                 return Object.assign({}, state,
                     {
                         all: _map(state.all, (light) => {
 
-                            var needsSwitching = _indexOf(action.data.lightIds, light.id) > -1;
+                            needsSwitching = _indexOf(action.data.lightIds, light.id) > -1;
                             if (needsSwitching) {
                                 light.state = action.data.state;
                             }
