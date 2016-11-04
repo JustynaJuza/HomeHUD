@@ -15,6 +15,8 @@ namespace HomeHUD.Models.Configurables
         public int Id { get; set; }
         public LightSwitchState State { get; set; }
         public string Color { get; set; }
+        public string Brightness { get; set; }
+        public string Description { get; set; }
         public int RoomId { get; set; }
         public Room Room { get; set; }
 
@@ -25,7 +27,9 @@ namespace HomeHUD.Models.Configurables
     {
         public int Id { get; set; }
         public LightSwitchState State { get; set; }
+        public string Description { get; set; }
         public string Color { get; set; }
+        public string Brightness { get; set; }
         public int RoomId { get; set; }
     }
 
