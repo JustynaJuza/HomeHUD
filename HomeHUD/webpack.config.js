@@ -1,113 +1,77 @@
+const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
+const merge = require('webpack-merge');
 
-const settings = require('./webpack.config.settings.js');
+module.exports = (env) => {
+    const isDevBuild = !(env && env.prod);
 
-const config = [{
-    name: 'client',
-    entry: [settings.paths.app + 'client/expose.js'],
-    output: {
-        path: settings.paths.build,
-        filename: 'client.bundle.js'
-    },
-    module: {
-        loaders: [
-            settings.loaders.jsx,
-            settings.loaders.tsx,
-            settings.loaders.css,
-            settings.loaders.images
+    // Configuration in common to both client-side and server-side bundles
+    const sharedConfig = () => ({
+        stats: { modules: false },
+        resolve: { extensions: [ '.js', '.jsx', '.ts', '.tsx' ] },
+        output: {
+            filename: '[name].js',
+            publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
+        },
+        module: {
+            rules: [
+                { test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
+                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' }
+            ]
+        },
+        plugins: [new CheckerPlugin()]
+    });
+
+    // Configuration for client-side bundle suitable for running in browsers
+    const clientBundleOutputDir = './wwwroot/dist';
+    const clientBundleConfig = merge(sharedConfig(), {
+        entry: { 'main-client': './ClientApp/boot-client.tsx' },
+        module: {
+            rules: [
+                { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' }) },
+                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+            ]
+        },
+        output: { path: path.join(__dirname, clientBundleOutputDir) },
+        plugins: [
+            new ExtractTextPlugin('site.css'),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./wwwroot/dist/vendor-manifest.json')
+            })
+        ].concat(isDevBuild ? [
+            // Plugins that apply in development builds only
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[file].map', // Remove this line if you prefer inline source maps
+                moduleFilenameTemplate: path.relative(clientBundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+            })
+        ] : [
+            // Plugins that apply in production builds only
+            new webpack.optimize.UglifyJsPlugin()
+        ])
+    });
+
+    // Configuration for server-side (prerendering) bundle suitable for running in Node
+    const serverBundleConfig = merge(sharedConfig(), {
+        resolve: { mainFields: ['main'] },
+        entry: { 'main-server': './ClientApp/boot-server.tsx' },
+        plugins: [
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./ClientApp/dist/vendor-manifest.json'),
+                sourceType: 'commonjs2',
+                name: './vendor'
+            })
         ],
-        preLoaders: [{
-            test: /\.js$/,
-            loader: 'source-map-loader'
-        }]
-    },
-    postcss: function(webpack) {
-        return [
-            settings.postcssConfig.import(webpack),
-            settings.postcssConfig.fonts,
-            settings.postcssConfig.precss
-        ].concat(settings.postcssConfig.processors);
-    },
-    modulesDirectories: settings.paths.app,
-    devtool: 'source-map',
-    resolve: {
-        extensions: settings.handledExtensions
-    },
-    plugins: [
-        // minify code
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            output: {
-                comments: false
-            }
-        }),
-        new webpack.DefinePlugin({
-            process: {
-                env: {
-                    NODE_ENV: '"development"'
-                }
-            },
-            includeClientScripts: true
-        }),
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
-        }),
-        new ExtractTextPlugin('styles.css')
-    ],
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'jquery': 'jQuery',
-        'signalr': 'signalr'
-    }
-},
-{
-    name: 'server',
-    entry: [settings.paths.app + 'server/expose.js'],
-    output: {
-        path: settings.paths.build,
-        filename: 'server.bundle.js'
-    },
-    module: {
-        loaders: [
-            settings.loaders.jsx,
-            settings.loaders.tsx,
-            settings.loaders.css,
-            settings.loaders.images
-        ]
-    },
-    postcss: function(webpack) {
-        return [
-            settings.postcssConfig.import(webpack),
-            settings.postcssConfig.fonts,
-            settings.postcssConfig.precss
-        ].concat(settings.postcssConfig.processors);
-    },
-    plugins: [
-        new webpack.DefinePlugin({
-            process: {
-                env: {
-                    NODE_ENV: '"development"'
-                }
-            },
-            includeClientScripts: false
-        }),
-        new ExtractTextPlugin('styles.css')
-    ],
-    resolve: {
-        extensions: settings.handledExtensions
-    },
-    externals: {
-        'react': 'React',
-        'react-dom': 'ReactDOM',
-        'jquery': 'jQuery',
-        'signalr': 'signalr'
-    }
-}
-];
+        output: {
+            libraryTarget: 'commonjs',
+            path: path.join(__dirname, './ClientApp/dist')
+        },
+        target: 'node',
+        devtool: 'inline-source-map'
+    });
 
-module.exports = config;
+    return [clientBundleConfig, serverBundleConfig];
+};

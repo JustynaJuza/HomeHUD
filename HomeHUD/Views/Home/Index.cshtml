@@ -1,18 +1,9 @@
-﻿@model IEnumerable<HomeHUD.Models.Configurables.RoomViewModel>
-
 @{
-    ViewBag.Title = "HomeHUD";
+    ViewData["Title"] = "Home Page";
 }
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jquerysignalR")
-@Scripts.Render("~/bundles/react")
-@Scripts.Render("~/Scripts/app/client.bundle.js")
+<div id="react-app" asp-prerender-module="ClientApp/dist/main-server">Loading...</div>
 
-@Styles.Render("~/Scripts/app/styles.css")
-
-<style>
-    #page { height: 100% }
-</style>
-
-@Html.ReactWithInit("Components.App", new { config = Model, route=@Request.Url.AbsolutePath.Substring(1) }, containerId: "page")
+@section scripts {
+    <script src="~/dist/main-client.js" asp-append-version="true"></script>
+}
