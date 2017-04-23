@@ -1,0 +1,19 @@
+@import './variables.css';
+
+.container {
+    composes: small_rounded_container from './shared-components.css';
+}
+
+.hidden {
+    display: none;
+}
+
+.name {
+    composes: uppercase_name from './shared-components.css';
+}
+
+.button {
+    composes: button from './shared-components.css';
+    
+    min-width: 190px;
+}

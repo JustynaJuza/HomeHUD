@@ -1,0 +1,21 @@
+@import './variables.css';
+.list {
+    flex-shrink: 0;
+
+    width: 100%;
+    height: $nav_height;
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    //border-bottom: 1px solid $nav_border_color;
+    background-color: $nav_color;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    align-content: stretch;
+}

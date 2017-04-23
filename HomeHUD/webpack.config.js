@@ -4,6 +4,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 const merge = require('webpack-merge');
 
+const settings = require('./webpack.config.settings.js');
+
+
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
 
@@ -30,8 +33,9 @@ module.exports = (env) => {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: ExtractTextPlugin.extract({ use: 'css-loader' }) },
-                { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
+                settings.loaders.css,
+                settings.loaders.images,
+                //{ test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
@@ -40,6 +44,21 @@ module.exports = (env) => {
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
+            }),
+            new webpack.LoaderOptionsPlugin({
+                // test: /\.xxx$/, // may apply this only for some modules
+                options: {
+                    postcss: function (webpack) {
+                        return [
+                            settings.postcssConfig.import(webpack),
+                            settings.postcssConfig.fonts,
+                            settings.postcssConfig.urls,
+                            settings.postcssConfig.precss,
+                            settings.postcssConfig.browserReporter,
+                            settings.postcssConfig.reporter,
+                        ].concat(settings.postcssConfig.processors);
+                    }
+                }
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only

@@ -1,0 +1,51 @@
+@import './variables.css';
+
+.container {
+    composes: small_rounded_container from './shared-components.css';
+}
+
+.button {
+    composes: button from './shared-components.css';
+}
+
+.field {
+    composes: small_container_item_spacing from './shared-components.css';
+}
+
+.input {
+    @mixin boxShadow inset;
+
+    width: 100%;
+    padding: 14px 10px 8px 10px;
+    border: none;
+
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.label {
+    composes: uppercase_name from './shared-components.css';
+    
+    @mixin textShadow;
+
+    font-size: .7em;
+    letter-spacing: 1px;
+    margin-bottom: -5px;
+    margin-top: 10px;
+}
+
+.field_error {
+    composes: label;
+
+    color: $error_color;
+}
+
+.form_error{
+    composes: label;
+    composes: small_container_item_spacing from './shared-components.css';
+
+    color: $error_color;
+    font-size: 0.85em;
+    text-align: center;
+    margin: 0;
+}
