@@ -7,10 +7,10 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './configureStore';
-import { ApplicationState }  from './store';
+import { IAppState }  from './state/store';
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = (window as any).initialReduxState as ApplicationState;
+const initialState = (window as any).initialReduxState as IAppState;
 const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
