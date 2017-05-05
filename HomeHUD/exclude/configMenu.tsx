@@ -4,7 +4,7 @@ import * as React from 'react'
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from '../../state/app';
+import { IAppState } from '../../state/store';
 import { authenticationActions } from '../../state/authentication/authenticationActions';
 
 // props

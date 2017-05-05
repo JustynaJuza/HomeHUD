@@ -1,4 +1,4 @@
-import './css/site.css';
+//import './css/site.css';
 import 'bootstrap';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -10,7 +10,7 @@ import configureStore from './configureStore';
 import { IAppState }  from './state/store';
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = (window as any).initialReduxState as IAppState;
+const initialState = window.initialReduxState;
 const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 

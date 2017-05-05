@@ -5,10 +5,10 @@ import { Layout } from './components/page/layout';
 //import FetchData from './components/FetchData';
 //import Counter from './components/Counter';
 
-export default <Route component={ Layout }>
+export default <Route path='/' component={ Layout }>
 </Route>;
 
-    //<Route path='/' components={{ body: Home }} />
+//<Route path='/' component={Layout} />
     //<Route path='/counter' components={{ body: Counter }} />
     //<Route path='/fetchdata' components={{ body: FetchData }}>
     //    <Route path='(:startDateIndex)' /> { /* Optional route segment that does not affect NavMenu highlighting */ }

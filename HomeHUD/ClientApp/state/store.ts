@@ -13,16 +13,16 @@ import { IAuthenticationState } from './authentication/authenticationState';
 
 export interface IAppState {
     navigation: INavigationState;
-    lights: ILightsState;
-    config: IConfigState;
-    authentication: IAuthenticationState;
+ //   lights: ILightsState;
+ //   config: IConfigState;
+ //   authentication: IAuthenticationState;
 }
 
 export const reducers = {
     navigation: navigationReducer,
-    lights: new LightsReducer().get(),
-    config: configReducer,
-    authentication: authenticationReducer
+ //   lights: new LightsReducer().get(),
+ //   config: configReducer,
+//    authentication: authenticationReducer
     //form: formReducer
 };
 

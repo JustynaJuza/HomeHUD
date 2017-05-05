@@ -5,7 +5,7 @@ import * as classNames from 'classnames';
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from '../../state/app';
+import { IAppState } from '../../state/store';
 import { navigationActions } from '../../state/navigation/navigationActions';
 
 // style

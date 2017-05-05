@@ -4,7 +4,7 @@ import * as React from 'react';
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState, api } from '../../../state/app';
+import { IAppState } from '../../../state/store';
 import { IFormResult } from '../../../state/formResult';
 import { authenticationActions } from '../../../state/authentication/authenticationActions';
 
@@ -35,6 +35,8 @@ interface IField {
 
 export class LoginForm extends React.Component<ILoginFormProps, {}> {
 
+    private api = new Api();
+
     public render() {
         return render(this);
     }
@@ -50,7 +52,7 @@ export class LoginForm extends React.Component<ILoginFormProps, {}> {
     }
 
     public submit(values: any) {
-        return api.postJson('/Home/Login', values)
+        return this.api.postJson('/Home/Login', values)
             .then(this.processResponse.bind(this))
             .catch(formatSubmitErrors);
     }
@@ -75,11 +77,12 @@ export class LoginForm extends React.Component<ILoginFormProps, {}> {
     public renderField = ({ input, label, type, meta: { touched, error } }: IField) => {
         return (
             <div className={style.field}>
-                <label className={style.label} htmlFor="username">{label}</label>
-                <input {...input} type={type} className={style.input}/>
-                {touched && error && <span className={style.field_error}>{error}</span>}
+                
             </div>
         );
+        //<label className={style.label} htmlFor="username">{label}</label>
+        //    <input {...input} type={type} className={style.input} />
+        //        {touched && error && <span className={style.field_error}>{error}</span> }
     }
 }
 

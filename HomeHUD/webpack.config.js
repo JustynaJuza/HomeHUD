@@ -18,47 +18,29 @@ module.exports = (env) => {
             filename: '[name].js',
             publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
+        target: 'node',
         module: {
             rules: [
                 { test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' }
+                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
+                settings.loaders.css,
+                settings.loaders.images
             ]
         },
-        plugins: [new CheckerPlugin()]
+        plugins: [
+            new ExtractTextPlugin('site.css'),
+            new CheckerPlugin()]
     });
 
     // Configuration for client-side bundle suitable for running in browsers
     const clientBundleOutputDir = './wwwroot/dist';
     const clientBundleConfig = merge(sharedConfig(), {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
-        module: {
-            rules: [
-                settings.loaders.css,
-                settings.loaders.images,
-                //{ test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
-            ]
-        },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
-            new ExtractTextPlugin('site.css'),
             new webpack.DllReferencePlugin({
-                context: __dirname,
+                context: './',
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
-            }),
-            new webpack.LoaderOptionsPlugin({
-                // test: /\.xxx$/, // may apply this only for some modules
-                options: {
-                    postcss: function (webpack) {
-                        return [
-                            settings.postcssConfig.import(webpack),
-                            settings.postcssConfig.fonts,
-                            settings.postcssConfig.urls,
-                            settings.postcssConfig.precss,
-                            settings.postcssConfig.browserReporter,
-                            settings.postcssConfig.reporter,
-                        ].concat(settings.postcssConfig.processors);
-                    }
-                }
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
@@ -78,7 +60,7 @@ module.exports = (env) => {
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
         plugins: [
             new webpack.DllReferencePlugin({
-                context: __dirname,
+                context: './',
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
                 sourceType: 'commonjs2',
                 name: './vendor'
@@ -88,7 +70,6 @@ module.exports = (env) => {
             libraryTarget: 'commonjs',
             path: path.join(__dirname, './ClientApp/dist')
         },
-        target: 'node',
         devtool: 'inline-source-map'
     });
 

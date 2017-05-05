@@ -2,10 +2,10 @@
 import * as React from 'react';
 
 // components
-import { Header } from './header';
+//import { Header } from './header';
 import Navigation from './navigation';
-import Content from './content';
-import ConfigMenu from './configMenu';
+//import Content from './content';
+//import ConfigMenu from './configMenu';
 
 // style
 import * as style from '../../css/components/layout.css';
@@ -15,17 +15,19 @@ import * as style from '../../css/components/layout.css';
 interface ILayoutProps {
 }
 
-export class Layout extends React.Component<ILayoutProps, {}> {
+export class Layout extends React.Component<{}, {}> {
 
     public render() {
 
         return (
             <div className={style.layout}>
-                <Header />
                 <Navigation />
-                <Content />
-                <ConfigMenu />
             </div>
         );
     }
+    
+    //<Header />
+    //<Navigation />
+    //<Content />
+    //<ConfigMenu />
 }

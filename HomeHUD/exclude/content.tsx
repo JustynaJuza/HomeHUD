@@ -4,7 +4,7 @@ import * as React from 'react'
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from '../../state/app';
+import { IAppState } from '../../state/store';
 
 // props
 import { ISelectedContent, IError } from '../../state/navigation/navigationState';

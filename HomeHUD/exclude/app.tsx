@@ -5,8 +5,8 @@ import * as React from 'react'
 ////import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 //// redux
-import { Provider } from 'react-redux';
-import { store } from '../state/app';
+//import { Provider } from 'react-redux';
+//import { store } from '../state/app';
 //import { configActions } from '../state/config/configActions';
 //import { navigationActions } from '../state/navigation/navigationActions';
 
@@ -40,11 +40,11 @@ export class App extends React.Component<IAppProps, {}> {
 
     public render() {
         return (
-            <Provider store={store}>
+            //<Provider store={store}>
 
                     <Layout />
                 
-            </Provider>
+            //</Provider>
         );
     }
 }

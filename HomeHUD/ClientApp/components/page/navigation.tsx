@@ -8,7 +8,7 @@ import * as React from 'react'
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from '../../state/app';
+import { IAppState } from '../../state/store';
 import { navigationActions } from '../../state/navigation/navigationActions';
 
 // props
@@ -81,9 +81,9 @@ class Navigation extends React.Component<INavigationProps, {}> {
 const mapStateToProps = (state: IAppState) => {
 
     return {
-        isAuthenticated: state.authentication.isAuthenticated,
+        isAuthenticated: true, //state.authentication.isAuthenticated,
         selectedContent: state.navigation.selectedContent,
-        rooms: _filter(state.config.rooms, room => room.lights.length > 0)
+        rooms: []//_filter(state.config.rooms, room => room.lights.length > 0)
     }
 };
 

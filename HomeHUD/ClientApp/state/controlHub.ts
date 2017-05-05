@@ -1,4 +1,4 @@
-import { store } from './app';
+import configureStore from '../configureStore';
 import * as _ from 'lodash';
 import 'signalr';
 
@@ -29,6 +29,7 @@ export class ControlHub implements IControlHub {
 
     private connection: SignalR.Hub.Connection;
     private proxy: SignalR.Hub.Proxy;
+    private store = configureStore();
 
     public init(): void {
         this.connection = $.hubConnection();
@@ -42,13 +43,13 @@ export class ControlHub implements IControlHub {
     private setClientEventHandlers(): void {
 
         this.proxy.on(SET_LIGHT_STATE, (data: SET_LIGHT_STATE) => {
-            store.dispatch(lightActions.SET_LIGHT_STATE(data));
+            this.store.dispatch(lightActions.SET_LIGHT_STATE(data));
         }),
         this.proxy.on(SET_ALL_LIGHTS_STATE, (data: SET_ALL_LIGHTS_STATE) => {
-            store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
+            this.store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
         }),
         this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
-            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
+            this.store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
         });
     }
 
@@ -58,7 +59,7 @@ export class ControlHub implements IControlHub {
                 this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
             })
             .fail(() => {
-                store.dispatch(navigationActions.SHOW_ERROR({
+                this.store.dispatch(navigationActions.SHOW_ERROR({
                     message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
                 }));
             });
