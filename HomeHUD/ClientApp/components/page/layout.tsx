@@ -2,9 +2,9 @@
 import * as React from 'react';
 
 // components
-//import { Header } from './header';
+import { Header } from './header';
 import Navigation from './navigation';
-//import Content from './content';
+import Content from './content';
 //import ConfigMenu from './configMenu';
 
 // style
@@ -21,7 +21,9 @@ export class Layout extends React.Component<{}, {}> {
 
         return (
             <div className={style.layout}>
+                <Header />
                 <Navigation />
+                <Content />
             </div>
         );
     }

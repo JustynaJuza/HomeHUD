@@ -1,6 +1,6 @@
-import * as _map from "lodash/map";
-import * as _filter from "lodash/filter";
-import * as _sortBy from "lodash/sortBy";
+import * as _map from 'lodash/map';
+import * as _filter from 'lodash/filter';
+import * as _sortBy from 'lodash/sortBy';
 
 // react
 import * as React from 'react'

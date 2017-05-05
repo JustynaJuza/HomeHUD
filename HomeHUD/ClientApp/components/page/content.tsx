@@ -51,18 +51,19 @@ class Content extends React.Component<IContentProps, {}> {
                         : <div>{ this.props.error.message }</div>
                     : this.props.isAuthenticated
                         ? this.getContent()
-                        : <LoginPanel />
+                        : <div></div>
                 }
             </div>
         );
     }
+    //<LoginPanel />
 }
 
 // redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState) => {
     return {
-        isAuthenticated: state.authentication.isAuthenticated,
+        isAuthenticated: true,
         selectedContent: state.navigation.selectedContent,
         error: state.navigation.error
     }
