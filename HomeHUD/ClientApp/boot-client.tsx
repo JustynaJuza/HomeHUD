@@ -10,7 +10,7 @@ import configureStore from './configureStore';
 import { IAppState }  from './state/store';
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = window.initialReduxState;
+const initialState = (window as any).initialReduxState as IAppState;
 const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 

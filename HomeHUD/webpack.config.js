@@ -18,11 +18,12 @@ module.exports = (env) => {
             filename: '[name].js',
             publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
-        target: 'node',
+        target: 'node', // HAD TO PUT THIS HERE TO AVOID GETTING ERRORS FROM 'as' TYPE CASTING IN boot-client.tsx
         module: {
             rules: [
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
+                //{ test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
+                //{ test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
+                settings.loaders.tsx,
                 settings.loaders.css,
                 settings.loaders.images
             ]
