@@ -34,7 +34,7 @@ namespace HomeHUD.Hubs
                     {
                         Id = x.Id,
                         State = x.State,
-                        Color = x.Color,
+                        Color = x.Color\,
                         RoomId = x.RoomId
                     }).ToList()
             };
