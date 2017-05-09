@@ -1,4 +1,6 @@
-﻿import 'whatwg-fetch';
+﻿//import 'whatwg-fetch';
+import 'isomorphic-fetch';
+
 
 export class Api {
 

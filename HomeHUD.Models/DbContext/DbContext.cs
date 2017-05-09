@@ -1,29 +1,57 @@
-﻿using HomeHUD.Models.Users;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
-using HomeHUD.Models.Configurables;
+﻿using HomeHUD.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace HomeHUD.Models.DbContext
 {
-
-    public partial class ApplicationDbContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
+    public partial class ApplicationDbContext : IdentityDbContext<User>
     {
-        public ApplicationDbContext() : base("HomeHUD") { }
-
-        public static ApplicationDbContext Create()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
-            return new ApplicationDbContext();
         }
 
-        public DbSet<Light> Lights { get; set; }
+        //        public ApplicationDbContext() : base("HomeHUD") { }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //        public static ApplicationDbContext Create()
+        //        {
+        //            return new ApplicationDbContext();
+        //        }
+
+        //        public DbSet<Light> Lights { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Conventions.Add(new UseDateTime2Convention());
-            modelBuilder.Conventions.Add(new DateCreatedIsGeneratedConvention());
+            //modelBuilder.Conventions.Add(new UseDateTime2Convention());
+            //modelBuilder.Conventions.Add(new DateCreatedIsGeneratedConvention());
 
             EntityConfig.ConfigureModelBuilder(modelBuilder);
         }
     }
 }
+
+//namespace HomeHUD.Models.DbContext
+//{
+
+//    public partial class ApplicationDbContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
+//    {
+//        public ApplicationDbContext() : base("HomeHUD") { }
+
+//        public static ApplicationDbContext Create()
+//        {
+//            return new ApplicationDbContext();
+//        }
+
+//        public DbSet<Light> Lights { get; set; }
+
+//        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+//        {
+//            base.OnModelCreating(modelBuilder);
+//            modelBuilder.Conventions.Add(new UseDateTime2Convention());
+//            modelBuilder.Conventions.Add(new DateCreatedIsGeneratedConvention());
+
+//            EntityConfig.ConfigureModelBuilder(modelBuilder);
+//        }
+//    }
+//}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HomeHUD.Models.Extensions;
-using HomeHUD.Data;
+using HomeHUD.Models.DbContext;
 
 namespace HomeHUD.Hubs
 {
