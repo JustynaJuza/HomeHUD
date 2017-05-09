@@ -2,7 +2,6 @@ using HomeHUD.Models.Configurables;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HomeHUD.Models.Extensions;
 using HomeHUD.Models.DbContext;
 
 namespace HomeHUD.Hubs
@@ -34,7 +33,7 @@ namespace HomeHUD.Hubs
                     {
                         Id = x.Id,
                         State = x.State,
-                        Color = x.Color\,
+                        Color = x.Color,
                         RoomId = x.RoomId
                     }).ToList()
             };
@@ -44,7 +43,7 @@ namespace HomeHUD.Hubs
         {
             return _context.Set<Light>()
                    .Where(x => x.State != expectedLightsState.State)
-                   .FilterBy(expectedLightsState.LightIds, x => x.Id)
+                   .Where(x => expectedLightsState.LightIds.Contains(x.Id))
                    .Select(x => x.Id)
                    .ToArray();
         }
@@ -65,7 +64,7 @@ namespace HomeHUD.Hubs
         {
             _context.Set<Light>()
                 .Where(x => x.State != state)
-                .FilterBy(lightIds, x => x.Id)
+                .Where(x => lightIds.Contains(x.Id))
                 .ToList()
                 .ForEach(x => x.State = state);
 

@@ -2,5 +2,5 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace HomeHUD.Models.Identity
 {
-    public class Role : IdentityRole<int, UserRole, RoleClaim> { }
+    public class RoleClaim : IdentityRoleClaim<int> { }
 }
