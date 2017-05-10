@@ -18,15 +18,15 @@ namespace HomeHUD.Models.DbContext
         //            return new ApplicationDbContext();
         //        }
 
-        //        public DbSet<Light> Lights { get; set; }
+        public DbSet<Light> Lights { get; set; }
+        public DbSet<Room> Rooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            //modelBuilder.Conventions.Add(new UseDateTime2Convention());
-            //modelBuilder.Conventions.Add(new DateCreatedIsGeneratedConvention());
 
-            EntityConfig.ConfigureModelBuilder(modelBuilder);
+            ConventionsConfig.SetPropertyConventions(modelBuilder);
+            EntityConfig.ConfigureTables(modelBuilder);
         }
     }
 }

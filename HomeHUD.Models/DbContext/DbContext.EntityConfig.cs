@@ -8,13 +8,15 @@ namespace HomeHUD.Models.DbContext
     {
         public static class EntityConfig
         {
-            internal static void ConfigureModelBuilder(ModelBuilder modelBuilder)
+            internal static void ConfigureTables(ModelBuilder modelBuilder)
             {
                 modelBuilder.Entity<User>().ToTable("Users");
-                modelBuilder.Entity<UserRole>().ToTable("UserRoles");
                 modelBuilder.Entity<UserLogin>().ToTable("UserLogins");
                 modelBuilder.Entity<UserClaim>().ToTable("UserClaims");
+                modelBuilder.Entity<UserToken>().ToTable("UserTokens");
+                modelBuilder.Entity<UserRole>().ToTable("UserRoles");
                 modelBuilder.Entity<Role>().ToTable("Roles");
+                modelBuilder.Entity<RoleClaim>().ToTable("RoleClaims");
             }
         }
     }

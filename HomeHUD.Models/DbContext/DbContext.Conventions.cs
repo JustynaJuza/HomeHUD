@@ -1,34 +1,52 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HomeHUD.Models.DbContext
 {
     public partial class ApplicationDbContext
     {
-        public void UseDateTime2Convention(ModelBuilder modelBuilder)
+        public static class ConventionsConfig
         {
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            internal static void SetPropertyConventions(ModelBuilder modelBuilder)
             {
-                foreach (var property in entityType.GetProperties())
+                foreach (var entityType in modelBuilder.Model.GetEntityTypes())
                 {
-                    //Properties<DateTime>()
-                    //    .Configure(c => c.HasColumnType("datetime2").HasPrecision(0));
-
+                    foreach (var property in entityType.GetProperties())
+                    {
+                        SetDateTime2ColumnForDate(property);
+                        SetDateCreatedInsert(property);
+                        SetDateUpdatedInsert(property);
+                    }
                 }
             }
 
-        }
-
-        public void DateCreatedIsGeneratedConvention(ModelBuilder modelBuilder)
-        {
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            private static void SetDateTime2ColumnForDate(IMutableProperty property)
             {
-                foreach (var property in entityType.GetProperties())
+                if (property.ClrType == typeof(DateTime))
                 {
-                    //Properties<DateTime>()
-                    //.Where(x => x.Name == "DateCreated")
-                    //.Configure(x => x.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed));
+                    property.Relational().ColumnType = "datetime2";
+                }
+            }
+
+            private static void SetDateCreatedInsert(IMutableProperty property)
+            {
+                if (property.Name == "DateCreated")
+                {
+                    property.ValueGenerated = ValueGenerated.OnAdd;
+                    property.IsStoreGeneratedAlways = true;
+                    property.Relational().DefaultValueSql = "GETDATE()";
+                }
+            }
+
+            private static void SetDateUpdatedInsert(IMutableProperty property)
+            {
+                if (property.Name == "DateModified"
+                    || property.Name == "DateUpdated")
+                {
+                    property.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAddOrUpdate;
+                    property.IsStoreGeneratedAlways = true;
+                    property.Relational().DefaultValueSql = "GETDATE()";
                 }
             }
         }
