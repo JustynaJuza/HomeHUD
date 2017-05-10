@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@types/history": "^2.0.0",
+    "@types/isomorphic-fetch": "0.0.34",
     "@types/react": "^0.14.29",
     "@types/react-dom": "^0.14.14",
     "@types/react-redux": "^4.4.29",
@@ -12,7 +13,7 @@
     "@types/signalr": "^2.2.33",
     "@types/webpack": "^2.2.0",
     "@types/webpack-env": "^1.13.0",
-    "@types/whatwg-fetch": "0.0.33",
+    "@types/whatwg-fetch": "^0.0.33",
     "aspnet-prerendering": "^2.0.0",
     "aspnet-webpack": "^1.0.27",
     "aspnet-webpack-react": "^1.0.4",
