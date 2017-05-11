@@ -3,7 +3,7 @@ import * as _indexOf from 'lodash/indexOf';
 
 import { handleActions } from 'redux-actions';
 
-import { IControlHub } from '../controlHub';
+import { IControlHub, ControlHub } from '../controlHub';
 
 import { ILightsState, EMPTY_LIGHTS_STATE } from './lightsState';
 import { IAction } from '../action';
@@ -22,6 +22,11 @@ export interface ILightsReducer {
 
 export class LightsReducer implements ILightsReducer {
     public hub: IControlHub;
+
+    //public init(): void {
+    //    this.hub = new ControlHub();
+    //    this.hub.init();
+    //}
 
     public get(): any {
         return handleActions(<any>{

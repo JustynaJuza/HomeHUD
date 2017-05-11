@@ -1,5 +1,6 @@
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Models.Identity;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

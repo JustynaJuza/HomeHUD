@@ -10,7 +10,7 @@ namespace HomeHUD.Models.DbContext
         {
             context.Database.EnsureCreated();
 
-            if (!context.Rooms.Any())
+            if (!context.Set<Room>().Any())
             {
                 Seed(context);
             }

@@ -41,7 +41,7 @@ module.exports = (env) => {
             new webpack.DllReferencePlugin({
                 context: './',
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
-            })
+            }),
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
             new webpack.SourceMapDevToolPlugin({
@@ -64,7 +64,11 @@ module.exports = (env) => {
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
                 sourceType: 'commonjs2',
                 name: './vendor'
-            })
+            }),
+new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })
         ],
         output: {
             libraryTarget: 'commonjs',

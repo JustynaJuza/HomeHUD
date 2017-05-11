@@ -11,6 +11,8 @@ import { IConfigState } from './config/configState';
 import { authenticationReducer } from './authentication/authenticationReducer';
 import { IAuthenticationState } from './authentication/authenticationState';
 
+import { ControlHub } from './controlHub';
+
 export interface IAppState {
     navigation: INavigationState;
     lights: ILightsState;
@@ -18,11 +20,43 @@ export interface IAppState {
     authentication: IAuthenticationState;
 }
 
+//export const reducers = {
+//    navigation: navigationReducer,
+//    lights: new LightsReducer().get(),
+//    config: configReducer,
+//    //    authentication: authenticationReducer
+//    //form: formReducer
+//};
+
+export function getReducers() {
+    return {
+        navigation: navigationReducer,
+        lights: new LightsReducer().get(),
+        config: configReducer,
+        //    authentication: authenticationReducer
+        //form: formReducer
+    };
+}
+
+export function getReducersWithControlHub() {
+    var lightsReducer = new LightsReducer();
+    lightsReducer.hub = new ControlHub();
+    lightsReducer.hub.init();
+
+    return {
+        navigation: navigationReducer,
+        lights: lightsReducer.get(),
+        config: configReducer,
+        //    authentication: authenticationReducer
+        //form: formReducer
+    };
+}
+
 export const reducers = {
     navigation: navigationReducer,
     lights: new LightsReducer().get(),
     config: configReducer,
-//    authentication: authenticationReducer
+    //    authentication: authenticationReducer
     //form: formReducer
 };
 

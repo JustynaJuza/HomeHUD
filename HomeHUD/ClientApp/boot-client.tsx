@@ -6,12 +6,12 @@ import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
-import configureStore from './configureStore';
+import configureStore from './configureStore-client';
 import { IAppState }  from './state/store';
 
 // Get the application-wide store instance, prepopulating with state from the server where available.
 const initialState = (window as any).initialReduxState as IAppState;
-const store = configureStore(initialState);
+export const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
 // This code starts up the React app when it runs in a browser. It sets up the routing configuration

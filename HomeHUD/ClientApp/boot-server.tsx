@@ -5,7 +5,7 @@ import { match, RouterContext } from 'react-router';
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import routes from './routes';
-import configureStore from './configureStore';
+import configureStore from './configureStore-server';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
