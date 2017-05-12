@@ -4,7 +4,7 @@ import * as React from 'react'
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from '../../state/store';
+import { IAppState } from '../../state/state';
 
 // props
 import { ISelectedContent, IError } from '../../state/navigation/navigationState';
@@ -12,7 +12,7 @@ import { ISelectedContent, IError } from '../../state/navigation/navigationState
 // components
 import RoomPanel from './content/roomPanel';
 import ControlPanel from './content/controlPanel';
-import LoginPanel from './content/loginPanel';
+//import LoginPanel from './content/loginPanel';
 
 // style
 import * as style from '../../css/components/layout.css';

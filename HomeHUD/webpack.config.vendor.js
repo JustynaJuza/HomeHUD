@@ -21,6 +21,8 @@ module.exports = (env) => {
                 'bootstrap/dist/css/bootstrap.css',
                 'domain-task',
                 'event-source-polyfill',
+                'isomorphic-fetch',
+                'signalr',
                 'react',
                 'react-dom',
                 'react-router',

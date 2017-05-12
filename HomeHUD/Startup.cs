@@ -27,7 +27,7 @@ namespace HomeHud
                 // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
             }
-
+            
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -37,6 +37,9 @@ namespace HomeHud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+            services.AddMemoryCache();
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));

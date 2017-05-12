@@ -5,8 +5,9 @@ import { Layout } from './components/page/layout';
 //import FetchData from './components/FetchData';
 //import Counter from './components/Counter';
 
-export default <Route path='/' component={ Layout }>
-</Route>;
+export default
+    <Route path='/' component={Layout}>
+    </Route>;
 
 //<Route path='/' component={Layout} />
     //<Route path='/counter' components={{ body: Counter }} />

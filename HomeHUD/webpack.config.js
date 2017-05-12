@@ -12,12 +12,12 @@ module.exports = (env) => {
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
         stats: { modules: false },
-        resolve: { extensions: [ '.js', '.jsx', '.ts', '.tsx' ] },
+        resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         output: {
             filename: '[name].js',
             publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
-        target: 'node', // HAD TO PUT THIS HERE TO AVOID GETTING ERRORS FROM 'as' TYPE CASTING IN boot-client.tsx
+        //target: 'node', // HAD TO PUT THIS HERE TO AVOID GETTING ERRORS FROM 'as' TYPE CASTING IN boot-client.tsx
         module: {
             rules: [
                 //{ test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
@@ -37,11 +37,17 @@ module.exports = (env) => {
     const clientBundleConfig = merge(sharedConfig(), {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
+        target: 'web',
         plugins: [
             new webpack.DllReferencePlugin({
                 context: './',
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
             }),
+            new webpack.ProvidePlugin({
+                $: 'jQuery',
+                jQuery: 'jQuery',
+                'window.jQuery': 'jQuery'
+            })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
             new webpack.SourceMapDevToolPlugin({
@@ -49,9 +55,9 @@ module.exports = (env) => {
                 moduleFilenameTemplate: path.relative(clientBundleOutputDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
             })
         ] : [
-            // Plugins that apply in production builds only
-            new webpack.optimize.UglifyJsPlugin()
-        ])
+                // Plugins that apply in production builds only
+                new webpack.optimize.UglifyJsPlugin()
+            ])
     });
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node
@@ -64,16 +70,13 @@ module.exports = (env) => {
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
                 sourceType: 'commonjs2',
                 name: './vendor'
-            }),
-new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery'
-        })
+            })
         ],
         output: {
             libraryTarget: 'commonjs',
             path: path.join(__dirname, './ClientApp/dist')
         },
+        target: 'node',
         devtool: 'inline-source-map'
     });
 
