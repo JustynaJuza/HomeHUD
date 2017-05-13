@@ -13,7 +13,6 @@
     "@types/signalr": "^2.2.33",
     "@types/webpack": "^2.2.0",
     "@types/webpack-env": "^1.13.0",
-    "@types/whatwg-fetch": "^0.0.33",
     "aspnet-prerendering": "^2.0.0",
     "aspnet-webpack": "^1.0.27",
     "aspnet-webpack-react": "^1.0.4",
@@ -71,8 +70,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^2.2.0",
     "webpack-hot-middleware": "^2.12.2",
-    "webpack-merge": "^0.14.1",
-    "whatwg-fetch": "^2.0.3"
+    "webpack-merge": "^0.14.1"
   },
   "devDependencies": {
     "postcss-loader": "^0.9.1"
