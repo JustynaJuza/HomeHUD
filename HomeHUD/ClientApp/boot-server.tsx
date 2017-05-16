@@ -6,9 +6,15 @@ import createMemoryHistory from 'history/lib/createMemoryHistory';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import routes from './routes';
 import configureStore from './configureStore-server';
+import { Api } from './state/api';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
+        
+        var api = new Api();
+        //var z = api.getJson("/rooms/config").then(() =>
+        //console.log(z));
+
         // Match the incoming request against the list of client-side routes
         const store = configureStore();
         match({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {

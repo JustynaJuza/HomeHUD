@@ -3,7 +3,7 @@ using HomeHUD.Models.DbContext;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace HomeHud.Controllers
+namespace HomeHUD.Controllers
 {
     public class RoomsController : Controller
     {
@@ -14,21 +14,31 @@ namespace HomeHud.Controllers
             _context = context;
         }
 
+        [Route("/rooms/config")]
         public IActionResult GetRoomConfig()
         {
-
             var rooms = _context.Rooms
                    .Select(x => new RoomViewModel
                    {
-                       id = x.Id,
-                       name = x.Name,
-                       hash = x.Hash,
-                       sortWeight = x.SortWeight,
-                       lights = x.Lights.Select(y => y.Id)
-                   }).ToList();
+                       Id = x.Id,
+                       Name = x.Name,
+                       Hash = x.Hash,
+                       SortWeight = x.SortWeight,
+                       Lights = x.Lights.Select(y => y.Id)
+                   }).ToArray();
 
-            return View(rooms);
+            var initialState = new AppState
+            {
+                Config = new AppState.AppConfiguration
+                {
+                    Rooms = rooms
+                }
+            };
 
+            var test = new { a = new { c = rooms }, b = rooms };
+            //var z = new JsonResult(test);
+
+            return new JsonResult(initialState);
         }
 
         public IActionResult Index()

@@ -1,16 +1,15 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using HomeHUD.Models.AccountViewModels;
+using HomeHUD.Models.Identity;
+using HomeHUD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using HomeHUD.Services;
-using HomeHUD.Models.AccountViewModels;
-using HomeHud.Controllers;
-using HomeHUD.Models.Identity;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
 {

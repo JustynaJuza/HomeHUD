@@ -18,10 +18,10 @@ namespace HomeHUD.Models
 
     public class RoomViewModel
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public int sortWeight { get; set; }
-        public string hash { get; set; }
-        public IEnumerable<int> lights { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public short SortWeight { get; set; }
+        public string Hash { get; set; }
+        public IEnumerable<int> Lights { get; set; }
     }
 }
