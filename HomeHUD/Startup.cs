@@ -1,3 +1,4 @@
+using HomeHUD.Hubs;
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
@@ -53,6 +54,7 @@ namespace HomeHud
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<ILightSwitchService, LightSwitchService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +79,9 @@ namespace HomeHud
 
             app.UseStaticFiles();
             app.UseIdentity();
+
+            app.UseWebSockets();
+            app.UseSignalR();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

@@ -1,8 +1,8 @@
-using HomeHUD.Models.Configurables;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Models;
 
 namespace HomeHUD.Hubs
 {
@@ -28,7 +28,7 @@ namespace HomeHUD.Hubs
         {
             return new LightsState
             {
-                All = _context.Set<Light>()
+                All = _context.Lights
                     .Select(x => new LightViewModel
                     {
                         Id = x.Id,
@@ -41,7 +41,7 @@ namespace HomeHUD.Hubs
 
         public int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState)
         {
-            return _context.Set<Light>()
+            return _context.Lights
                    .Where(x => x.State != expectedLightsState.State)
                    .Where(x => expectedLightsState.LightIds.Contains(x.Id))
                    .Select(x => x.Id)
@@ -50,7 +50,7 @@ namespace HomeHUD.Hubs
 
         public async Task<int> SetLightState(int lightId, LightSwitchState state)
         {
-            var switchedLight = await _context.Set<Light>().FindAsync(lightId);
+            var switchedLight = await _context.Lights.FindAsync(lightId);
             if (switchedLight.State != state)
             {
                 switchedLight.State = state;
@@ -62,7 +62,7 @@ namespace HomeHUD.Hubs
 
         public async Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state)
         {
-            _context.Set<Light>()
+            _context.Lights
                 .Where(x => x.State != state)
                 .Where(x => lightIds.Contains(x.Id))
                 .ToList()
@@ -73,7 +73,7 @@ namespace HomeHUD.Hubs
 
         //public async Task<int> SetAllLightsState(LightSwitchState state)
         //{
-        //    _context.Set<Light>()
+        //    _context.Lights
         //        .Where(x => x.State != state)
         //        .ToList()
         //        .ForEach(x => x.State = state);

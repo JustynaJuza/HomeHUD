@@ -1,8 +1,8 @@
-using HomeHUD.Models.Configurables;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using HomeHUD.Models;
 
 namespace HomeHUD.Hubs
 {
