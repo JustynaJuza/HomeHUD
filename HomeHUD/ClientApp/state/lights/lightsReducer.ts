@@ -21,12 +21,7 @@ export interface ILightsReducer {
 }
 
 export class LightsReducer implements ILightsReducer {
-    public hub: IControlHub;
-
-    //public init(): void {
-    //    this.hub = new ControlHub();
-    //    this.hub.init();
-    //}
+    public hub: IControlHub
 
     public get(): any {
         return handleActions(<any>{

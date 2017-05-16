@@ -1,8 +1,8 @@
+using HomeHUD.Models;
+using HomeHUD.Models.DbContext;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HomeHUD.Models.DbContext;
-using HomeHUD.Models;
 
 namespace HomeHUD.Hubs
 {

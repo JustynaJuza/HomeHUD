@@ -10,6 +10,7 @@
     "@types/react-router": "^2.0.30",
     "@types/react-router-redux": "4.0.30",
     "@types/redux": "3.5.27",
+    "@types/redux-actions": "^1.2.4",
     "@types/signalr": "^2.2.33",
     "@types/webpack": "^2.2.0",
     "@types/webpack-env": "^1.13.0",

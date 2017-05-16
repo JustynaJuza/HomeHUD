@@ -1,7 +1,6 @@
 using HomeHUD.Hubs;
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
-using HomeHUD.Models.Identity;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace HomeHud
 {
@@ -28,7 +28,7 @@ namespace HomeHud
                 // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets<Startup>();
             }
-            
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -38,6 +38,14 @@ namespace HomeHud
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new SignalRContractResolver();
+
+            var serializer = JsonSerializer.Create(settings);
+            services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+                         provider => serializer,
+                         ServiceLifetime.Transient));
+
             services.AddSignalR();
             services.AddMemoryCache();
 
@@ -48,7 +56,7 @@ namespace HomeHud
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-                        
+
             services.AddMvc();
 
             // Add application services.
@@ -67,7 +75,8 @@ namespace HomeHud
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+                {
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
                 });
