@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Header } from './header';
 import Navigation from './navigation';
 import Content from './content';
+import { Api } from '../../state/api';
 //import ConfigMenu from './configMenu';
 
 // style
@@ -16,6 +17,14 @@ interface ILayoutProps {
 }
 
 export class Layout extends React.Component<{}, {}> {
+    private api: Api;
+
+    constructor() {
+        super();
+
+        var api = new Api();
+        api.getJson("/")
+    }
 
     public render() {
 
