@@ -32,10 +32,10 @@ export class Api {
         }
     }
 
-    public getJson(url: string): Promise<any> {
+    public getJson<T>(url: string): Promise<T> {
         return fetch(url, this.getRequestSettings)
             .then(this.processStatus)
-            .then(response => response.json());
+            .then(response => response.json() as Promise<T>);
     }
 
     public postJson(url: string, data: any): Promise<any> {

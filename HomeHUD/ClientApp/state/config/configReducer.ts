@@ -11,7 +11,7 @@ const initialState: IConfigState = {
 export const configReducer = handleActions(<any> {
     [SET_CONFIG_STATE]:
     (state: IConfigState, action: IAction<SET_CONFIG_STATE>) => {
-        
+
             return Object.assign({}, state, {
                 rooms: action.data
             });
