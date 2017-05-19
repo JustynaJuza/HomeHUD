@@ -1,20 +1,21 @@
-import { handleActions } from 'redux-actions';
+import { Reducer } from 'redux';
 
-import { IAction } from '../action';
-import { SET_CONFIG_STATE } from './configActions';
-import { IConfigState } from './configState';
+import { ConfigAction } from './configActions';
+import * as ConfigActionTypes from './configActionTypes';
 
-const initialState: IConfigState = {
-    rooms: []
+import { IConfigState, initialConfigState } from './configState';
+
+export const reducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigAction) => {
+    switch (action.type) {
+        case ConfigActionTypes.SetConfigState:
+            return <IConfigState>{
+                rooms: action.config.rooms
+            };
+        default:
+            //return state || unloadedState;
+            //throw new RangeError(
+            //    `The action type ${action.type} passed to ${typeof reducer} is not recognized and has no state transitions defined.`);
+    }
+
+    return state || initialConfigState;
 };
-
-export const configReducer = handleActions(<any> {
-    [SET_CONFIG_STATE]:
-    (state: IConfigState, action: IAction<SET_CONFIG_STATE>) => {
-
-            return Object.assign({}, state, {
-                rooms: action.data
-            });
-        }
-    },
-initialState);

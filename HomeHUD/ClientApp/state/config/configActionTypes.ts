@@ -1,2 +1,3 @@
-export type KnownActionType = 'SET_CONFIG';
-export const SetConfigState: KnownActionType = 'SET_CONFIG';
+export type ConfigActionType = 'SET_CONFIG';
+export const SetConfigState: ConfigActionType = 'SET_CONFIG';
+

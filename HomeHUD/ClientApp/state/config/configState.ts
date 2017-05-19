@@ -9,3 +9,7 @@ export interface IRoomConfig {
 export interface IConfigState {
     rooms: IRoomConfig[];
 }
+
+export const initialConfigState: IConfigState = {
+    rooms: []
+}
