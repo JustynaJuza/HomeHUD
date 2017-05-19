@@ -15,7 +15,7 @@ namespace HomeHUD.Controllers
         }
 
         [Route("/rooms/config")]
-        public IActionResult GetRoomConfig()
+        public AppState GetRoomConfig()
         {
             var rooms = _context.Rooms
                    .Select(x => new RoomViewModel
@@ -35,10 +35,7 @@ namespace HomeHUD.Controllers
                 }
             };
 
-            var test = new { a = new { c = rooms }, b = rooms };
-            //var z = new JsonResult(test);
-
-            return new JsonResult(initialState);
+            return initialState;
         }
 
         public IActionResult Index()

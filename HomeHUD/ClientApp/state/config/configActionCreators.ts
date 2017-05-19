@@ -6,7 +6,7 @@ import { ConfigAction } from './configActions';
 import { Api } from '../api';
 import { IConfigState } from './configState';
 
-export const actionCreators = {
+export const configActionCreators = {
     getServerConfig: (): AppThunkAction<ConfigAction> => (dispatch, getState) => {
 
         var api = new Api();

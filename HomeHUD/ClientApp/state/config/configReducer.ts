@@ -5,7 +5,7 @@ import * as ConfigActionTypes from './configActionTypes';
 
 import { IConfigState, initialConfigState } from './configState';
 
-export const reducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigAction) => {
+export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigAction) => {
     switch (action.type) {
         case ConfigActionTypes.SetConfigState:
             return <IConfigState>{

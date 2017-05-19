@@ -10,10 +10,6 @@ import { Api } from './state/api';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
-        
-        var api = new Api();
-        //var z = api.getJson("/rooms/config").then(() =>
-        //console.log(z));
 
         // Match the incoming request against the list of client-side routes
         const store = configureStore();
