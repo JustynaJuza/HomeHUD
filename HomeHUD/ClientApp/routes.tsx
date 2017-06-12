@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Router, Route, HistoryBase } from 'react-router';
-import { Layout } from './components/page/layout';
+import Layout from './components/page/layout';
 //import Home from './components/Home';
 //import FetchData from './components/FetchData';
 //import Counter from './components/Counter';

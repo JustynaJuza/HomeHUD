@@ -20,15 +20,10 @@ import * as style from '../../css/components/layout.css';
 
 type ILayoutProps = IAppState & typeof configActionCreators;
 
-export class Layout extends React.Component<ILayoutProps, {}> {
+class Layout extends React.Component<ILayoutProps, {}> {
     private api: Api;
 
     componentWillMount() {
-        console.log("Layout props", this.props);
-        this.props.getServerConfig();
-    }
-
-    componentWillReceiveProps(nextProps: ILayoutProps) {
         this.props.getServerConfig();
     }
 
@@ -51,5 +46,5 @@ export class Layout extends React.Component<ILayoutProps, {}> {
 
 export default connect(
     (state: IAppState) => state,            // Selects which state properties are merged into the component's props
-    configActionCreators                 // Selects which action creators are merged into the component's props
+    configActionCreators                // Selects which action creators are merged into the component's props
 )(Layout);

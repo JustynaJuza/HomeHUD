@@ -11,8 +11,10 @@ export const configActionCreators = {
 
         var api = new Api();
         var configLoadingTask =
-            api.getJson<IConfigState>('/rooms/config')
-                .then(configState => dispatch({ type: ConfigActionTypes.SetConfigState, config: configState }));
+            api.getJson<IConfigState>('http://localhost:5000/rooms/config')
+                .then(configState => {
+                    dispatch({ type: ConfigActionTypes.SetConfigState, config: configState })
+                });
 
         addTask(configLoadingTask); // Ensure server-side prerendering waits for this to complete
     }

@@ -3,7 +3,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="react-app" asp-prerender-module="ClientApp/dist/main-server" asp-prerender-data="@Model">Loading...</div>
+<div id="react-app"
+     asp-prerender-module="ClientApp/dist/main-server"
+     asp-prerender-data="@Model"
+     asp-prerender-timeout="1000000">Loading...</div>
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
