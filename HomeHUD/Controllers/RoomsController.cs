@@ -15,7 +15,7 @@ namespace HomeHUD.Controllers
         }
 
         [Route("/rooms/config")]
-        public AppState.AppConfiguration GetRoomConfig()
+        public AppState GetRoomConfig()
         {
             var rooms = _context.Rooms
                    .Select(x => new RoomViewModel
@@ -27,12 +27,30 @@ namespace HomeHUD.Controllers
                        Lights = x.Lights.Select(y => y.Id)
                    }).ToArray();
 
-            var config = new AppState.AppConfiguration
+            var lights = _context.Lights
+                   .Select(x => new LightViewModel
+                   {
+                       Id = x.Id,
+                       State = x.State,
+                       Color = x.Color,
+                       Brightness = x.Brightness,
+                       Description = x.Description,
+                       RoomId = x.RoomId
+                   }).ToList();
+
+            var initialState = new AppState
             {
-                Rooms = rooms
+                Config = new AppState.AppConfiguration
+                {
+                    Rooms = rooms
+                },
+                Lights = new LightsState
+                {
+                    All = lights
+                }
             };
 
-            return config;
+            return initialState;
         }
 
         public IActionResult Index()

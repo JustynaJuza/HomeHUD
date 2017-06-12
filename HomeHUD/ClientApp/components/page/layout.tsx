@@ -9,7 +9,7 @@ import Content from './content';
 import { Api } from '../../state/api';
 //import ConfigMenu from './configMenu';
 
-import { configActionCreators } from '../../state/config/configActionCreators';
+import { initialStateLoader } from '../../state/initialStateLoader';
 import { IConfigState } from '../../state/config/configState';
 import { IAppState } from '../../state/state';
 
@@ -18,7 +18,7 @@ import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
-type ILayoutProps = IAppState & typeof configActionCreators;
+type ILayoutProps = IAppState & typeof initialStateLoader;
 
 class Layout extends React.Component<ILayoutProps, {}> {
     private api: Api;
@@ -46,5 +46,5 @@ class Layout extends React.Component<ILayoutProps, {}> {
 
 export default connect(
     (state: IAppState) => state,            // Selects which state properties are merged into the component's props
-    configActionCreators                // Selects which action creators are merged into the component's props
+    initialStateLoader                      // Selects which action creators are merged into the component's props
 )(Layout);
