@@ -16,6 +16,12 @@ namespace HomeHUD.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        [Route("/initialState")]
+        public AppState InitialState()
+        {
             var rooms = _context.Rooms
                    .Select(x => new RoomViewModel
                    {
@@ -26,18 +32,30 @@ namespace HomeHUD.Controllers
                        Lights = x.Lights.Select(y => y.Id)
                    }).ToArray();
 
+            var lights = _context.Lights
+                   .Select(x => new LightViewModel
+                   {
+                       Id = x.Id,
+                       State = x.State,
+                       Color = x.Color,
+                       Brightness = x.Brightness,
+                       Description = x.Description,
+                       RoomId = x.RoomId
+                   }).ToList();
+
             var initialState = new AppState
             {
                 Config = new AppState.AppConfiguration
                 {
                     Rooms = rooms
+                },
+                Lights = new LightsState
+                {
+                    All = lights
                 }
             };
 
-            var test = new { a = new { c = rooms }, b = rooms };
-            //var z = new JsonResult(test);
-
-            return View();
+            return initialState;
         }
 
         public IActionResult Error()
