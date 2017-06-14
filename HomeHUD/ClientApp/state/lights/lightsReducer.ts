@@ -1,87 +1,44 @@
-import * as _map from 'lodash/map';
-import * as _indexOf from 'lodash/indexOf';
+import { Reducer } from 'redux';
 
-import { handleActions } from 'redux-actions';
+import * as LightAction from './lightActions';
+import * as LightActionTypes from './lightActionTypes';
+
+import { ILightsState, initialLightsState } from './lightsState';
 
 import { IControlHub, ControlHub } from '../controlHub';
 
-import { ILightsState, EMPTY_LIGHTS_STATE } from './lightsState';
-import { IAction } from '../action';
-import {
-    TRY_SET_LIGHT_STATE,
-    TRY_SET_ALL_LIGHTS_STATE,
-
-    SET_LIGHT_STATE,
-    SET_ALL_LIGHTS_STATE,
-    SET_CURRENT_LIGHTS_STATE
-} from './lightActionDescriptions';
-
 export interface ILightsReducer {
-    get: () => any;
+    get: () => Reducer<ILightsState>;
 }
 
 export class LightsReducer implements ILightsReducer {
     public hub: IControlHub
 
-    public get(): any {
-        return handleActions(<any>{
-            // interface actions, dispatched to server via signalR
-            TRY_SET_LIGHT_STATE:
-            (state: ILightsState, action: IAction<TRY_SET_LIGHT_STATE>) => {
-                console.log('dispatching')
-                this.hub.trySetLightState(action.data);
-                return state;
-            },
+    public get(): Reducer<ILightsState> {
+        return (state: ILightsState, action: LightAction.LightAction) => {
+            switch (action.type) {
+                case LightActionTypes.SetAllLights:
+                    return (<LightAction.SetAllLightsAction>action).lights;
 
-            TRY_SET_ALL_LIGHTS_STATE:
-            (state: ILightsState, action: IAction<TRY_SET_ALL_LIGHTS_STATE>) => {
+                //case LightActionTypes.TrySetLightState:
+                //    return (<LightAction.TrySetLightStateAction>action).lights;
 
-                console.log('dispatching')
-                this.hub.trySetAllLightsState(action.data);
-                return state;
-            },
+                //case LightActionTypes.SetAllLights:
+                //    return (<LightAction.SetAllLights>action).lights
 
-            // signalR callback functions
-            SET_LIGHT_STATE:
-            (state: ILightsState, action: IAction<SET_LIGHT_STATE>) => {
-                var needsSwitching: boolean;
+                //case LightActionTypes.SetAllLights:
+                //    return (<LightAction.SetAllLights>action).lights
 
-                return Object.assign({}, state, {
-                    all: _map(state.all, (light) => {
+                //case LightActionTypes.SetAllLights:
+                //    return (<LightAction.SetAllLights>action).lights
 
-                        needsSwitching = light.id === action.data.lightId && light.state !== action.data.state;
-                        if (needsSwitching) {
-                            light.state = action.data.state;
-                        }
-
-                        return light;
-                    })
-                });
-            },
-
-            SET_ALL_LIGHTS_STATE:
-            (state: ILightsState, action: IAction<SET_ALL_LIGHTS_STATE>) => {
-                var needsSwitching: boolean;
-
-                return Object.assign({}, state,
-                    {
-                        all: _map(state.all, (light) => {
-
-                            needsSwitching = _indexOf(action.data.lightIds, light.id) > -1;
-                            if (needsSwitching) {
-                                light.state = action.data.state;
-                            }
-
-                            return light;
-                        })
-                    });
-            },
-            SET_CURRENT_LIGHTS_STATE:
-            (state: ILightsState, action: IAction<SET_CURRENT_LIGHTS_STATE>) => {
-
-                return action.data;
+                default:
+                //return state || unloadedState;
+                //throw new RangeError(
+                //    `The action type ${action.type} passed to ${typeof reducer} is not recognized and has no state transitions defined.`);
             }
-        },
-            EMPTY_LIGHTS_STATE);
+
+            return state || initialLightsState;
+        };
     }
 }

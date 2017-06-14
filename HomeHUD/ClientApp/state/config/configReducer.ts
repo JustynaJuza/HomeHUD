@@ -8,9 +8,8 @@ import { IConfigState, initialConfigState } from './configState';
 export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigAction) => {
     switch (action.type) {
         case ConfigActionTypes.SetConfigState:
-            return <IConfigState>{
-                rooms: action.config.rooms
-            };
+            return action.config;
+
         default:
             //return state || unloadedState;
             //throw new RangeError(

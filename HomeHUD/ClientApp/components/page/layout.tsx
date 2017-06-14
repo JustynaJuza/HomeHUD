@@ -24,7 +24,7 @@ class Layout extends React.Component<ILayoutProps, {}> {
     private api: Api;
 
     componentWillMount() {
-        this.props.getServerConfig();
+        this.props.getInitialState();
     }
 
     public render() {

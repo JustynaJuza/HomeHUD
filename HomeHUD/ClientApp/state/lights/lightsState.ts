@@ -15,4 +15,8 @@ export interface ILightsState {
     all: Array<ILightSwitchState>;
 };
 
+export const initialLightsState: ILightsState = {
+    all: []
+}
+
 export const EMPTY_LIGHTS_STATE = <ILightsState>{ all: [] };

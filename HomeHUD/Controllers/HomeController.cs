@@ -22,36 +22,61 @@ namespace HomeHUD.Controllers
         [Route("/initialState")]
         public AppState InitialState()
         {
-            var rooms = _context.Rooms
-                   .Select(x => new RoomViewModel
+            var query = _context.Rooms
+                   .Select(x => new
                    {
                        Id = x.Id,
                        Name = x.Name,
                        Hash = x.Hash,
                        SortWeight = x.SortWeight,
-                       Lights = x.Lights.Select(y => y.Id)
+                       Lights = x.Lights.Select(y => new LightViewModel
+                       {
+                           Id = y.Id,
+                           State = y.State,
+                           Color = y.Color,
+                           Brightness = y.Brightness,
+                           Description = y.Description,
+                           RoomId = y.RoomId
+                       })
                    }).ToArray();
 
-            var lights = _context.Lights
-                   .Select(x => new LightViewModel
-                   {
-                       Id = x.Id,
-                       State = x.State,
-                       Color = x.Color,
-                       Brightness = x.Brightness,
-                       Description = x.Description,
-                       RoomId = x.RoomId
-                   }).ToList();
+            //var rooms = _context.Rooms
+            //       .Select(x => new RoomViewModel
+            //       {
+            //           Id = x.Id,
+            //           Name = x.Name,
+            //           Hash = x.Hash,
+            //           SortWeight = x.SortWeight,
+            //           Lights = x.Lights.Select(y => y.Id)
+            //       }).ToArray();
+
+            //var lights = _context.Lights
+            //       .Select(x => new LightViewModel
+            //       {
+            //           Id = x.Id,
+            //           State = x.State,
+            //           Color = x.Color,
+            //           Brightness = x.Brightness,
+            //           Description = x.Description,
+            //           RoomId = x.RoomId
+            //       }).ToList();
 
             var initialState = new AppState
             {
                 Config = new AppState.AppConfiguration
                 {
-                    Rooms = rooms
+                    Rooms = query.Select(x => new RoomViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Hash = x.Hash,
+                        SortWeight = x.SortWeight,
+                        Lights = x.Lights.Select(y => y.Id)
+                    }).ToArray()
                 },
                 Lights = new LightsState
                 {
-                    All = lights
+                    All = query.SelectMany(x => x.Lights).ToList()
                 }
             };
 

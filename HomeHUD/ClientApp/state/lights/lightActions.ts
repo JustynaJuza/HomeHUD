@@ -1,41 +1,37 @@
-import { ILightSwitchState } from './lightsState';
+import { ILightsState } from './lightsState';
 import * as LightActionTypes from './lightActionTypes';
 
-interface TrySetLightStateAction {
+export interface TrySetLightStateAction {
     type: typeof LightActionTypes.TrySetLightState,
     lightId: string | number,
     state: number
 }
 
-interface TrySetAllLightsStateAction {
+export interface TrySetAllLightsStateAction {
     type: typeof LightActionTypes.TrySetAllLightsState,
     lightIds: Array<string | number>,
     state: number
 }
 
-interface SetLightStateAction {
+export interface SetLightStateAction {
     type: typeof LightActionTypes.SetLightState,
     lightId: string | number,
     state: number
 }
 
-interface SetAllLightsStateAction {
+export interface SetAllLightsStateAction {
     type: typeof LightActionTypes.SetAllLightsState,
     lightIds: Array<string | number>,
     state: number
 }
 
-interface SetAllLights {
+export interface SetAllLightsAction {
     type: typeof LightActionTypes.SetAllLightsState,
-    lights: Array<ILightSwitchState>
+    lights: ILightsState
 }
 
 export type LightAction =
-    TrySetLightStateAction
-    | TrySetAllLightsStateAction
-    | SetLightStateAction
-    | SetAllLightsStateAction
-    | SetAllLights;
+    SetAllLightsAction | TrySetLightStateAction | TrySetAllLightsStateAction | SetLightStateAction | SetAllLightsStateAction;
 
 
 import { IAction } from '../action';

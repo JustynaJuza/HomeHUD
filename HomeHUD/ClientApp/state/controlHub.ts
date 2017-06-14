@@ -55,7 +55,7 @@ export class ControlHub implements IControlHub {
     private startConnection(): void {
         this.connection.start()
             .done(() => {
-                this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
+                //this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
             })
             .fail(() => {
                 store.dispatch(navigationActions.SHOW_ERROR({
