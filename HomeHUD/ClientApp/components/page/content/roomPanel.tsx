@@ -6,11 +6,13 @@ import * as _indexOf from 'lodash/indexOf';
 import * as React from 'react'
 import * as classNames from 'classnames';
 
+import * as LightAction from '../../../state/lights/lightActions';
+import * as LightActionTypes from '../../../state/lights/lightActionTypes';
+
 // redux
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/state';
-import { lightActions } from '../../../state/lights/lightActions';
 
 // props
 import { LIGHT_SWITCH_STATE, ILightSwitchState } from '../../../state/lights/lightsState';
@@ -66,13 +68,13 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
             <div>
 
                 <div className={switchesClasses}>
-                    <button className={style.button} onClick={() => this.props.onSwitchAllOn(this.props.lights) }>Switch all ON</button>
+                    <button className={style.button} onClick={() => this.props.onSwitchAllOn(this.props.lights)}>Switch all ON</button>
                     <button className={style.button} onClick={() => this.props.onSwitchAllOff(this.props.lights)}>Switch all OFF</button>
                 </div>
                 <div className={style.container}>
                     <h2 className={nameClasses}>{this.props.name}</h2>
 
-                    { this.renderLightSwitches() }
+                    {this.renderLightSwitches()}
                 </div>
             </div>
         );
@@ -97,12 +99,18 @@ const mapStateToProps = (state: IAppState, publicProps: IRoomPanelPublicProps) =
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onSwitchAllOn(lights: Array<ILightSwitchState>) {
-        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE(
-            { lightIds: _map(lights, light => light.id), state: LIGHT_SWITCH_STATE.ON }));
+        dispatch({
+            type: LightActionTypes.TrySetAllLightsState,
+            lightIds: _map(lights, light => light.id),
+            state: LIGHT_SWITCH_STATE.ON
+        } as LightAction.TrySetAllLightsStateAction)
     },
     onSwitchAllOff(lights: Array<ILightSwitchState>) {
-        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE(
-            { lightIds: _map(lights, light => light.id), state: LIGHT_SWITCH_STATE.OFF }));
+        dispatch({
+            type: LightActionTypes.TrySetAllLightsState,
+            lightIds: _map(lights, light => light.id),
+            state: LIGHT_SWITCH_STATE.ON
+        } as LightAction.TrySetAllLightsStateAction)
     }
 });
 

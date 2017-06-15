@@ -9,7 +9,9 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/state';
-import { lightActions } from '../../../state/lights/lightActions';
+
+import * as LightAction from '../../../state/lights/lightActions';
+import * as LightActionTypes from '../../../state/lights/lightActionTypes';
 
 // props
 import { IRoomConfig } from '../../../state/config/configState';
@@ -32,7 +34,7 @@ interface IControlPanelProps {
 }
 
 export class ControlPanel extends React.Component<IControlPanelProps, {}> {
-    
+
     private renderRoom = (room: IRoomConfig, index: number) => {
         return (
             <RoomPanel key={index} id={room.id} showName={true} showBulkSwitches={false}/>
@@ -42,7 +44,7 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
     private renderRooms = () => {
         return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoom);
     }
-    
+
     public render() {
 
         return (
@@ -69,10 +71,18 @@ const mapStateToProps = (state: IAppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onSwitchAllOn() {
-        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: LIGHT_SWITCH_STATE.ON }));
+        dispatch({
+            type: LightActionTypes.TrySetAllLightsState,
+            lightIds: [],
+            state: LIGHT_SWITCH_STATE.ON
+        } as LightAction.TrySetAllLightsStateAction)
     },
     onSwitchAllOff() {
-        dispatch(lightActions.TRY_SET_ALL_LIGHTS_STATE({ lightIds: [], state: LIGHT_SWITCH_STATE.OFF }));
+        dispatch({
+            type: LightActionTypes.TrySetAllLightsState,
+            lightIds: [],
+            state: LIGHT_SWITCH_STATE.ON
+        } as LightAction.TrySetAllLightsStateAction)
     }
 });
 

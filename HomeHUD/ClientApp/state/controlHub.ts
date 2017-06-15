@@ -2,10 +2,12 @@ import { store } from '../boot-client';
 import * as _ from 'lodash';
 import 'signalr';
 
+import * as LightAction from './lights/lightActions';
+import * as LightActionTypes from './lights/lightActionTypes';
+
 import { navigationActions } from './navigation/navigationActions';
 
 import { ILightsState, ILightSwitchState, ILightsState as LightsState } from './lights/lightsState';
-import { lightActions } from './lights/lightActions';
 import {
 
     TRY_SET_LIGHT_STATE,
@@ -41,15 +43,27 @@ export class ControlHub implements IControlHub {
 
     private setClientEventHandlers(): void {
 
-        this.proxy.on(SET_LIGHT_STATE, (data: SET_LIGHT_STATE) => {
-            store.dispatch(lightActions.SET_LIGHT_STATE(data));
+        this.proxy.on('SetLightState', (data: { lightId: number | string, state: number }) => {
+
+            store.dispatch(<LightAction.SetLightStateAction>{
+                type: LightActionTypes.SetLightState,
+                lightId: data.lightId,
+                state: data.state
+            })
         }),
-        this.proxy.on(SET_ALL_LIGHTS_STATE, (data: SET_ALL_LIGHTS_STATE) => {
-            store.dispatch(lightActions.SET_ALL_LIGHTS_STATE(data));
-        }),
-        this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
-            store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
-        });
+
+        this.proxy.on('SetAllLightsState', (data: { lightIds: Array<string | number>, state: number }) => {
+
+            store.dispatch(<LightAction.SetAllLightsStateAction>{
+                type: LightActionTypes.SetLightState,
+                lightIds: data.lightIds,
+                state: data.state
+            })
+            })
+
+        //this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
+        //    store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
+        //});
     }
 
     private startConnection(): void {
@@ -65,10 +79,10 @@ export class ControlHub implements IControlHub {
     }
 
     public trySetLightState(lightState: TRY_SET_LIGHT_STATE): void {
-        this.proxy.invoke(SET_LIGHT_STATE, lightState);
+        this.proxy.invoke('SetLightState', lightState);
     }
 
     public trySetAllLightsState(allLightsState: TRY_SET_ALL_LIGHTS_STATE): void {
-        this.proxy.invoke(SET_ALL_LIGHTS_STATE, allLightsState);
+        this.proxy.invoke('SetAllLightsState', allLightsState);
     }
 }

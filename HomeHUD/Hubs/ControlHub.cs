@@ -1,16 +1,16 @@
+using HomeHUD.Models;
+using Microsoft.AspNetCore.SignalR;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
-using HomeHUD.Models;
 
 namespace HomeHUD.Hubs
 {
     public interface IControlHub
     {
-        void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
-        void SET_LIGHT_STATE(LightStateViewModel singleLightState);
-        void SET_ALL_LIGHTS_STATE(AllLightsStateViewModel lightsStateStateData);
+        //void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
+        void SetLightState(LightStateViewModel singleLightState);
+        void SetAllLightsState(AllLightsStateViewModel lightsStateStateData);
     }
 
     //[Authorize]
@@ -23,12 +23,12 @@ namespace HomeHUD.Hubs
             _lightSwitchService = lightSwitchService;
         }
 
-        public void GET_CURRENT_LIGHTS_STATE()
-        {
-            Clients.Caller.SET_CURRENT_LIGHTS_STATE(_lightSwitchService.GetCurrentLightsState());
-        }
+        //public void GET_CURRENT_LIGHTS_STATE()
+        //{
+        //    Clients.Caller.SET_CURRENT_LIGHTS_STATE(_lightSwitchService.GetCurrentLightsState());
+        //}
 
-        public async Task<int> SET_LIGHT_STATE(LightStateViewModel lightState)
+        public async Task<int> SetLightState(LightStateViewModel lightState)
         {
             // send request to set light
             // save changing state to db
@@ -40,7 +40,7 @@ namespace HomeHUD.Hubs
             var transition = GetLightSwitchTransition(lightState.State);
 
             var switching = _lightSwitchService.SetLightState(lightState.LightId, transition[0]);
-            Clients.All.SET_LIGHT_STATE(new LightStateViewModel
+            Clients.All.SetLightState(new LightStateViewModel
             {
                 LightId = lightState.LightId,
                 State = transition[0]
@@ -49,7 +49,7 @@ namespace HomeHUD.Hubs
 
             await switching;
             var switched = _lightSwitchService.SetLightState(lightState.LightId, transition[1]);
-            Clients.All.SET_LIGHT_STATE(new LightStateViewModel
+            Clients.All.SetLightState(new LightStateViewModel
             {
                 LightId = lightState.LightId,
                 State = transition[1]
@@ -58,7 +58,7 @@ namespace HomeHUD.Hubs
             return await switched;
         }
 
-        public async Task<int> SET_ALL_LIGHTS_STATE(AllLightsStateViewModel allLightsState)
+        public async Task<int> SetAllLightsState(AllLightsStateViewModel allLightsState)
         {
             // send request to set light
             // save changing state to db
@@ -82,13 +82,13 @@ namespace HomeHUD.Hubs
                 LightIds = lightsToSwitch,
                 State = transition[0]
             };
-            Clients.All.SET_ALL_LIGHTS_STATE(lightsState);
+            Clients.All.SetAllLightsState(lightsState);
 
 
             await switching;
             var switched = _lightSwitchService.SetAllLightsState(lightsToSwitch, transition[1]);
             lightsState.State = transition[1];
-            Clients.All.SET_ALL_LIGHTS_STATE(lightsState);
+            Clients.All.SetAllLightsState(lightsState);
 
             return await switched;
         }

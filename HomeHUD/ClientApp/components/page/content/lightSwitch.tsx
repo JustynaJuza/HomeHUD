@@ -6,7 +6,9 @@ import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/state';
-import { lightActions } from '../../../state/lights/lightActions';
+
+import * as LightAction from '../../../state/lights/lightActions';
+import * as LightActionTypes from '../../../state/lights/lightActionTypes';
 
 // props
 import { LIGHT_SWITCH_STATE } from '../../../state/lights/lightsState';
@@ -88,10 +90,20 @@ const mapStateToProps = (appState: IAppState, publicProps: ILightSwitchPublicPro
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     onSwitchOn(id: string | number) {
-        dispatch(lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: LIGHT_SWITCH_STATE.ON }));
+
+        dispatch({
+            type: LightActionTypes.TrySetLightState,
+            lightId: id,
+            state: LIGHT_SWITCH_STATE.ON
+        } as LightAction.TrySetLightStateAction)
     },
     onSwitchOff(id: string | number) {
-        dispatch(lightActions.TRY_SET_LIGHT_STATE({ lightId: id, state: LIGHT_SWITCH_STATE.OFF }));
+
+        dispatch({
+            type: LightActionTypes.TrySetLightState,
+            lightId: id,
+            state: LIGHT_SWITCH_STATE.OFF
+        } as LightAction.TrySetLightStateAction)
     }
 });
 
