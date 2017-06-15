@@ -109,7 +109,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         dispatch({
             type: LightActionTypes.TrySetAllLightsState,
             lightIds: _map(lights, light => light.id),
-            state: LIGHT_SWITCH_STATE.ON
+            state: LIGHT_SWITCH_STATE.OFF
         } as LightAction.TrySetAllLightsStateAction)
     }
 });
