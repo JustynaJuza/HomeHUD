@@ -24,6 +24,8 @@ import RoomPanel from './roomPanel';
 // style
 import * as style from '../../../css/components/control-panel.css';
 
+import { Route } from 'react-router';
+
 // component ---------------------------------------------------------------------------------
 
 interface IControlPanelProps {
@@ -37,13 +39,24 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
     private renderRoom = (room: IRoomConfig, index: number) => {
         return (
-            <RoomPanel key={index} id={room.id} showName={true} showBulkSwitches={false}/>
+            <RoomPanel key={index} id={room.id} showName={true} showBulkSwitches={false} />
         )
     }
 
     private renderRooms = () => {
         return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoom);
     }
+
+    private renderPath = (room: IRoomConfig, index: number) => {
+        return (
+            <Route key={index} path={room.hash} />
+        )
+    }
+
+    private renderPaths = () => {
+        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderPath);
+    }
+
 
     public render() {
 
@@ -54,7 +67,8 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
                     <button className={style.button} onClick={() => this.props.onSwitchAllOff()}>Switch all OFF</button>
                 </div>
 
-            { this.renderRooms() }
+                {this.renderRooms()}
+                {this.renderPaths()}
 
             </div>
         );
