@@ -1,5 +1,6 @@
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Models.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace HomeHUD.Hubs
         {
             return _context.Lights
                    .Where(x => x.State != expectedLightsState.State)
-                   .Where(x => expectedLightsState.LightIds.Contains(x.Id))
+                   .WhereFilterIsEmptyOrContains(x => x.Id, expectedLightsState.LightIds)
                    .Select(x => x.Id)
                    .ToArray();
         }

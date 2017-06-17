@@ -26,7 +26,7 @@ export interface SetAllLightsStateAction {
 }
 
 export interface SetAllLightsAction {
-    type: typeof LightActionTypes.SetAllLightsState,
+    type: typeof LightActionTypes.SetAllLights,
     lights: ILightsState
 }
 

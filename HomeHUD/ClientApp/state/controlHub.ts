@@ -38,16 +38,16 @@ export class ControlHub implements IControlHub {
                 lightId: data.lightId,
                 state: data.state
             })
-        }),
+        });
 
         this.proxy.on('SetAllLightsState', (data: { lightIds: Array<string | number>, state: number }) => {
 
             store.dispatch(<LightAction.SetAllLightsStateAction>{
-                type: LightActionTypes.SetLightState,
+                type: LightActionTypes.SetAllLightsState,
                 lightIds: data.lightIds,
                 state: data.state
             })
-            })
+        });
 
         //this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
         //    store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));

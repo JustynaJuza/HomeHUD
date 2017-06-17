@@ -1,5 +1,4 @@
-﻿using LinqKit;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,6 +7,18 @@ namespace HomeHUD.Models.Extensions
 {
     public static class QueryableExtensions
     {
+        public static IQueryable<TModel> WhereFilterIsEmptyOrContains<TModel, T>
+            (this IQueryable<TModel> query, Expression<Func<TModel, T>> predicate, IEnumerable<T> filter) where TModel : class
+        {
+            if (!filter.Any())
+            {
+                return query;
+            }
+
+            var predicateFunc = predicate.Compile();
+            return !filter.IsNullOrEmptyOrHasNullElementsOnly() ? query : query.Where(x => filter.Contains(predicateFunc(x)));
+        }
+
         public static IQueryable<TModel> FilterBy<TModel>(this IQueryable<TModel> query, IEnumerable<TModel> filter) where TModel : class
         {
             return !filter.IsNullOrEmptyOrHasNullElementsOnly() ? query : query.Where(x => filter.Contains(x));
@@ -46,13 +57,13 @@ namespace HomeHUD.Models.Extensions
         //}
 
 
-        public static IQueryable<TModel> FilterBy<TModel, TFilter>(this IQueryable<TModel> query, IEnumerable<TFilter> filter, Expression<Func<TModel, TFilter>> propertySelector)
-            where TModel : class
-        {
-            return filter.IsNullOrEmptyOrHasNullElementsOnly()
-                ? query
-                : query.AsExpandable().Where(x => filter.Contains(propertySelector.Invoke(x)));
-        }
+        //public static IQueryable<TModel> FilterBy<TModel, TFilter>(this IQueryable<TModel> query, IEnumerable<TFilter> filter, Expression<Func<TModel, TFilter>> propertySelector)
+        //    where TModel : class
+        //{
+        //    return filter.IsNullOrEmptyOrHasNullElementsOnly()
+        //        ? query
+        //        : query.AsExpandable().Where(x => filter.Contains(propertySelector.Invoke(x)));
+        //}
     }
 
     public static class EnumerableExtensions
@@ -64,7 +75,8 @@ namespace HomeHUD.Models.Extensions
 
         public static bool IsNullOrEmptyOrHasNullElementsOnly<T>(this IEnumerable<T> enumerable)
         {
-            if (enumerable == null) return true;
+            if (enumerable == null)
+                return true;
 
             enumerable = enumerable.Where(x => x != null);
             return !enumerable.Any();
