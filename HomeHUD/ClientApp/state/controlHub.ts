@@ -5,26 +5,14 @@ import 'signalr';
 import * as LightAction from './lights/lightActions';
 import * as LightActionTypes from './lights/lightActionTypes';
 
-import { navigationActions } from './navigation/navigationActions';
+//import { navigationActions } from './navigation/navigationActions';
 
-import { ILightsState, ILightSwitchState, ILightsState as LightsState } from './lights/lightsState';
-import {
-
-    TRY_SET_LIGHT_STATE,
-    TRY_SET_ALL_LIGHTS_STATE,
-
-    SET_LIGHT_STATE,
-    SET_ALL_LIGHTS_STATE,
-
-    GET_CURRENT_LIGHTS_STATE,
-    SET_CURRENT_LIGHTS_STATE
-
-} from './lights/lightActionDescriptions';
+import { ILightsState, ILightSwitchState } from './lights/lightsState';
 
 export interface IControlHub {
     init: () => void;
-    trySetLightState: (lightState: TRY_SET_LIGHT_STATE) => void;
-    trySetAllLightsState: (allLightsState: TRY_SET_ALL_LIGHTS_STATE) => void;
+    trySetLightState: (lightState: { lightId: string | number, state: number }) => void;
+    trySetAllLightsState: (allLightsState: { lightIds: Array<string | number>, state: number }) => void;
 }
 
 export class ControlHub implements IControlHub {
@@ -72,17 +60,17 @@ export class ControlHub implements IControlHub {
                 //this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
             })
             .fail(() => {
-                store.dispatch(navigationActions.SHOW_ERROR({
-                    message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
-                }));
+                //store.dispatch(navigationActions.SHOW_ERROR({
+                //    message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
+                //}));
             });
     }
 
-    public trySetLightState(lightState: TRY_SET_LIGHT_STATE): void {
+    public trySetLightState(lightState: { lightId: string | number, state: number }): void {
         this.proxy.invoke('SetLightState', lightState);
     }
 
-    public trySetAllLightsState(allLightsState: TRY_SET_ALL_LIGHTS_STATE): void {
+    public trySetAllLightsState(allLightsState: { lightIds: Array<string | number>, state: number }): void {
         this.proxy.invoke('SetAllLightsState', allLightsState);
     }
 }

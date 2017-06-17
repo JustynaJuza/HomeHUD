@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
 
 // props
-import { ISelectedContent, IError } from '../../state/navigation/navigationState';
+import { ISelectedContent, IError } from '../../state/nav/navState';
 
 // components
 import RoomPanel from './content/roomPanel';

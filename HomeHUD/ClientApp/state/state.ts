@@ -1,13 +1,13 @@
-import { INavigationState } from './navigation/navigationState';
+import { INavState } from './nav/navState';
 import { ILightsState } from './lights/lightsState';
 import { IConfigState } from './config/configState';
-import { IAuthenticationState } from './authentication/authenticationState';
+//import { IAuthenticationState } from './authentication/authenticationState';
 
 export interface IAppState {
-    navigation: INavigationState;
+    navigation: INavState;
     lights: ILightsState;
     config: IConfigState;
-    authentication: IAuthenticationState;
+    //authentication: IAuthenticationState;
 }
 
 export interface AppThunkAction<TAction> {

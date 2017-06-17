@@ -1,27 +1,12 @@
-import { navigationReducer } from './navigation/navigationReducer';
-import { INavigationState } from './navigation/navigationState';
-import { navigationActions } from './navigation/navigationActions';
-
+import { navReducer } from './nav/navReducer';
 import { LightsReducer } from './lights/lightsReducer';
-import { ILightsState } from './lights/lightsState';
-
 import { configReducer } from './config/configReducer';
-import { IConfigState } from './config/configState';
 
-import { authenticationReducer } from './authentication/authenticationReducer';
-import { IAuthenticationState } from './authentication/authenticationState';
-
-
-export interface IAppState {
-    navigation: INavigationState;
-    lights: ILightsState;
-    config: IConfigState;
-    authentication: IAuthenticationState;
-}
+//import { authenticationReducer } from './authentication/authenticationReducer';
 
 export function getReducers() {
     return {
-        navigation: navigationReducer,
+        navigation: navReducer,
         lights: new LightsReducer().get(),
         config: configReducer,
         //    authentication: authenticationReducer
@@ -30,7 +15,7 @@ export function getReducers() {
 }
 
 export const reducers = {
-    navigation: navigationReducer,
+    navigation: navReducer,
     lights: new LightsReducer().get(),
     config: configReducer,
     //    authentication: authenticationReducer

@@ -68,7 +68,6 @@ export class ControlPanel extends React.Component<IControlPanelProps, {}> {
                 </div>
 
                 {this.renderRooms()}
-                {this.renderPaths()}
 
             </div>
         );

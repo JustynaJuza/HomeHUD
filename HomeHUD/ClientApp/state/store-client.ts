@@ -1,10 +1,11 @@
-import { navigationReducer } from './navigation/navigationReducer';
+import { navReducer } from './nav/navReducer';
 
 import { LightsReducer } from './lights/lightsReducer';
 
 import { configReducer } from './config/configReducer';
 
-import { authenticationReducer } from './authentication/authenticationReducer';
+//import { authenticationReducer } from './authentication/authenticationReducer';
+
 import { ControlHub } from './controlHub';
 
 import { IAppState } from './state';
@@ -15,7 +16,7 @@ export function getReducersWithControlHub() {
     lightsReducer.hub.init();
 
     return {
-        navigation: navigationReducer,
+        navigation: navReducer,
         lights: lightsReducer.get(),
         config: configReducer,
         //    authentication: authenticationReducer

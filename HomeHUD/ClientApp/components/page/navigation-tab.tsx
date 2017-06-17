@@ -6,7 +6,7 @@ import * as classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
-import { navigationActions } from '../../state/navigation/navigationActions';
+import { navActionCreators } from '../../state/nav/navActionCreators';
 
 // style
 import * as style from '../../css/components/navigation-tab.css';
@@ -54,7 +54,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTab
         e.preventDefault();
         history.pushState(null, null, publicProps.hash);
 
-        dispatch(navigationActions.UPDATE_ROUTE(publicProps.hash));
+        //navActionCreators.selectContent(id);
+        //dispatch(navigationActions.UPDATE_ROUTE(publicProps.hash));
     }
 });
 

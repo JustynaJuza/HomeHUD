@@ -1,11 +1,15 @@
 import { Reducer } from 'redux';
 
-import { ConfigAction } from './configActions';
+import * as ConfigActions from './configActions';
 import * as ConfigActionTypes from './configActionTypes';
 
-import { IConfigState, initialConfigState } from './configState';
+import { IConfigState } from './configState';
 
-export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigAction) => {
+const initialConfigState: IConfigState = {
+    rooms: []
+}
+
+export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigActions.ConfigAction) => {
     switch (action.type) {
         case ConfigActionTypes.SetConfigState:
             return action.config;

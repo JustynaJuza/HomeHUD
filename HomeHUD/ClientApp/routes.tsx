@@ -11,19 +11,19 @@ const routesConfig = [
     {
         path: '/',
         component: Layout
+    },
+    {
+        path: '/gaming',
+        component: Layout
+    },
+    {
+        path: '/bed',
+        component: Layout
+    },
+    {
+        path: '/living',
+        component: Layout
     }
-    //{
-    //    path: '/gaming',
-    //    component: Layout
-    //},
-    //{
-    //    path: '/bed',
-    //    component: Layout
-    //},
-    //{
-    //    path: '/living',
-    //    component: Layout
-    //}
 ]
 
 const renderRoutes = (route, key) => <Route key={key} path={route.path} component={route.component} />;

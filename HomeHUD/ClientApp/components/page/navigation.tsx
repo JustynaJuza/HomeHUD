@@ -9,11 +9,10 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
-import { navigationActions } from '../../state/navigation/navigationActions';
 
 // props
 import { IRoomConfig } from '../../state/config/configState';
-import { ISelectedContent } from '../../state/navigation/navigationState';
+import { ISelectedContent } from '../../state/nav/navState';
 
 // components
 import NavigationTab from './navigation-tab';

@@ -34,7 +34,6 @@ export interface IRoomPanelPublicProps {
 
 interface IRoomPanelProps extends IRoomPanelPublicProps {
     name: string;
-    hash: string;
     onSwitchAllOn: (lights: Array<ILightSwitchState>) => void;
     onSwitchAllOff: (lights: Array<ILightSwitchState>) => void;
     lights: Array<ILightSwitchState>;
@@ -78,10 +77,9 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 
                     {this.renderLightSwitches()}
                 </div>
-
-                <Route path={this.props.hash} />
+                
             </div>
-        );
+        );              
     }
 }
 
@@ -94,7 +92,6 @@ const mapStateToProps = (state: IAppState, publicProps: IRoomPanelPublicProps) =
     }
 
     return {
-        hash: configEntry.hash,
         name: configEntry.name,
         lights: _filter(state.lights.all, (light) => {
             return _indexOf(configEntry.lights, light.id) > -1;

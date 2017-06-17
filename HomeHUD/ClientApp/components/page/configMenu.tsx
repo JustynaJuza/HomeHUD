@@ -5,11 +5,11 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
-import { authenticationActions } from '../../state/authentication/authenticationActions';
+//import { authenticationActions } from '../../state/authentication/authenticationActions';
 
 // props
 import { IRoomConfig } from '../../state/config/configState';
-import { ISelectedContent } from '../../state/navigation/navigationState';
+import { ISelectedContent } from '../../state/nav/navState';
 
 // style
 import * as style from '../../css/components/config-menu.css';
@@ -53,13 +53,13 @@ class ConfigMenu extends React.Component<IConfigMenuProps, {}> {
 const mapStateToProps = (state: IAppState) => {
 
     return {
-        isAuthenticated: state.authentication.isAuthenticated,
-        userName: state.authentication.userName
+        //isAuthenticated: state.authentication.isAuthenticated,
+        //userName: state.authentication.userName
     }
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    logoff() { dispatch(authenticationActions.LOGOFF()); }
+    //logoff() { dispatch(authenticationActions.LOGOFF()); }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigMenu);

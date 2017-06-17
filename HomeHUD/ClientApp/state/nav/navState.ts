@@ -20,7 +20,7 @@ export class SelectedContent implements ISelectedContent{
     }
 }
 
-export interface INavigationState {
+export interface INavState {
     selectedContent: ISelectedContent;
     error: IError;
     route: string;
