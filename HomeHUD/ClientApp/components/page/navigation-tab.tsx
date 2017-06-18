@@ -54,8 +54,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTab
         e.preventDefault();
         history.pushState(null, null, publicProps.hash);
 
-        //navActionCreators.selectContent(id);
-        //dispatch(navigationActions.UPDATE_ROUTE(publicProps.hash));
+        dispatch(navActionCreators.selectContent({ type: 'ROOM', id: id }));
     }
 });
 

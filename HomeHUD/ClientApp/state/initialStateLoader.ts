@@ -14,7 +14,6 @@ import { ILightsState } from './lights/lightsState';
 
 export const initialStateDispatcher = {
     dispatchConfigState: (configState: IConfigState): AppThunkAction<ConfigAction> => (dispatch, getState) => {
-        console.log(configState)
         dispatch({ type: ConfigActionTypes.SetConfigState, config: configState })
     },
     dispatchLightsState: (lightsState: ILightsState): AppThunkAction<LightAction> => (dispatch, getState) => {

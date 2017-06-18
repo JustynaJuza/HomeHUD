@@ -32,11 +32,3 @@ export const navReducer: Reducer<INavState> = (state: INavState, action: NavActi
             return state || initialNavState;
     }
 };
-
-    //[UPDATE_ROUTE]:
-    //(state: INavigationState, action: IAction<UPDATE_ROUTE>) => {
-
-    //    return Object.assign({}, state, {
-    //        route: action.data
-    //    });
-    //}

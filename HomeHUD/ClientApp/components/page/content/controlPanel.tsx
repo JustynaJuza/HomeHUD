@@ -35,7 +35,7 @@ interface IControlPanelProps {
     onSwitchAllOff: () => void;
 }
 
-export class ControlPanel extends React.Component<IControlPanelProps, {}> {
+class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
     private renderRoom = (room: IRoomConfig, index: number) => {
         return (
