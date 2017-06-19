@@ -59,7 +59,6 @@ class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
 
     public render() {
-
         return (
             <div>
                 <div className={style.container}>

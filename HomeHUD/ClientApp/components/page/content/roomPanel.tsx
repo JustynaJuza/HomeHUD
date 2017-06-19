@@ -77,9 +77,9 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 
                     {this.renderLightSwitches()}
                 </div>
-                
+
             </div>
-        );              
+        );
     }
 }
 

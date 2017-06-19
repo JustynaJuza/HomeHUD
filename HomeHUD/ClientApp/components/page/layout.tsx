@@ -12,13 +12,17 @@ import { Api } from '../../state/api';
 import { initialStateLoader } from '../../state/initialStateLoader';
 import { IConfigState } from '../../state/config/configState';
 import { IAppState } from '../../state/state';
+import { IRouterParams } from '../../router';
+
 
 // style
 import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
-type ILayoutProps = IAppState & typeof initialStateLoader;
+type ILayoutProps = IAppState
+    & IRouterParams
+    & typeof initialStateLoader;
 
 class Layout extends React.Component<ILayoutProps, {}> {
     private api: Api;
@@ -29,11 +33,13 @@ class Layout extends React.Component<ILayoutProps, {}> {
 
     public render() {
 
+        const { location, params } = this.props;
+
         return (
             <div className={style.layout}>
                 <Header />
                 <Navigation />
-                <Content />
+                <Content {...{ location, params }} />
             </div>
         );
     }

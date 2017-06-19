@@ -5,6 +5,7 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
+import { IRouterParams } from '../../router';
 
 // props
 import { ISelectedContent, IError } from '../../state/nav/navState';
@@ -19,13 +20,17 @@ import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IContentProps {
+interface IContentProps extends IRouterParams {
     isAuthenticated: boolean;
     selectedContent: ISelectedContent;
     error: IError;
-}
+};
+
 
 class Content extends React.Component<IContentProps, {}> {
+    //static contextTypes = {
+    //    router: PropTypes.object.isRequired
+    //};
 
     private getSelectedRoom(): number {
         return this.props.selectedContent.type === 'ROOM'
@@ -41,6 +46,8 @@ class Content extends React.Component<IContentProps, {}> {
     }
 
     public render() {
+        console.log(this.props)
+        console.log(this.state)
 
         return (
             <div className={style.content}>
@@ -61,7 +68,7 @@ class Content extends React.Component<IContentProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: IAppState, ownProps: IRouterParams) => {
     return {
         isAuthenticated: true,
         selectedContent: state.navigation.selectedContent,

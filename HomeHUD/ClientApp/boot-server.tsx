@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
-import routes from './routes';
+import routes from './router';
 import configureStore from './configureStore-server';
 import { Api } from './state/api';
 

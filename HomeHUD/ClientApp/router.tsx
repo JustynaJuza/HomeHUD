@@ -7,21 +7,18 @@ import Layout from './components/page/layout';
 //import FetchData from './components/FetchData';
 //import Counter from './components/Counter';
 
+export interface IRouterParams {
+    params: Router.Params
+    location: Router.LocationDescriptor
+}
+
 const routesConfig = [
     {
         path: '/',
         component: Layout
     },
     {
-        path: '/gaming',
-        component: Layout
-    },
-    {
-        path: '/bed',
-        component: Layout
-    },
-    {
-        path: '/living',
+        path: '/:hash',
         component: Layout
     }
 ]
