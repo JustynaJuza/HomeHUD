@@ -47,7 +47,6 @@ class Content extends React.Component<IContentProps, {}> {
 
     public render() {
         console.log(this.props)
-        console.log(this.state)
 
         return (
             <div className={style.content}>

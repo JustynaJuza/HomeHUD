@@ -29,7 +29,6 @@ export const initialStateLoader = {
         var initialStateLoadingTask =
             api.getJson<IAppState>('http://localhost:5000/initialState')
                 .then((initialState) => {
-                    console.log(initialState)
                     dispatch({ type: ConfigActionTypes.SetConfigState, config: initialState.config })
                     dispatch({ type: LightActionTypes.SetAllLights, lights: initialState.lights });
                     //initialStateDispatcher.dispatchConfigState(initialState.config);

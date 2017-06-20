@@ -44,9 +44,9 @@ module.exports = (env) => {
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
             }),
             new webpack.ProvidePlugin({
-                $: 'jQuery',
-                jQuery: 'jQuery',
-                'window.jQuery': 'jQuery'
+                $: 'jquery',
+                jQuery: 'jquery',
+                'window.jQuery': 'jquery'
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
