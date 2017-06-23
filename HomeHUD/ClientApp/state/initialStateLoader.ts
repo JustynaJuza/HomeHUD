@@ -22,21 +22,26 @@ export const initialStateDispatcher = {
     }
 }
 
+var initialStateLoadingTask;
+
 export const initialStateLoader = {
 
     getInitialState: () => (dispatch, getState) => {
-        var api = new Api();
-        var initialStateLoadingTask =
-            api.getJson<IAppState>('http://localhost:5000/initialState')
-                .then((initialState) => {
-                    dispatch({ type: ConfigActionTypes.SetConfigState, config: initialState.config })
-                    dispatch({ type: LightActionTypes.SetAllLights, lights: initialState.lights });
-                    //initialStateDispatcher.dispatchConfigState(initialState.config);
-                    //initialStateDispatcher.dispatchLightsState(initialState.lights);
-                });
+        if(!initialStateLoadingTask) {
 
-        // ensures server-side prerendering waits for this to complete
-        addTask(initialStateLoadingTask);
+            var api = new Api();
+            initialStateLoadingTask =
+                api.getJson<IAppState>('http://localhost:5000/initialState')
+                    .then((initialState) => {
+                        dispatch({ type: ConfigActionTypes.SetConfigState, config: initialState.config })
+                        dispatch({ type: LightActionTypes.SetAllLights, lights: initialState.lights });
+                        //initialStateDispatcher.dispatchConfigState(initialState.config);
+                        //initialStateDispatcher.dispatchLightsState(initialState.lights);
+                    });
+
+            // ensures server-side prerendering waits for this to complete
+            addTask(initialStateLoadingTask);
+        }
     },
     getServerConfig: (): AppThunkAction<ConfigAction> => (dispatch, getState) => {
 

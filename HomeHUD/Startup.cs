@@ -86,6 +86,10 @@ namespace HomeHud
             }
             else
             {
+                if (!string.IsNullOrWhiteSpace(Configuration["showDetailedErrors"]))
+                {
+                    app.UseDeveloperExceptionPage();
+                }
                 app.UseExceptionHandler("/Home/Error");
             }
 
@@ -97,11 +101,33 @@ namespace HomeHud
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
+            //app.MapWhen(c => c.Request.Path.Value.eHasValue, b => )
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                //routes.MapRoute(
+                //    name: "gaming",
+                //    template: "gaming",
+                //    defaults: new { controller = "Home", action = "Index" });
+
+                //routes.MapRoute(
+                //    name: "bed",
+                //    template: "bed",
+                //    defaults: new { controller = "Home", action = "Index" });
+
+                //routes.MapRoute(
+                //   name: "living",
+                //   template: "living",
+                //    defaults: new { controller = "Home", action = "Index" });
+
+                //routes.MapSpaFallbackRoute(
+                //    name: "spa-fallback",
+                //    templatePrefix: "gaming",
+                //    defaults: new { controller = "Home", action = "Index" });
 
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",

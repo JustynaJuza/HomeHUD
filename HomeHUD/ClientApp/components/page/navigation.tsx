@@ -82,8 +82,10 @@ const mapStateToProps = (state: IAppState) => {
     return {
         isAuthenticated: true, //state.authentication.isAuthenticated,
         selectedContent: state.navigation.selectedContent,
-        rooms: _filter(state.config.rooms, room => room.lights.length > 0)
+        rooms: _filter(state.config.rooms, room => room.lights.length > 0) as IRoomConfig[]
     }
 };
 
-export default connect(mapStateToProps)(Navigation);
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

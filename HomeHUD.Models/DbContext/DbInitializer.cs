@@ -9,8 +9,9 @@ namespace HomeHUD.Models.DbContext
         public static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
-            context.Rooms.RemoveRange(context.Rooms);
-            context.SaveChanges();
+
+            //context.Rooms.RemoveRange(context.Rooms);
+            //context.SaveChanges();
 
             if (!context.Set<Room>().Any())
             {

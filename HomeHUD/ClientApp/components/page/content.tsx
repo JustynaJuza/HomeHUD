@@ -75,4 +75,7 @@ const mapStateToProps = (state: IAppState, ownProps: IRouterParams) => {
     }
 };
 
-export default connect(mapStateToProps)(Content);
+const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: IRouterParams) => ({    
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);
