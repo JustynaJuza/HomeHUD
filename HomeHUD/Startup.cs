@@ -50,6 +50,9 @@ namespace HomeHud
             services.AddSignalR();
             services.AddMemoryCache();
 
+            // Map configuration
+            services.Configure<RabbitMqCredentials>(Configuration.GetSection(nameof(RabbitMqCredentials)));
+
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -66,6 +69,7 @@ namespace HomeHud
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILightSwitchService, LightSwitchService>();
+            services.AddTransient<IRabbitMqService, RabbitMqService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

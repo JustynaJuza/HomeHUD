@@ -3,6 +3,7 @@ using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Hubs
@@ -11,8 +12,8 @@ namespace HomeHUD.Hubs
     {
         LightsState GetCurrentLightsState();
         int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState);
-        Task<int> SetLightState(int lightId, LightSwitchState state);
-        Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state);
+        Task<int> SetLightState(int lightId, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
     }
 
     //[Authorize]
@@ -49,19 +50,19 @@ namespace HomeHUD.Hubs
                    .ToArray();
         }
 
-        public async Task<int> SetLightState(int lightId, LightSwitchState state)
+        public async Task<int> SetLightState(int lightId, LightSwitchState state, CancellationToken cancellationToken)
         {
             var switchedLight = await _context.Lights.FindAsync(lightId);
             if (switchedLight.State != state)
             {
                 switchedLight.State = state;
-                return await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync(cancellationToken);
             }
 
             return await Task.FromResult(1);
         }
 
-        public async Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state)
+        public async Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state, CancellationToken cancellationToken)
         {
             _context.Lights
                 .Where(x => x.State != state)
@@ -69,7 +70,7 @@ namespace HomeHUD.Hubs
                 .ToList()
                 .ForEach(x => x.State = state);
 
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
 
         //public async Task<int> SetAllLightsState(LightSwitchState state)
