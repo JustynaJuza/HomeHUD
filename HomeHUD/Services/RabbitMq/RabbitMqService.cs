@@ -28,10 +28,11 @@ namespace HomeHUD.Services
             var factory = new ConnectionFactory()
             {
                 Uri = string.Format(
-                    "amqp://{0}:{1}@{2}/{3}",
+                    "amqp://{0}:{1}@{2}:{3}/{4}",
                     _credentials.Username,
                     _credentials.Password,
                     _credentials.Server,
+                    _credentials.Port,
                     _credentials.VirtualHost)
             };
 

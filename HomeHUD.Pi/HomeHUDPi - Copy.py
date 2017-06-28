@@ -3,38 +3,22 @@ import json
 
 from pprint import pprint
 from QueueConsumer import QueueConsumer
-from RabbitMqModels import RabbitMqCredentials
 
 
-#with open("settings.json") as dataFile:
-#    data = json.load(dataFile)
+with open("settings.json") as dataFile:
+    data = json.load(dataFile)
 
-#rabbitMqCredentialsData = data["RabbitMq"]["Credentials"]
-#rabbitMqCredentials = RabbitMqCredentials(
-
-#)
-
-
-#connectionUri = "amqp://{0}:{1}@{2}:{3}/{4}".format(
-#    rabbitMqCredentials["Username"],
-#    rabbitMqCredentials["Password"],
-#    rabbitMqCredentials["Server"],
-#    rabbitMqCredentials["Port"],
-#    rabbitMqCredentials["VirtualHost"])
+rabbitMqCredentials = data["RabbitMq"]["Credentials"]
+connectionUri = "amqp://{0}:{1}@{2}:{3}/{4}".format(
+    rabbitMqCredentials["Username"],
+    rabbitMqCredentials["Password"],
+    rabbitMqCredentials["Server"],
+    rabbitMqCredentials["Port"],
+    rabbitMqCredentials["VirtualHost"])
 
 pprint(connectionUri)
 
-def main():
-    example = QueueConsumer(connectionUri)
-    try:
-        example.run()
-    except KeyboardInterrupt:
-        example.stop()
-
-
-if __name__ == '__main__':
-    main()
-
+parameters = pika.URLParameters(connectionUri)
 
 # Step #3
 def on_open(connection):
@@ -80,3 +64,8 @@ except KeyboardInterrupt:
 
     # Start the IOLoop again so Pika can communicate, it will stop on its own when the connection is closed
     connection.ioloop.start()
+
+input("Enter something: ")
+
+
+#channel.exchange_declare(exchange='heartbit', auto_delete=True, type='fanout')
