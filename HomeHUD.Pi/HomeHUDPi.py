@@ -1,7 +1,6 @@
 import pika #amqp library for RabbitMq connections
 import json
 
-from pprint import pprint
 from QueueConsumer import QueueConsumer
 from RabbitMqModels import RabbitMqCredentials
 
@@ -13,14 +12,6 @@ from RabbitMqModels import RabbitMqCredentials
 #rabbitMqCredentials = RabbitMqCredentials(
 
 #)
-
-
-#connectionUri = "amqp://{0}:{1}@{2}:{3}/{4}".format(
-#    rabbitMqCredentials["Username"],
-#    rabbitMqCredentials["Password"],
-#    rabbitMqCredentials["Server"],
-#    rabbitMqCredentials["Port"],
-#    rabbitMqCredentials["VirtualHost"])
 
 #pprint(connectionUri)
 

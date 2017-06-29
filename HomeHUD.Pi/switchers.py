@@ -7,7 +7,17 @@ import time
 import logging
 
 
-class Switcher(object):
+class EnergenieLightSwitcher(object):
+
+    LIGHT_1_ON = [(11, True)(15, True)(16, True)(13, True)]
+    LIGHT_1_OFF = [(11, True)(15, True)(16, True)(13, False)]
+    LIGHT_2_ON = [(11, False)(15, True)(16, True)(13, True)]
+    LIGHT_2_OFF = [(11, False)(15, True)(16, True)(13, False)]
+    LIGHT_3_ON = [(11, True)(15, False)(16, True)(13, True)]
+    LIGHT_3_OFF = [(11, True)(15, False)(16, True)(13, False)]
+    LIGHT_4_ON = [(11, False)(15, False)(16, True)(13, True)]
+    LIGHT_4_OFF = [(11, False)(15, False)(16, True)(13, False)]
+
     def __init__(self):
         # set the pins numbering mode
         GPIO.setmode(GPIO.BOARD)
@@ -39,118 +49,59 @@ class Switcher(object):
 
     def switch_off_first(self):
         logging.info("sending code 0111 Socket 1 off")
-        GPIO.output(11, True)
-        GPIO.output(15, True)
-        GPIO.output(16, True)
-        GPIO.output(13, False)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_1_OFF)
+        self.run_modulator()
 
     def switch_on_first(self):
         logging.info("sending code 1111 socket 1 on")
-        GPIO.output(11, True)
-        GPIO.output(15, True)
-        GPIO.output(16, True)
-        GPIO.output(13, True)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_1_ON)
+        self.run_modulator()
 
     def switch_on_second(self):
         logging.info("sending code 1110 Socket 2 on")
-        GPIO.output(11, False)
-        GPIO.output(15, True)
-        GPIO.output(16, True)
-        GPIO.output(13, True)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_2_ON)
+        self.run_modulator()
 
     def switch_off_second(self):
         logging.info("sending code 0110 socket 2 off")
-        GPIO.output(11, False)
-        GPIO.output(15, True)
-        GPIO.output(16, True)
-        GPIO.output(13, False)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_2_OFF)
+        self.run_modulator()
 
     def switch_on_third(self):
         logging.info("sending code 1101 Socket 3 on")
-        GPIO.output(11, True)
-        GPIO.output(15, False)
-        GPIO.output(16, True)
-        GPIO.output(13, True)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_3_ON)
+        self.run_modulator()
 
     def switch_off_third(self):
         logging.info("sending code 0101 socket 3 off")
-        GPIO.output(11, True)
-        GPIO.output(15, False)
-        GPIO.output(16, True)
-        GPIO.output(13, False)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_3_OFF)
+        self.run_modulator()
+
 
     def switch_on_fourth(self):
         logging.info("sending code 1100 Socket 4 on")
-        GPIO.output(11, False)
-        GPIO.output(15, False)
-        GPIO.output(16, True)
-        GPIO.output(13, True)
-        # let it settle, encoder requires this
-        time.sleep(0.1)
-        # Enable the modulator
-        GPIO.output(22, True)
-        # keep enabled for a period
-        time.sleep(0.25)
-        # Disable the modulator
-        GPIO.output(22, False)
+        self.set_output_sequence(sequence = LIGHT_4_ON)
+        self.run_modulator()
 
     def switch_off_fourth(self):
         logging.info("sending code 0100 socket 4 off")
-        GPIO.output(11, False)
-        GPIO.output(15, False)
-        GPIO.output(16, True)
-        GPIO.output(13, False)
+        self.set_output_sequence(sequence = LIGHT_4_OFF)
+        self.run_modulator()
+
+    def set_output_sequence(self, sequence = [()]):
+        for pinState in sequence:
+            self.setSinglePinState(pinState)
+
+    def setSinglePinState(self, pinState):
+            pin = pinState[0]
+            state = pinState[1]
+            GPIO.output(pin, state)
+
+    def run_modulator(self):
         # let it settle, encoder requires this
         time.sleep(0.1)
-        # Enable the modulator
+
+         # Enable the modulator
         GPIO.output(22, True)
         # keep enabled for a period
         time.sleep(0.25)
