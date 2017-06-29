@@ -2,24 +2,18 @@ import pika #amqp library for RabbitMq connections
 import logging
 import json
 
-
-with open("appsettings.auth.json") as dataFile:
-    data = json.load(dataFile)
-    rabbitMqCredentials = data["RabbitMq"]["Credentials"]
-
-CONNECTION_URI = "amqp://{0}:{1}@{2}:{3}/{4}".format(
-    rabbitMqCredentials["Username"],
-    rabbitMqCredentials["Password"],
-    rabbitMqCredentials["Server"],
-    rabbitMqCredentials["Port"],
-    rabbitMqCredentials["VirtualHost"])
-
-
-LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
-              '-35s %(lineno) -5d: %(message)s')
 LOGGER = logging.getLogger(__name__)
 
-logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
+with open('appsettings.auth.json') as dataFile:
+    data = json.load(dataFile)
+    rabbitMqCredentials = data['RabbitMq']['Credentials']
+
+CONNECTION_URI = 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
+    rabbitMqCredentials['Username'],
+    rabbitMqCredentials['Password'],
+    rabbitMqCredentials['Server'],
+    rabbitMqCredentials['Port'],
+    rabbitMqCredentials['VirtualHost'])
 
 class QueueConsumer(object):
 
@@ -28,23 +22,17 @@ class QueueConsumer(object):
     QUEUE = 'text'
     ROUTING_KEY = 'example.text'
 
-    def __init__(self):
-
-        #self._connection = None
-        #self._channel = None
-        #self._closing = False
-        #self._consumer_tag = None
-        self._url = CONNECTION_URI
+    def __init__(self, message_processing_function):
+        self._message_processing_function = message_processing_function
+        self._url = CONNECTION_URI        
 
     def connect(self):
-
-        LOGGER.info('Connecting to %s', self._url)
-        return pika.SelectConnection(pika.URLParameters(self._url),
-                                     self.on_connection_open,
-                                     stop_ioloop_on_close=False)
+        return pika.SelectConnection(
+            pika.URLParameters(self._url),
+            self.on_connection_open,
+            stop_ioloop_on_close=False)
 
     def on_connection_open(self, unused_connection):
-
         LOGGER.info('Connection opened')
         LOGGER.info('Adding connection close callback')
         self._connection.add_on_close_callback(self.on_connection_closed)
@@ -129,23 +117,17 @@ class QueueConsumer(object):
         if self._channel:
             self._channel.close()
 
-    def on_message(self, unused_channel, basic_deliver, properties, body):
-        """Invoked by pika when a message is delivered from RabbitMQ. The
-        channel is passed for your convenience. The basic_deliver object that
-        is passed in carries the exchange, routing key, delivery tag and
-        a redelivered flag for the message. The properties passed in is an
-        instance of BasicProperties with the message properties and the body
-        is the message that was sent.
+    def on_message(self, unused_channel, basic_deliver, properties, message):
+        LOGGER.info(
+            'Received message # %s from %s: %s',
+            basic_deliver.delivery_tag, 
+            properties.app_id, 
+            message)
 
-        :param pika.channel.Channel unused_channel: The channel object
-        :param pika.Spec.Basic.Deliver: basic_deliver method
-        :param pika.Spec.BasicProperties: properties
-        :param str|unicode body: The message body
-
-        """
-        LOGGER.info('Received message # %s from %s: %s',
-                    basic_deliver.delivery_tag, properties.app_id, body)
         self.acknowledge_message(basic_deliver.delivery_tag)
+
+        if(self._message_processing_function):
+            self._message_processing_function(message)
 
     def acknowledge_message(self, delivery_tag):
         LOGGER.info('Acknowledging message %s', delivery_tag)

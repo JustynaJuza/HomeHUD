@@ -1,26 +1,20 @@
 import pika #amqp library for RabbitMq connections
 import json
+import LoggingConfig
 
 from QueueConsumer import QueueConsumer
 from RabbitMqModels import RabbitMqCredentials
-
-
-#with open("settings.json") as dataFile:
-#    data = json.load(dataFile)
-
-#rabbitMqCredentialsData = data["RabbitMq"]["Credentials"]
-#rabbitMqCredentials = RabbitMqCredentials(
-
-#)
-
-#pprint(connectionUri)
+from MessageProcessingService import MessageProcessingService
 
 def main():
-    example = QueueConsumer()
+
+    messageProcessingService = MessageProcessingService()
+    rabbitMqService = QueueConsumer(messageProcessingService.process_message)
+
     try:
-        example.run()
+        rabbitMqService.run()
     except KeyboardInterrupt:
-        example.stop()
+        rabbitMqService.stop()
 
 
 if __name__ == '__main__':

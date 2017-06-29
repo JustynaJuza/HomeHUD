@@ -22,24 +22,29 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="dailycyclelights.py" />
+    <Compile Include="LoggingConfig.py" />
     <Compile Include="HomeHUDPi - Copy.py" />
     <Compile Include="HomeHUDPi.py" />
+    <Compile Include="MessageProcessingService.py" />
+    <Compile Include="old stuff\dailycyclelights.py" />
+    <Compile Include="old stuff\manager - Copy.py" />
+    <Compile Include="old stuff\manager.py" />
+    <Compile Include="old stuff\switchlights.py" />
+    <Compile Include="old stuff\switchlightson.py" />
+    <Compile Include="old stuff\turnonpc.py" />
     <Compile Include="RabbitMqModels.py" />
     <Compile Include="QueueConsumer.py" />
-    <Compile Include="manager.py" />
-    <Compile Include="switchers.py" />
-    <Compile Include="switchlights.py" />
-    <Compile Include="switchlightson.py" />
-    <Compile Include="turnonpc.py" />
+    <Compile Include="EnergenieLightSwitcher.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.auth.json" />
-    <Content Include="manager.log" />
-    <Content Include="settings.json" />
-    <Content Include="switcher.log" />
-    <Content Include="settings.cfg" />
-    <Content Include="switchers.cfg" />
+    <Content Include="homehudPi.log" />
+    <Content Include="old stuff\manager.log" />
+    <Content Include="old stuff\settings.cfg" />
+    <Content Include="old stuff\switchers.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="old stuff\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
