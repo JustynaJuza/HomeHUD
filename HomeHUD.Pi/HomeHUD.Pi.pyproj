@@ -23,8 +23,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="dailycyclelights.py" />
+    <Compile Include="HomeHUDPi - Copy.py" />
     <Compile Include="HomeHUDPi.py" />
-    <Compile Include="manager - Copy.py" />
+    <Compile Include="RabbitMqModels.py" />
+    <Compile Include="QueueConsumer.py" />
     <Compile Include="manager.py" />
     <Compile Include="switchers.py" />
     <Compile Include="switchlights.py" />
@@ -32,6 +34,7 @@
     <Compile Include="turnonpc.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="appsettings.auth.json" />
     <Content Include="manager.log" />
     <Content Include="settings.json" />
     <Content Include="switcher.log" />

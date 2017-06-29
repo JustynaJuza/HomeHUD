@@ -3,8 +3,9 @@ import logging
 import json
 
 
-with open("settings.json") as dataFile:
+with open("appsettings.auth.json") as dataFile:
     data = json.load(dataFile)
+    rabbitMqCredentials = data["RabbitMq"]["Credentials"]
 
 CONNECTION_URI = "amqp://{0}:{1}@{2}:{3}/{4}".format(
     rabbitMqCredentials["Username"],
@@ -27,12 +28,12 @@ class QueueConsumer(object):
     QUEUE = 'text'
     ROUTING_KEY = 'example.text'
 
-    def __init__(self, amqp_url, queueDetails):
+    def __init__(self):
 
-        self._connection = None
-        self._channel = None
-        self._closing = False
-        self._consumer_tag = None
+        #self._connection = None
+        #self._channel = None
+        #self._closing = False
+        #self._consumer_tag = None
         self._url = CONNECTION_URI
 
     def connect(self):
@@ -82,19 +83,19 @@ class QueueConsumer(object):
         LOGGER.info('Adding channel close callback')
         self._channel.add_on_close_callback(self.on_channel_closed)
 
-        self.setup_queue(self.QUEUE)
+        self.setup_queue()
 
     def on_channel_closed(self, channel, reply_code, reply_text):
         LOGGER.warning('Channel %i was closed: (%s) %s',
                        channel, reply_code, reply_text)
         self._connection.close()
 
-    def setup_queue(self, queue_name):
-        LOGGER.info('Declaring queue %s', queue_name)
+    def setup_queue(self):
         rabbitMqQueue = data["RabbitMq"]["Queue"];
 
-        channel.queue_declare(
-            callback=on_queue_declare,
+        LOGGER.info('Declaring queue %s', rabbitMqQueue["Name"])
+        self._channel.queue_declare(
+            callback=self.on_queue_declare,
             queue=rabbitMqQueue["Name"],
             durable=rabbitMqQueue["Durable"],
             auto_delete=rabbitMqQueue["AutoDelete"],
@@ -105,13 +106,14 @@ class QueueConsumer(object):
         self.read_messages()
 
     def read_messages(self):
+        LOGGER.info('Queue declared')
         self.add_on_cancel_callback()
 
         rabbitMqQueue = data["RabbitMq"]["Queue"];
 
         LOGGER.info('Starting message reading')
-        self._consumer_tag = channel.basic_consume(
-            callback=process_message,
+        self._consumer_tag = self._channel.basic_consume(
+            consumer_callback=self.on_message,
             queue=rabbitMqQueue["Name"],
             no_ack=rabbitMqQueue["NoAck"],
             exclusive=rabbitMqQueue["Exclusive"],
