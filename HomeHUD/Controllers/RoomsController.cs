@@ -7,7 +7,7 @@ namespace HomeHUD.Controllers
 {
     public class RoomsController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public RoomsController(ApplicationDbContext context)
         {

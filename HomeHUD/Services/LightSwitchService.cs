@@ -6,14 +6,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HomeHUD.Hubs
+namespace HomeHUD.Services
 {
     public interface ILightSwitchService
     {
         LightsState GetCurrentLightsState();
         int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState);
         Task<int> SetLightState(int lightId, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
-        Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SetAllLightsState(IList<int> lightIds, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
+        Task<int> SetLightsState(IList<Light> lights);
     }
 
     //[Authorize]
@@ -62,7 +63,7 @@ namespace HomeHUD.Hubs
             return await Task.FromResult(1);
         }
 
-        public async Task<int> SetAllLightsState(IEnumerable<int> lightIds, LightSwitchState state, CancellationToken cancellationToken)
+        public async Task<int> SetAllLightsState(IList<int> lightIds, LightSwitchState state, CancellationToken cancellationToken)
         {
             _context.Lights
                 .Where(x => x.State != state)
@@ -73,15 +74,18 @@ namespace HomeHUD.Hubs
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        //public async Task<int> SetAllLightsState(LightSwitchState state)
-        //{
-        //    _context.Lights
-        //        .Where(x => x.State != state)
-        //        .ToList()
-        //        .ForEach(x => x.State = state);
+        public async Task<int> SetLightsState(IList<Light> lights)
+        {
+            _context.Lights
+                .WhereFilterIsEmptyOrContains(x => x.Id, lights.Select(y => y.Id))
+                .ToList()
+                .ForEach(x =>
+                {
+                    var source = lights.First(y => y.Id == x.Id);
+                    x.SetPropertyFrom(source, y => y.State);
+                });
 
-        //    return await _context.SaveChangesAsync();
-        //}
-
+            return await _context.SaveChangesAsync();
+        }
     }
 }

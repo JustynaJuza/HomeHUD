@@ -49,21 +49,29 @@ export class ControlHub implements IControlHub {
             })
         });
 
+        this.proxy.on('SetLightsState', (data: ILightSwitchState[]) => {
+
+            store.dispatch(<LightAction.SetAllLightsAction>{
+                type: LightActionTypes.SetAllLights,
+                lights: { all: data }
+            })
+        });
+
         //this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
         //    store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
         //});
     }
 
     private startConnection(): void {
-        this.connection.start()
-            .done(() => {
-                //this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
-            })
-            .fail(() => {
-                //store.dispatch(navigationActions.SHOW_ERROR({
-                //    message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
-                //}));
-            });
+        this.connection.start();
+            //.done(() => {
+            //    //this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
+            //})
+            //.fail(() => {
+            //    //store.dispatch(navigationActions.SHOW_ERROR({
+            //    //    message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
+            //    //}));
+            //});
     }
 
     public trySetLightState(lightState: { lightId: string | number, state: number }): void {

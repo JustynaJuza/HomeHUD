@@ -1,6 +1,7 @@
 using HomeHUD.Models;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.SignalR;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -13,6 +14,7 @@ namespace HomeHUD.Hubs
         //void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
         void SetLightState(LightStateViewModel singleLightState);
         void SetAllLightsState(AllLightsStateViewModel lightsStateStateData);
+        void SetLightsState(IEnumerable<Light> lightsState);
     }
 
     //[Authorize]
@@ -28,18 +30,6 @@ namespace HomeHUD.Hubs
             _lightSwitchService = lightSwitchService;
             _queueService = queueService;
         }
-
-        //public void GET_CURRENT_LIGHTS_STATE()
-        //{
-        //    Clients.Caller.SET_CURRENT_LIGHTS_STATE(_lightSwitchService.GetCurrentLightsState());
-        //}
-
-
-        //public LightChangeBackgroundTasks()
-        //{
-
-
-        //}
 
 
         public async Task SetLightState(LightStateViewModel lightState)

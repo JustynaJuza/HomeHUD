@@ -38,28 +38,7 @@ namespace HomeHUD.Controllers
                            Description = y.Description,
                            RoomId = y.RoomId
                        })
-                   }).ToArray();
-
-            //var rooms = _context.Rooms
-            //       .Select(x => new RoomViewModel
-            //       {
-            //           Id = x.Id,
-            //           Name = x.Name,
-            //           Hash = x.Hash,
-            //           SortWeight = x.SortWeight,
-            //           Lights = x.Lights.Select(y => y.Id)
-            //       }).ToArray();
-
-            //var lights = _context.Lights
-            //       .Select(x => new LightViewModel
-            //       {
-            //           Id = x.Id,
-            //           State = x.State,
-            //           Color = x.Color,
-            //           Brightness = x.Brightness,
-            //           Description = x.Description,
-            //           RoomId = x.RoomId
-            //       }).ToList();
+                   }).ToList();
 
             var initialState = new AppState
             {

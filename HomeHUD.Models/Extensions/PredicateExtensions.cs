@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace HomeHUD.Models.Extensions
 {
@@ -65,6 +66,34 @@ namespace HomeHUD.Models.Extensions
                 }
                 return node;
             }
+        }
+
+        public static TModel SetPropertyFrom<TModel, T>(this TModel target, TModel source, Expression<Func<TModel, T>> predicate)
+        {
+            var property = GetPropertyInfo(target, predicate);
+            var sourceValue = property.GetValue(source);
+            property.SetValue(target, sourceValue);
+
+            return target;
+        }
+
+        private static PropertyInfo GetPropertyInfo<TSource, TProperty>(TSource source, Expression<Func<TSource, TProperty>> propertyLambda)
+        {
+            Type type = typeof(TSource);
+
+            MemberExpression member = propertyLambda.Body as MemberExpression;
+            if (member == null)
+                throw new ArgumentException(string.Format(
+                    "Expression '{0}' refers to a method, not a property.",
+                    propertyLambda.ToString()));
+
+            PropertyInfo propInfo = member.Member as PropertyInfo;
+            if (propInfo == null)
+                throw new ArgumentException(string.Format(
+                    "Expression '{0}' refers to a field, not a property.",
+                    propertyLambda.ToString()));
+
+            return propInfo;
         }
     }
 }
