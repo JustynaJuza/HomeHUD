@@ -66,27 +66,29 @@ class EnergenieLightSwitcher(object):
         #GPIO.output(16, False)
         #GPIO.output(13, False)
 
-    #def switch_on(self, lightId):
-    #    light = next((x for x in LIGHTS if x.Id == lightId), None)
-    #    self.set_output_sequence(sequence=light.onSequence)
-    #    self.run_modulator()
-
-    #def switch_off(self, lightId):
-    #    light = next((x for x in LIGHTS if x.Id == lightId), None)
-    #    self.set_output_sequence(sequence=light.offSequence)
-    #    self.run_modulator()
-
-    def switch_light(self, lightId, state):
-        light = next((x for x in self.PiLights if x.Id == lightId), None)
-        if (light):
-            sequence = light.OnSequence if state==1 else light.OffSequence
-            self.set_output_sequence(sequence)
-            #self.run_modulator()
-
-            light.State=state
-            LOGGER.info("Switched light {0} {1}".format(lightId, "ON" if state==1 else "OFF"))
+    def switch_lights(self, state, lightIds = None):
+        # assuming it might be faster to not check the first if on every loop
+        if lightIds:
+            for light in self.PiLights:
+                for id in lightIds:
+                    if id == light.Id:
+                        self.switch_light(light, state)
+                    else:
+                        LOGGER.error("No light was found with id {0}".format(light.Id))
         else:
-            LOGGER.error("No light was found with id {0}".format(lightId))
+            for light in self.PiLights:
+                self.switch_light(light, state)
+
+    def switch_light(self, light, state):
+        LOGGER.info('Swiching light {0}: {1}'.format(light.Id, light))
+
+        #light = next((x for x in self.PiLights if x.Id == lightId), None)
+        sequence = light.OnSequence if state==1 else light.OffSequence
+        self.set_output_sequence(sequence)
+        #self.run_modulator()
+
+        light.State=state
+        LOGGER.info("Switched light {0} {1}".format(light.Id, "ON" if state==1 else "OFF"))
 
     def set_output_sequence(self, sequence = [()]):
         #for pinState in sequence:

@@ -32,16 +32,19 @@ class MessageProcessingService(object):
     def process_message(self, message):
         lightSwitcher = EnergenieLightSwitcher()
 
-        #try:
-        messageParts = message.decode().split(',')
-        lightState = int(messageParts[0].strip())
-        lightIds = map(int, messageParts[1].strip().split(' '))
-        #except:
-        #    LOGGER.error('Parsing message "' + message + '" failed')
+        try:
 
-        for lightId in lightIds:
-            LOGGER.info('Swiching light {0}: {1}'.format(lightId, lightState))
-            lightSwitcher.switch_light(lightId, lightState)
+            messageParts = message.decode().split(',')
+            lightState = int(messageParts[0].strip())
+            lightIdsStr = messageParts[1].strip().split(' ')
+            # if no light ids provided means all lights should be switched to lightState
+            # mapping to list since otherwise would be lazily evaluated and would cause mayhem!
+            lightIds = list(map(int, lightIdsStr)) if lightIdsStr != [''] else None
+
+        except ValueError:
+            LOGGER.error('Parsing message {0} failed'.format(message))
+
+        lightSwitcher.switch_lights(lightState, lightIds)
 
         lightsState = []
         for piLight in lightSwitcher.PiLights:
