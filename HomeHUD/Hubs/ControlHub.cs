@@ -3,7 +3,6 @@ using HomeHUD.Services;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,74 +33,56 @@ namespace HomeHUD.Hubs
 
         public async Task SetLightState(LightStateViewModel lightState)
         {
-            // save changing state to db
-            //await response for light on
-            // save new state to db
-            // trigger light changed on all clients
+            var transition = GetLightSwitchTransition(lightState.State);
+            lightState.State = transition[0];
 
-            var transitionSequence = GetLightSwitchTransition(lightState.State);
+            // trigger light changing on all clients to disable switch
+            Clients.All.SetLightState(lightState);
 
-            foreach (var transition in transitionSequence)
+            // save new state to db so new requests fetch updated state
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+            var saving = _lightSwitchService.SetLightState(lightState.LightId, transition[0], cancellationToken);
+
+            // send request to set light
+            var transitionRequestSent = _queueService.SendLightState(lightState.LightId, transition[1]);
+            if (!transitionRequestSent)
             {
-                // trigger light changing on all clients to disable switch
-                Clients.All.SetLightState(new LightStateViewModel
-                {
-                    LightId = lightState.LightId,
-                    State = transition
-                });
-
-                // save new state to db so new requests fetch updated state
-                var cancellationTokenSource = new CancellationTokenSource();
-                var cancellationToken = cancellationTokenSource.Token;
-                var saving = _lightSwitchService.SetLightState(lightState.LightId, transition, cancellationToken);
-
-                // send request to set light
-                var transitionRequestSent = _queueService.SendLightState(lightState.LightId, transition);
-                if (!transitionRequestSent)
-                {
-                    // could not send transition request, rollback all actions
-                    cancellationTokenSource.Cancel();
-                }
-
-                await saving;
+                // could not send transition request, rollback all actions
+                cancellationTokenSource.Cancel();
             }
+
+            await saving;
         }
 
-        public async Task SetAllLightsState(AllLightsStateViewModel allLightsState)
+        public async Task SetAllLightsState(AllLightsStateViewModel lightsState)
         {
-            var lightsToSwitch = _lightSwitchService.GetLightsToSwitch(allLightsState);
+            //var lightsToSwitch = _lightSwitchService.GetLightsToSwitch(allLightsState);
 
-            // if nothing needs switching return
-            if (!lightsToSwitch.Any())
-                return;
+            //// if nothing needs switching return
+            //if (!lightsToSwitch.Any())
+            //    return;
 
-            var transitionSequence = GetLightSwitchTransition(allLightsState.State);
-            var lightsState = new AllLightsStateViewModel
+            var transition = GetLightSwitchTransition(lightsState.State);
+            lightsState.State = transition[0];
+
+            // trigger light changing on all clients to disable switch
+            Clients.All.SetAllLightsState(lightsState);
+
+            // save new state to db so new requests fetch updated state
+            var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
+            var saving = _lightSwitchService.SetAllLightsState(lightsState.LightIds, transition[0], cancellationToken);
+
+            // send request to set light
+            var transitionRequestSent = _queueService.SendLightsState(lightsState.LightIds, transition[1]);
+            if (!transitionRequestSent)
             {
-                LightIds = lightsToSwitch
-            };
-
-            foreach (var transition in transitionSequence)
-            {
-                // trigger light changing on all clients to disable switch
-                lightsState.State = transition;
-                Clients.All.SetAllLightsState(lightsState);
-
-                // save new state to db so new requests fetch updated state
-                var cancellationTokenSource = new CancellationTokenSource();
-                var cancellationToken = cancellationTokenSource.Token;
-                var saving = _lightSwitchService.SetAllLightsState(lightsToSwitch, transition, cancellationToken);
-
-                // send request to set light
-                var transitionRequestSent = _queueService.SendLightsState(lightsToSwitch, transition);
-                if (!transitionRequestSent)
-                {
-                    // could not send transition request, rollback all actions
-                    cancellationTokenSource.Cancel();
-                }
-
-                await saving;
+                // could not send transition request, rollback all actions
+                cancellationTokenSource.Cancel();
             }
+
+            await saving;
         }
 
         private LightSwitchState[] GetLightSwitchTransition(LightSwitchState state)
