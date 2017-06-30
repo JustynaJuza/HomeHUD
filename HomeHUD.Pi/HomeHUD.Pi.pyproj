@@ -31,6 +31,7 @@
     <Compile Include="old stuff\switchlights.py" />
     <Compile Include="old stuff\switchlightson.py" />
     <Compile Include="old stuff\turnonpc.py" />
+    <Compile Include="ApiHandler.py" />
     <Compile Include="RabbitMqModels.py" />
     <Compile Include="QueueConsumer.py" />
     <Compile Include="EnergenieLightSwitcher.py" />
