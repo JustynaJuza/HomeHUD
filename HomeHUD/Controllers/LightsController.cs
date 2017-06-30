@@ -24,14 +24,13 @@ namespace HomeHUD.Controllers
             _connectionManager = connectionManager;
         }
 
+        [HttpPost]
         [Route("/lights/confirm")]
-        public Task ConfirmLightsState(IList<Light> lights)
+        public async Task ConfirmLightsState([FromBody] IList<Light> lights)
         {
             _controlHub = _connectionManager.GetHubContext<ControlHub, IControlHub>();
             _controlHub.Clients.All.SetLightsState(lights);
-            _lightSwitchService.SetLightsState(lights);
-
-            return Task.CompletedTask;
+            await _lightSwitchService.SetLightsState(lights);
         }
 
     }
