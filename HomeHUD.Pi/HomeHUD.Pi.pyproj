@@ -23,7 +23,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="LoggingConfig.py" />
-    <Compile Include="HomeHUDPi - Copy.py" />
     <Compile Include="HomeHUDPi.py" />
     <Compile Include="MessageProcessingService.py" />
     <Compile Include="old stuff\dailycyclelights.py" />
@@ -37,7 +36,8 @@
     <Compile Include="EnergenieLightSwitcher.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="appsettings.auth.json" />
+    <Content Include=".gitignore" />
+    <Content Include="appsettings.youShallNotCommitThis.json" />
     <Content Include="homehudPi.log" />
     <Content Include="old stuff\manager.log" />
     <Content Include="old stuff\settings.cfg" />

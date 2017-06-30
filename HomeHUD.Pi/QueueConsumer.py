@@ -4,7 +4,7 @@ import json
 
 LOGGER = logging.getLogger(__name__)
 
-with open('appsettings.auth.json') as dataFile:
+with open('appsettings.youShallNotCommitThis.json') as dataFile:
     data = json.load(dataFile)
     rabbitMqCredentials = data['RabbitMq']['Credentials']
 
