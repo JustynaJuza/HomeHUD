@@ -14,7 +14,9 @@ $default_border: #bcbcbc;
 
 $color_accent_green: #BBFF33;
 $color_accent_yellow: #FFC300;
-$color_accent_dark: #3E3A2D;
+$color_accent_darkYellow: #93761A;
+$color_accent_darkBrown: #3E3A2D;
+$color_accent_lightBrown: #8A8362;
 $color_accent_lime: #DAF7A6;
 $color_accent_orange: #FF5733;
 $color_accent_rose: #C70039;
@@ -56,6 +58,10 @@ $default_button_text_color: $color_text_black;
 $default_button_active_color: $color_background_3;
 $default_button_hover_color: $white;
 
+$lightSwitchOn_color: $color_accent_yellow;
+$lightSwitchingOn_color: $color_accent_darkYellow;
+$lightSwitchOff_color: $color_accent_darkBrown;
+$lightSwitchingOff_color: $color_accent_lightBrown;
 
 @define-mixin softerEdges {
     border-radius: 2px;

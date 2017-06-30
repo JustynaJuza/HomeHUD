@@ -19,16 +19,16 @@
         left: 0;
     }
     &.on .icon {
-        background-color: $color_accent_yellow;
+        background-color: $lightSwitchOn_color;
     }
     &.off .icon {
-        background-color: $color_accent_dark;
+        background-color: $lightSwitchOff_color;
     }
     &.switching_on .icon {
-        background-color: $color_accent_orange;
+        background-color: $lightSwitchingOn_color;
     }
     &.switching_off .icon {
-        background-color: $color_accent_lime;
+        background-color: $lightSwitchingOff_color;
     }
 }
 .light_switcher {
@@ -56,7 +56,7 @@
     bottom: 0;
     transition: .4s;
     outline-color: transparent;
-    
+
     &:hover {
         background-color: $default_button_hover_color;
     }
