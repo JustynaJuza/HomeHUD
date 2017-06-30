@@ -4,6 +4,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace HomeHUD.Services
@@ -16,9 +17,9 @@ namespace HomeHUD.Services
 
     public class RabbitMqService : IRabbitMqService
     {
-        private readonly RabbitMqCredentials _credentials;
+        private readonly RabbitMq.Credentials _credentials;
 
-        public RabbitMqService(IOptions<RabbitMqCredentials> credentials)
+        public RabbitMqService(IOptions<RabbitMq.Credentials> credentials)
         {
             _credentials = credentials.Value;
         }
@@ -50,6 +51,7 @@ namespace HomeHUD.Services
                     var properties = channel.CreateBasicProperties();
                     properties.Persistent = true;
                     properties.Expiration = "18000000";
+                    properties.AppId = Assembly.GetEntryAssembly().GetName().Name;
                     //properties.ContentType = "text/plain";
 
                     var messageBody = Encoding.UTF8.GetBytes(message);
@@ -71,7 +73,7 @@ namespace HomeHUD.Services
 
         public bool SendLightState(int lightId, LightSwitchState state)
         {
-            var message = $"{state} {lightId}";
+            var message = $"{(int) state}, {lightId}";
             return SendMessage(message);
         }
 
@@ -83,7 +85,7 @@ namespace HomeHUD.Services
                 lightIdsMessage.Append($"{id} ");
             }
 
-            var message = $"{state} {lightIdsMessage.ToString().TrimEnd()}";
+            var message = $"{(int) state}, {lightIdsMessage.ToString().TrimEnd()}";
             return SendMessage(message);
         }
     }

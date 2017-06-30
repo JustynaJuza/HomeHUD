@@ -24,7 +24,7 @@ class QueueConsumer(object):
 
     def __init__(self, message_processing_function):
         self._message_processing_function = message_processing_function
-        self._url = CONNECTION_URI        
+        self._url = CONNECTION_URI
 
     def connect(self):
         return pika.SelectConnection(
@@ -94,7 +94,6 @@ class QueueConsumer(object):
         self.read_messages()
 
     def read_messages(self):
-        LOGGER.info('Queue declared')
         self.add_on_cancel_callback()
 
         rabbitMqQueue = data["RabbitMq"]["Queue"];
@@ -119,9 +118,9 @@ class QueueConsumer(object):
 
     def on_message(self, unused_channel, basic_deliver, properties, message):
         LOGGER.info(
-            'Received message # %s from %s: %s',
-            basic_deliver.delivery_tag, 
-            properties.app_id, 
+            'Received message #%s from %s: %s',
+            basic_deliver.delivery_tag,
+            properties.app_id,
             message)
 
         self.acknowledge_message(basic_deliver.delivery_tag)
@@ -130,7 +129,7 @@ class QueueConsumer(object):
             self._message_processing_function(message)
 
     def acknowledge_message(self, delivery_tag):
-        LOGGER.info('Acknowledging message %s', delivery_tag)
+        LOGGER.info('Acknowledging message #%s', delivery_tag)
         self._channel.basic_ack(delivery_tag)
 
     def stop_consuming(self):

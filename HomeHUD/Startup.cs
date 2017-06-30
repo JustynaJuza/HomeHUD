@@ -51,7 +51,10 @@ namespace HomeHud
             services.AddMemoryCache();
 
             // Map configuration
-            services.Configure<RabbitMqCredentials>(Configuration.GetSection(nameof(RabbitMqCredentials)));
+            services.Configure<RabbitMq.Credentials>(
+                Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}"));
+            services.Configure<RabbitMq.Queue>(
+                Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Queue)}"));
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
