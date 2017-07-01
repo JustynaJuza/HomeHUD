@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
-namespace HomeHud
+namespace HomeHUD
 {
     public class Program
     {

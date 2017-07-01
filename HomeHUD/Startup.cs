@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace HomeHud
+namespace HomeHUD
 {
     public class Startup
     {
@@ -72,6 +72,9 @@ namespace HomeHud
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILightSwitchService, LightSwitchService>();
             services.AddTransient<IRabbitMqService, RabbitMqService>();
+
+            // Initialize Automapper
+            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

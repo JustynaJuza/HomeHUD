@@ -26,11 +26,11 @@ namespace HomeHUD.Controllers
 
         [HttpPost]
         [Route("/lights/confirm")]
-        public async Task ConfirmLightsState([FromBody] IList<Light> lights)
+        public async Task ConfirmLightsState([FromBody] IList<LightViewModel> lights)
         {
             _controlHub = _connectionManager.GetHubContext<ControlHub, IControlHub>();
-            _controlHub.Clients.All.SetLightsState(lights);
-            await _lightSwitchService.SetLightsState(lights);
+            _controlHub.Clients.All.SetLights(lights);
+            await _lightSwitchService.SetLights(lights);
         }
 
     }

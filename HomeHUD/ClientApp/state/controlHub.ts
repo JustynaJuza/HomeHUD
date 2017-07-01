@@ -49,7 +49,7 @@ export class ControlHub implements IControlHub {
             })
         });
 
-        this.proxy.on('SetLightsState', (data: ILightSwitchState[]) => {
+        this.proxy.on('SetLights', (data: ILightSwitchState[]) => {
 
             store.dispatch(<LightAction.SetAllLightsAction>{
                 type: LightActionTypes.SetAllLights,

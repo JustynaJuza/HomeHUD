@@ -13,7 +13,7 @@ namespace HomeHUD.Hubs
         //void SET_CURRENT_LIGHTS_STATE(LightsState allLights);
         void SetLightState(LightStateViewModel singleLightState);
         void SetAllLightsState(AllLightsStateViewModel lightsStateStateData);
-        void SetLightsState(IEnumerable<Light> lightsState);
+        void SetLights(IEnumerable<LightViewModel> lights);
     }
 
     //[Authorize]

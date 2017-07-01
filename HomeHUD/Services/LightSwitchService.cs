@@ -1,3 +1,4 @@
+using AutoMapper;
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Extensions;
@@ -14,7 +15,7 @@ namespace HomeHUD.Services
         int[] GetLightsToSwitch(AllLightsStateViewModel expectedLightsState);
         Task<int> SetLightState(int lightId, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
         Task<int> SetAllLightsState(IList<int> lightIds, LightSwitchState state, CancellationToken cancellationToken = default(CancellationToken));
-        Task<int> SetLightsState(IList<Light> lights);
+        Task<int> SetLights(IList<LightViewModel> lights);
     }
 
     //[Authorize]
@@ -74,16 +75,12 @@ namespace HomeHUD.Services
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<int> SetLightsState(IList<Light> lights)
+        public async Task<int> SetLights(IList<LightViewModel> lights)
         {
-            _context.Lights
+            var lightsEntities = _context.Lights
                 .WhereFilterIsEmptyOrContains(x => x.Id, lights.Select(y => y.Id))
-                .ToList()
-                .ForEach(x =>
-                {
-                    var source = lights.First(y => y.Id == x.Id);
-                    x.SetPropertyFrom(source, y => y.State);
-                });
+                .ToList();
+            Mapper.Map(lights, lightsEntities);
 
             return await _context.SaveChangesAsync();
         }
