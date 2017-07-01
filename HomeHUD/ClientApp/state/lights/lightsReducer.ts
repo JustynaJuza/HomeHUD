@@ -59,14 +59,21 @@ export class LightsReducer implements ILightsReducer {
                 });
 
             case LightActionTypes.SetAllLightsState:
+                var switchAllLights = !(<LightActions.SetAllLightsStateAction>action).lightIds.length;
+
                 return Object.assign({}, state,
                     {
                         all: _map(state.all, (light) => {
 
-                            needsSwitching = _indexOf((<LightActions.SetAllLightsStateAction>action).lightIds, light.id) > -1;
-
-                            if (needsSwitching) {
+                            if (switchAllLights) {
                                 light.state = (<LightActions.SetAllLightsStateAction>action).state;
+                            }
+                            else {
+                                needsSwitching = _indexOf((<LightActions.SetAllLightsStateAction>action).lightIds, light.id) > -1;
+
+                                if (needsSwitching) {
+                                    light.state = (<LightActions.SetAllLightsStateAction>action).state;
+                                }
                             }
 
                             return light;
