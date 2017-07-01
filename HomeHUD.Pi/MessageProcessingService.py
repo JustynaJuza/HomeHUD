@@ -1,14 +1,11 @@
 import logging
-import json
+
+from ArgumentParser import debuggingOnPC
 
 from ApiHandler import ApiHandler
 from EnergenieLightSwitcher import EnergenieLightSwitcher
 
 LOGGER = logging.getLogger(__name__)
-
-with open('appsettings.youShallNotCommitThis.json') as dataFile:
-    data = json.load(dataFile)
-    homehudWeb = data['HomeHud.Web']
 
 class Light(object):
 
@@ -18,16 +15,16 @@ class Light(object):
         self.Color = color
         self.Brightness = brightness
 
-
-URL = 'http://{0}/{1}'.format(
-    homehudWeb['Server'],
-    homehudWeb['ConfirmLights'])
-
 class MessageProcessingService(object):
 
-    def __init__(self):
+    def __init__(self, requestServer):
         self._api = ApiHandler()
-        self._url = URL
+        self._url = self.format_url(requestServer)
+
+    def format_url(self, requestServer):
+        return 'http://{0}/{1}'.format(
+            requestServer.ServerLocal if debuggingOnPC else requestServer.ServerExternal,
+            requestServer.ConfirmLights)
 
     def process_message(self, message):
         lightSwitcher = EnergenieLightSwitcher()

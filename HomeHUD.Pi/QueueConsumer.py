@@ -1,19 +1,7 @@
 import pika #amqp library for RabbitMq connections
 import logging
-import json
 
 LOGGER = logging.getLogger(__name__)
-
-with open('appsettings.youShallNotCommitThis.json') as dataFile:
-    data = json.load(dataFile)
-    rabbitMqCredentials = data['RabbitMq']['Credentials']
-
-CONNECTION_URI = 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
-    rabbitMqCredentials['Username'],
-    rabbitMqCredentials['Password'],
-    rabbitMqCredentials['Server'],
-    rabbitMqCredentials['Port'],
-    rabbitMqCredentials['VirtualHost'])
 
 class QueueConsumer(object):
 
@@ -22,9 +10,18 @@ class QueueConsumer(object):
     QUEUE = 'text'
     ROUTING_KEY = 'example.text'
 
-    def __init__(self, message_processing_function):
-        self._message_processing_function = message_processing_function
-        self._url = CONNECTION_URI
+    def __init__(self, rabbitMqCredentials, rabbitMqQueue, messageProcessingFunction):
+        self._messageProcessingFunction = messageProcessingFunction
+        self._queue = rabbitMqQueue
+        self._url = self.format_connection_uri(rabbitMqCredentials)
+
+    def format_connection_uri(self, rabbitMqCredentials):
+        return 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
+            rabbitMqCredentials.Username,
+            rabbitMqCredentials.Password,
+            rabbitMqCredentials.Server,
+            rabbitMqCredentials.Port,
+            rabbitMqCredentials.VirtualHost)
 
     def connect(self):
         return pika.SelectConnection(
@@ -79,14 +76,13 @@ class QueueConsumer(object):
         self._connection.close()
 
     def setup_queue(self):
-        rabbitMqQueue = data["RabbitMq"]["Queue"];
+        LOGGER.info('Declaring queue %s', self._queue.Name)
 
-        LOGGER.info('Declaring queue %s', rabbitMqQueue["Name"])
         self._channel.queue_declare(
             callback=self.on_queue_declare,
-            queue=rabbitMqQueue["Name"],
-            durable=rabbitMqQueue["Durable"],
-            auto_delete=rabbitMqQueue["AutoDelete"],
+            queue=self._queue.Name,
+            durable=self._queue.Durable,
+            auto_delete=self._queue.AutoDelete,
             passive=False)
 
     def on_queue_declare(self, method_frame):
@@ -96,14 +92,12 @@ class QueueConsumer(object):
     def read_messages(self):
         self.add_on_cancel_callback()
 
-        rabbitMqQueue = data["RabbitMq"]["Queue"];
-
         LOGGER.info('Starting message reading')
         self._consumer_tag = self._channel.basic_consume(
             consumer_callback=self.on_message,
-            queue=rabbitMqQueue["Name"],
-            no_ack=rabbitMqQueue["NoAck"],
-            exclusive=rabbitMqQueue["Exclusive"],
+            queue=self._queue.Name,
+            no_ack=self._queue.NoAck,
+            exclusive=self._queue.Exclusive,
             consumer_tag="homehudPi")
 
     def add_on_cancel_callback(self):
@@ -125,8 +119,8 @@ class QueueConsumer(object):
 
         self.acknowledge_message(basic_deliver.delivery_tag)
 
-        if(self._message_processing_function):
-            self._message_processing_function(message)
+        if(self._messageProcessingFunction):
+            self._messageProcessingFunction(message)
 
     def acknowledge_message(self, delivery_tag):
         LOGGER.info('Acknowledging message #%s', delivery_tag)
