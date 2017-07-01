@@ -51,20 +51,31 @@ class EnergenieLightSwitcher(object):
         self.PiLights = LIGHTS
 
         if not debuggingOnPC:
-            initGPIO()
+            self.initGPIO()
 
     def switch_lights(self, state, lightIds = None):
-        # assuming it might be faster to not check the first if on every loop
         if lightIds:
-            for light in self.PiLights:
-                for id in lightIds:
-                    if id == light.Id:
-                        self.switch_light(light, state)
-                    else:
-                        LOGGER.error("No light was found with id {0}".format(light.Id))
+            self.switch_selected(lightIds, state)
         else:
-            for light in self.PiLights:
+            self.switch_all(state)
+
+    def switch_selected(self, lightIds, state):
+        LOGGER.info('Swiching {0} selected light(s): {1}'.format(
+            "ON" if state==1 else "OFF",
+            lightIds))
+
+        for id in lightIds:
+            light = next((l for l in self.PiLights if l.Id == id), None)
+            if light:
                 self.switch_light(light, state)
+            else:
+                LOGGER.error("No light was found with id {0}".format(light.Id))
+
+    def switch_all(self, state):
+        LOGGER.info('Swiching all lights {0}'.format("ON" if state==1 else "OFF"))
+
+        for light in self.PiLights:
+            self.switch_light(light, state)
 
     def switch_light(self, light, state):
         LOGGER.info('Swiching light {0}: {1}'.format(light.Id, light))
