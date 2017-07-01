@@ -1,5 +1,6 @@
 @import './variables.css';
 .on, .off, .switching_on, .switching_off {}
+
 .light {
     display: flex;
     flex-direction: row;
@@ -8,13 +9,16 @@
     align-items: center;
     align-content: stretch;
 
-    &.on .switcher {
+    &.on .switcher,
+    &.switching_on .switcher {
         right: 0;
         left: auto;
         border: 1px solid #5ea617;
         background: #8DD297;
     }
-    &.off .switcher {
+
+    &.off .switcher,
+    &.switching_off .switcher  {
         right: auto;
         left: 0;
     }
