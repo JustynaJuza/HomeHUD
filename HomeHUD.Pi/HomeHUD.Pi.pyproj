@@ -12,6 +12,9 @@
     <OutputPath>.</OutputPath>
     <Name>HomeHUD.Pi</Name>
     <RootNamespace>HomeHUDPi</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>--debuggingOnPC</CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +25,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EnergenieLightSwitcher.py" />
+    <Compile Include="ArgumentParser.py" />
     <Compile Include="LoggingConfig.py" />
     <Compile Include="HomeHUDPi.py" />
     <Compile Include="MessageProcessingService.py" />
@@ -34,7 +39,6 @@
     <Compile Include="ApiHandler.py" />
     <Compile Include="RabbitMqModels.py" />
     <Compile Include="QueueConsumer.py" />
-    <Compile Include="EnergenieLightSwitcher.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
