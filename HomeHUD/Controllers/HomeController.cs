@@ -1,5 +1,6 @@
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -7,16 +8,22 @@ namespace HomeHUD.Controllers
 {
     public partial class HomeController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IPathProvider _pathProvider;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(
+            ApplicationDbContext context,
+            IPathProvider pathProvider)
         {
             _context = context;
+            _pathProvider = pathProvider;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var baseUrl = _pathProvider.GetAppBaseUrl();
+
+            return View(new { baseUrl = baseUrl });
         }
 
         [Route("/initialState")]

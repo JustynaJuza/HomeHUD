@@ -8,11 +8,17 @@ import routes from './router';
 import configureStore from './configureStore-server';
 import { Api } from './state/api';
 
+import * as RequestActionTypes from './state/request/requestActionTypes';
+
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
 
         // Match the incoming request against the list of client-side routes
         const store = configureStore();
+        store.dispatch({
+            type: RequestActionTypes.SetBaseUrl,
+            baseUrl: params.data.baseUrl })
+
         match({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {
             if (error) {
                 throw error;
@@ -44,7 +50,10 @@ export default createServerRenderer(params => {
             params.domainTasks.then(() => {
                 resolve({
                     html: renderToString(app),
-                    globals: { initialReduxState: store.getState() }
+                    globals: {
+                        initialReduxState: store.getState(),
+                        baseUrl: params.data.baseUrl
+                    }
                 });
             }, reject); // Also propagate any errors back into the host application
         });

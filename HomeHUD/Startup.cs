@@ -3,6 +3,7 @@ using HomeHUD.Models.DbContext;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,9 @@ namespace HomeHUD
             services.AddSignalR();
             services.AddMemoryCache();
 
+            // Allow injecting HttpContext (for PathProviver)
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             // Map configuration
             services.Configure<RabbitMq.Credentials>(
                 Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}"));
@@ -72,6 +76,7 @@ namespace HomeHUD
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<ILightSwitchService, LightSwitchService>();
             services.AddTransient<IRabbitMqService, RabbitMqService>();
+            services.AddTransient<IPathProvider, PathProvider>();
 
             // Initialize Automapper
             services.AddAutoMapper();

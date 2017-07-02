@@ -4,7 +4,7 @@ import { LightsReducer } from './lights/lightsReducer';
 
 import { configReducer } from './config/configReducer';
 
-//import { authenticationReducer } from './authentication/authenticationReducer';
+import { requestReducer } from './request/requestReducer';
 
 import { ControlHub } from './controlHub';
 
@@ -19,7 +19,7 @@ export function getReducersWithControlHub() {
         navigation: navReducer,
         lights: lightsReducer.get(),
         config: configReducer,
-        //    authentication: authenticationReducer
+        request: requestReducer
         //form: formReducer
     };
 }
