@@ -14,6 +14,7 @@ class QueueConsumer(object):
         # when debugging set higher queue reading priority so all messages get routed to the debugging instance
         # if this proves an inconvenience consider using routing key or separate debug queue
         self._basicConsumeArguments = {'x-priority': 1000} if debuggingOnPC else {'x-priority': 0}
+        self._closing = False
 
     def format_connection_uri(self, rabbitMqCredentials):
         return 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
