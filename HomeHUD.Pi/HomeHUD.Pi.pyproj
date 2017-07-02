@@ -30,6 +30,9 @@
     <Compile Include="LoggingConfig.py" />
     <Compile Include="HomeHUDPi.py" />
     <Compile Include="MessageProcessingService.py" />
+    <AdditionalFiles Include="docs.md">
+      <SubType>Code</SubType>
+    </AdditionalFiles>
     <Compile Include="old stuff\dailycyclelights.py" />
     <Compile Include="old stuff\manager.py" />
     <Compile Include="ApiHandler.py" />
