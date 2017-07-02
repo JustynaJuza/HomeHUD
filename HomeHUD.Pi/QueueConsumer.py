@@ -1,19 +1,19 @@
 import pika #amqp library for RabbitMq connections
 import logging
 
+from ArgumentParser import debuggingOnPC
+
 LOGGER = logging.getLogger(__name__)
 
 class QueueConsumer(object):
-
-    EXCHANGE = 'message'
-    EXCHANGE_TYPE = 'topic'
-    QUEUE = 'text'
-    ROUTING_KEY = 'example.text'
 
     def __init__(self, rabbitMqCredentials, rabbitMqQueue, messageProcessingFunction):
         self._messageProcessingFunction = messageProcessingFunction
         self._queue = rabbitMqQueue
         self._url = self.format_connection_uri(rabbitMqCredentials)
+        # when debugging set higher queue reading priority so all messages get routed to the debugging instance
+        # if this proves an inconvenience consider using routing key or separate debug queue
+        self._basicConsumeArguments = {'x-priority': 1000} if debuggingOnPC else {'x-priority': 0}
 
     def format_connection_uri(self, rabbitMqCredentials):
         return 'amqp://{0}:{1}@{2}:{3}/{4}'.format(
@@ -50,11 +50,8 @@ class QueueConsumer(object):
         self._connection.ioloop.stop()
 
         if not self._closing:
-
             # Create a new connection
             self._connection = self.connect()
-
-            # There is now a new connection, needs a new ioloop to run
             self._connection.ioloop.start()
 
     def open_channel(self):
@@ -98,7 +95,7 @@ class QueueConsumer(object):
             queue=self._queue.Name,
             no_ack=self._queue.NoAck,
             exclusive=self._queue.Exclusive,
-            consumer_tag="homehudPi")
+            arguments=self._basicConsumeArguments)
 
     def add_on_cancel_callback(self):
         LOGGER.info('Adding consumer cancellation callback')
