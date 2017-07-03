@@ -19,7 +19,7 @@ export const initialStateLoader = {
     getInitialState: () => (dispatch, getState) => {
         var currentState: IAppState = getState();
 
-        if(!initialStateLoadingTask) {
+        if(currentState.config.rooms.length === 0) {
             var api = new Api();
             initialStateLoadingTask =
                 api.getJson<IAppState>(currentState.request.baseUrl + '/initialState')
