@@ -32,6 +32,5 @@ namespace HomeHUD.Controllers
             _controlHub.Clients.All.SetLights(lights);
             await _lightSwitchService.SetLights(lights);
         }
-
     }
 }

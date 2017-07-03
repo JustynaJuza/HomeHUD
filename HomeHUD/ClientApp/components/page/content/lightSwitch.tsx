@@ -37,7 +37,7 @@ class LightSwitch extends React.Component<ILightSwitchProps, {}> {
             : this.props.onSwitchOn(this.props.id)
     }
 
-    private getSwitchStyleFromState() {
+    private getSwitchStyle() {
         switch (this.props.state) {
             case 0:
                 return style.off;
@@ -52,14 +52,28 @@ class LightSwitch extends React.Component<ILightSwitchProps, {}> {
         }
     }
 
+    private isDisabled() {
+        switch (this.props.state) {
+            case 0:
+            case 1:
+                return false;
+            case 2:
+            case 3:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public render() {
 
-        var lightClasses = classNames(style.light, this.getSwitchStyleFromState())
+        var lightClasses = classNames(style.light, this.getSwitchStyle())
 
         return (
             <div className={lightClasses}>
 
                 <div className={style.light_switcher}
+                    disabled={this.isDisabled()}
                     onClick={() => this.onSwitchChange()}>
 
                     <button className={style.switcher}></button>

@@ -1,4 +1,3 @@
-using AutoMapper;
 using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Extensions;
@@ -77,10 +76,17 @@ namespace HomeHUD.Services
 
         public async Task<int> SetLights(IList<LightViewModel> lights)
         {
-            var lightsEntities = _context.Lights
+            var lightEntities = _context.Lights
                 .WhereFilterIsEmptyOrContains(x => x.Id, lights.Select(y => y.Id))
                 .ToList();
-            Mapper.Map(lights, lightsEntities);
+
+            foreach (var light in lights)
+            {
+                var lightEntity = lightEntities.FirstOrDefault(x => x.Id == light.Id);
+                lightEntity.State = light.State;
+                lightEntity.Color = light.Color;
+                lightEntity.Brightness = light.Brightness;
+            }
 
             return await _context.SaveChangesAsync();
         }

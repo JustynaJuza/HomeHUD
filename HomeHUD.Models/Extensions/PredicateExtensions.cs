@@ -68,6 +68,22 @@ namespace HomeHUD.Models.Extensions
             }
         }
 
+        public static TTarget SetPropertyFrom<TSource, TTarget, T>(this TTarget target, TSource source, Expression<Func<TTarget, T>> predicate)
+        {
+            var targetProperty = GetPropertyInfo(target, predicate);
+
+            var sourceProperty = typeof(TSource).GetProperty(targetProperty.Name, targetProperty.PropertyType);
+            if (sourceProperty == null)
+            {
+                throw new ArgumentException("The object's type does not have a member matching the name and type of the target property.", "source");
+            }
+
+            var sourceValue = sourceProperty.GetValue(source);
+            targetProperty.SetValue(target, sourceValue);
+
+            return target;
+        }
+
         public static TModel SetPropertyFrom<TModel, T>(this TModel target, TModel source, Expression<Func<TModel, T>> predicate)
         {
             var property = GetPropertyInfo(target, predicate);
@@ -79,7 +95,7 @@ namespace HomeHUD.Models.Extensions
 
         private static PropertyInfo GetPropertyInfo<TSource, TProperty>(TSource source, Expression<Func<TSource, TProperty>> propertyLambda)
         {
-            Type type = typeof(TSource);
+            var type = typeof(TSource);
 
             MemberExpression member = propertyLambda.Body as MemberExpression;
             if (member == null)
