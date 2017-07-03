@@ -27,7 +27,7 @@ import { Route } from 'react-router';
 // component ---------------------------------------------------------------------------------
 
 export interface IRoomPanelPublicProps {
-    id: number;
+    hash: number;
     showName: boolean;
     showBulkSwitches: boolean;
 }
@@ -86,9 +86,15 @@ class RoomPanel extends React.Component<IRoomPanelProps, {}> {
 // redux ---------------------------------------------------------------------------------
 
 const mapStateToProps = (state: IAppState, publicProps: IRoomPanelPublicProps) => {
-    var configEntry = _filter(state.config.rooms, (room) => { return room.id === publicProps.id })[0];
+
+
+    var configEntry = _filter(state.config.rooms, (room) => { return room.hash === publicProps.hash })[0];
     if (!configEntry) {
-        throw Error("Invalid room config, lightId " + publicProps.id + " is expected to have an entry in the config.");
+        return {
+            name: '',
+            lights:[]
+        }
+        //throw Error("Invalid room config, room with hash " + publicProps.hash + " is expected to have an entry in the config.");
     }
 
     return {

@@ -39,24 +39,13 @@ class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
     private renderRoom = (room: IRoomConfig, index: number) => {
         return (
-            <RoomPanel key={index} id={room.id} showName={true} showBulkSwitches={false} />
+            <RoomPanel key={index} hash={room.hash} showName={true} showBulkSwitches={false} />
         )
     }
 
     private renderRooms = () => {
         return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoom);
     }
-
-    private renderPath = (room: IRoomConfig, index: number) => {
-        return (
-            <Route key={index} path={room.hash} />
-        )
-    }
-
-    private renderPaths = () => {
-        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderPath);
-    }
-
 
     public render() {
         return (

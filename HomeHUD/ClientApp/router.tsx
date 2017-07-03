@@ -1,8 +1,9 @@
 import * as _map from 'lodash/map';
 
 import * as React from 'react';
-import { Router, Route, HistoryBase } from 'react-router';
+import { Router, Route } from 'react-router';
 import Layout from './components/page/layout';
+import RoomContent from './components/page/roomContent';
 //import Home from './components/Home';
 //import FetchData from './components/FetchData';
 //import Counter from './components/Counter';
@@ -12,20 +13,35 @@ export interface IRouterParams {
     location: Router.LocationDescriptor
 }
 
-const routesConfig = [
+export interface IRouteConfig {
+    path: string,
+    component: any;
+    routes?: IRouteConfig[]
+}
+
+const routesConfig: IRouteConfig[] = [
     {
         path: '/',
-        component: Layout
-    },
-    {
-        path: '/:hash',
-        component: Layout
+        component: Layout,
+        routes: [{
+            path: '/rooms(/:hash)',
+            component: RoomContent
+        }]
     }
 ]
 
-const renderRoutes = (route, key) => <Route key={key} path={route.path} component={route.component} />;
+var renderSubroutes = (subroutes: IRouteConfig[]) => {
+    if (subroutes)
+        return _map(subroutes, renderRoutesRecursive);
+}
 
-export default _map(routesConfig, renderRoutes);
+const renderRoutesRecursive = (route: IRouteConfig, index) => (
+    <Route key={index} path={route.path} component={route.component}>
+        {renderSubroutes(route.routes)}
+    </Route>
+)
+
+export default _map(routesConfig, renderRoutesRecursive);
 
 
 //const RouteWithSubRoutes = (route) => (

@@ -119,6 +119,11 @@ namespace HomeHUD
 
             app.UseMvc(routes =>
             {
+                routes.MapSpaFallbackRoute(
+                    name: "rooms-spa-fallback",
+                    templatePrefix: "rooms",
+                    defaults: new { controller = "Home", action = "Index" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
@@ -139,7 +144,7 @@ namespace HomeHUD
                 //    defaults: new { controller = "Home", action = "Index" });
 
                 //routes.MapSpaFallbackRoute(
-                //    name: "spa-fallback",
+                //    name: "gaming",
                 //    templatePrefix: "gaming",
                 //    defaults: new { controller = "Home", action = "Index" });
 

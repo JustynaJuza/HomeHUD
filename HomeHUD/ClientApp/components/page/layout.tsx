@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // components
 import { Header } from './header';
-import Navigation from './navigation';
 import Content from './content';
 import { Api } from '../../state/api';
 //import ConfigMenu from './configMenu';
@@ -38,17 +37,17 @@ class Layout extends React.Component<ILayoutProps, {}> {
         return (
             <div className={style.layout}>
                 <Header />
-                <Navigation />
-                <Content {...{ location, params }} />
+                {this.props.children}
             </div>
         );
     }
 
+    //<Content {...{ location, params }} />
     //<Header />
     //<Navigation />
     //<Content />
     //<ConfigMenu />
-    }
+}
 
 export default connect(
     (state: IAppState) => state,            // Selects which state properties are merged into the component's props

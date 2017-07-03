@@ -1,6 +1,8 @@
 // react
 import * as React from 'react'
 import * as classNames from 'classnames';
+import { Link } from 'react-router'
+//import { NavLink } from 'react-router-dom'
 
 // redux
 import { connect } from 'react-redux';
@@ -33,11 +35,11 @@ export class NavigationTab extends React.Component<INavigationTabProps, {}> {
 
         return (
             <li className={tabClasses}>
-                <a href={`/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
+                <Link to={`/rooms/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
                     <span className={style.name}>
                         {this.props.children}
                     </span>
-                </a>
+                </Link>
             </li>
         );
     }
@@ -51,10 +53,10 @@ const mapStateToProps = (state: IAppState, publicProps: INavigationTabPublicProp
 
 const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTabPublicProps) => ({
     onSelectTab(e: any, id: number) {
-        e.preventDefault();
-        history.pushState(null, null, publicProps.hash);
+        //e.preventDefault();
+        //history.pushState(null, null, publicProps.hash);
 
-        dispatch(navActionCreators.selectContent({ type: 'ROOM', id: id }));
+        //dispatch(navActionCreators.selectContent({ type: 'ROOM', id: id }));
     }
 });
 
