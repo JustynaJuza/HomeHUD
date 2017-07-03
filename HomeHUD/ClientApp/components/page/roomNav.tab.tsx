@@ -11,21 +11,21 @@ import { IAppState } from '../../state/state';
 import { navActionCreators } from '../../state/nav/navActionCreators';
 
 // style
-import * as style from '../../css/components/navigation-tab.css';
+import * as style from '../../css/components/roomNav.tab.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface INavigationTabPublicProps {
+interface IRoomNavTabPublicProps {
     id: number;
     hash: string;
     isActive: boolean;
 }
 
-interface INavigationTabProps extends INavigationTabPublicProps {
+interface IRoomNavTabProps extends IRoomNavTabPublicProps {
     onSelectTab: (e: any, id: number) => void;
 }
 
-export class NavigationTab extends React.Component<INavigationTabProps, {}> {
+export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
 
     public render() {
         var tabClasses = classNames({
@@ -47,11 +47,11 @@ export class NavigationTab extends React.Component<INavigationTabProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState, publicProps: INavigationTabPublicProps) => {
+const mapStateToProps = (state: IAppState, publicProps: IRoomNavTabPublicProps) => {
     return {};
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTabPublicProps) => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: IRoomNavTabPublicProps) => ({
     onSelectTab(e: any, id: number) {
         //e.preventDefault();
         //history.pushState(null, null, publicProps.hash);
@@ -60,4 +60,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: INavigationTab
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationTab);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomNavTab);

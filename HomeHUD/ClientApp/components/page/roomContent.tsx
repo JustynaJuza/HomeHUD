@@ -11,7 +11,7 @@ import { IRouterParams } from '../../router';
 import { ISelectedContent, IError } from '../../state/nav/navState';
 
 // components
-import Navigation from './navigation';
+import RoomNav from './roomNav';
 import RoomPanel from './content/roomPanel';
 import ControlPanel from './content/controlPanel';
 
@@ -41,7 +41,7 @@ class RoomContent extends React.Component<IContentProps, {}> {
 
         return (
             <div  className={style.content}>
-                <Navigation />
+                <RoomNav />
                 { this.getSelectedRoom() }
             </div>
         );

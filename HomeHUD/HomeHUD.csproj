@@ -51,6 +51,7 @@
     <ProjectReference Include="..\HomeHUD.Models\HomeHUD.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="exclude\_components\" />
     <Folder Include="Models\Json\" />
   </ItemGroup>
   <ItemGroup>

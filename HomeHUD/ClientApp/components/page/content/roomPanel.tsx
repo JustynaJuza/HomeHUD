@@ -27,7 +27,7 @@ import { Route } from 'react-router';
 // component ---------------------------------------------------------------------------------
 
 export interface IRoomPanelPublicProps {
-    hash: number;
+    hash: string;
     showName: boolean;
     showBulkSwitches: boolean;
 }

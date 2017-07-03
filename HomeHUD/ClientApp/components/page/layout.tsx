@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // components
 import { Header } from './header';
-import Content from './content';
 import { Api } from '../../state/api';
 //import ConfigMenu from './configMenu';
 

@@ -14,6 +14,8 @@ export interface ILightsReducer {
 }
 
 export class LightsReducer implements ILightsReducer {
+    // due to some import issues, hub needs to be set externally
+    // so reducer can work both in server and client rendering mode
     public hub: IControlHub
 
     private initialLightsState: ILightsState = {

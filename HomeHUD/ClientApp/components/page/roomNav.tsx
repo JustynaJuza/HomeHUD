@@ -15,20 +15,20 @@ import { IRoomConfig } from '../../state/config/configState';
 import { ISelectedContent } from '../../state/nav/navState';
 
 // components
-import NavigationTab from './navigation-tab';
+import RoomNavTab from './roomNav.tab';
 
 // style
-import * as style from '../../css/components/navigation.css';
+import * as style from '../../css/components/roomNav.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface INavigationProps {
+interface IRoomNavProps {
     isAuthenticated: boolean;
     selectedContent: ISelectedContent;
     rooms: IRoomConfig[];
 }
 
-class Navigation extends React.Component<INavigationProps, {}> {
+class RoomNav extends React.Component<IRoomNavProps, {}> {
 
     private selectedRoomId: number = null;
 
@@ -41,22 +41,22 @@ class Navigation extends React.Component<INavigationProps, {}> {
 
     private renderControlPanelTab = () => {
         return (
-            <NavigationTab key={0} id={0} hash={''} isActive={this.selectedRoomId === 0}>
+            <RoomNavTab key={0} id={0} hash={''} isActive={this.selectedRoomId === 0}>
                 Control Panel
-            </NavigationTab>
+            </RoomNavTab>
         )
     }
 
-    private renderRoomTab = (room: IRoomConfig, index: number) => {
+    private renderRoomNavTab = (room: IRoomConfig, index: number) => {
         return (
-            <NavigationTab key={index + 1} id={room.id} hash={room.hash} isActive={room.id === this.selectedRoomId}>
+            <RoomNavTab key={index + 1} id={room.id} hash={room.hash} isActive={room.id === this.selectedRoomId}>
                 {room.name}
-            </NavigationTab>
+            </RoomNavTab>
         )
     }
 
     private renderRoomTabs = () => {
-        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoomTab);
+        return _map(_sortBy(this.props.rooms, room => room.sortWeight), this.renderRoomNavTab);
     }
 
     public render() {
@@ -88,4 +88,4 @@ const mapStateToProps = (state: IAppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps, mapDispatchToProps)(RoomNav);
