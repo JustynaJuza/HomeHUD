@@ -58,6 +58,9 @@
     <None Include="exclude\authentication\authenticationActions.ts" />
     <None Include="exclude\authentication\authenticationReducer.ts" />
     <None Include="exclude\authentication\authenticationState.ts" />
+    <None Include="exclude\store\Counter.ts" />
+    <None Include="exclude\store\index.ts" />
+    <None Include="exclude\store\WeatherForecasts.ts" />
   </ItemGroup>
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->

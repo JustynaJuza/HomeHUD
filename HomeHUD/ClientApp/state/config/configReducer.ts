@@ -12,7 +12,7 @@ const initialConfigState: IConfigState = {
 export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigActions.ConfigAction) => {
     switch (action.type) {
         case ConfigActionTypes.SetConfigState:
-            return action.config;
+            return (<ConfigActions.SetConfigStateAction>action).config;
 
         default:
             //return state || unloadedState;
