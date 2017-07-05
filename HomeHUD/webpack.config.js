@@ -1,8 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const settings = require('./webpack.config.settings.js');
 
+const settings = require('./webpack.config.settings');
+const vendor = require('./webpack.config.vendor');
+
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 
@@ -10,7 +13,7 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
 
     // Configuration in common to both client-side and server-side bundles
-    const sharedConfig = () => ({
+    const sharedConfig = {
         stats: { modules: false },
         resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         output: {
@@ -29,12 +32,19 @@ module.exports = (env) => {
         },
         plugins: [
             new ExtractTextPlugin('site.css'),
-            new CheckerPlugin()]
-    });
+            new CheckerPlugin()
+        ]
+            .concat(isDevBuild ? [
+                // Plugins that apply in development builds only
+                new BundleAnalyzerPlugin({
+                    analyzerMode: 'static'
+                })
+            ] : [])
+    };
 
     // Configuration for client-side bundle suitable for running in browsers
     const clientBundleOutputDir = './wwwroot/dist';
-    const clientBundleConfig = merge(sharedConfig(), {
+    const clientBundleConfig = merge(sharedConfig, {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         target: 'web',
@@ -61,7 +71,7 @@ module.exports = (env) => {
     });
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node
-    const serverBundleConfig = merge(sharedConfig(), {
+    const serverBundleConfig = merge(sharedConfig, {
         resolve: { mainFields: ['main'] },
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
         plugins: [

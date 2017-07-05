@@ -73,6 +73,7 @@
     "webpack-merge": "^0.14.1"
   },
   "devDependencies": {
-    "postcss-loader": "^0.9.1"
+    "postcss-loader": "^0.9.1",
+    "webpack-bundle-analyzer": "^2.8.2"
   }
 }

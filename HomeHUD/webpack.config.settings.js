@@ -57,13 +57,13 @@ const loaders = {
                             require('precss'),
                             require('postcss-nesting')(),
                             require('postcss-browser-reporter')(),
-                            require('postcss-reporter')()    
+                            require('postcss-reporter')()
                         ]
                     }
                 }
             ]
-        })        
-    },    
+        })
+    },
     images:
     {
         test: /\.(jpe?g|png|gif|svg)$/i,
