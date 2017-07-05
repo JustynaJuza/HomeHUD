@@ -1,7 +1,8 @@
 import * as _map from 'lodash/map';
 
 import * as React from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, match } from 'react-router';
+import { Location, History } from 'history';
 import Layout from './components/page/layout';
 import RoomContent from './components/page/roomContent';
 //import Home from './components/Home';
@@ -9,8 +10,9 @@ import RoomContent from './components/page/roomContent';
 //import Counter from './components/Counter';
 
 export interface IRouterParams {
-    params: Router.Params
-    location: Router.LocationDescriptor
+    match: match<any>;
+    location: Location;
+    history: History;
 }
 
 export interface IRouteConfig {
@@ -21,12 +23,8 @@ export interface IRouteConfig {
 
 const routesConfig: IRouteConfig[] = [
     {
-        path: '/',
-        component: Layout,
-        routes: [{
             path: '/rooms(/:hash)',
             component: RoomContent
-        }]
     }
 ]
 
@@ -42,7 +40,6 @@ const renderRoutesRecursive = (route: IRouteConfig, index) => (
 )
 
 export default _map(routesConfig, renderRoutesRecursive);
-
 
 //const RouteWithSubRoutes = (route) => (
 //    <Route path={route.path} render={props => (

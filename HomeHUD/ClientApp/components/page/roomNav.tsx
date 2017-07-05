@@ -4,6 +4,9 @@ import * as _sortBy from 'lodash/sortBy';
 
 // react
 import * as React from 'react'
+import { withRouter } from 'react-router-dom'
+import { IRouterParams } from '../../router';
+
 
 // redux
 import { connect } from 'react-redux';
@@ -22,7 +25,7 @@ import * as style from '../../css/components/roomNav.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IRoomNavProps {
+interface IRoomNavProps extends IRouterParams {
     isAuthenticated: boolean;
     selectedContent: ISelectedContent;
     rooms: IRoomConfig[];

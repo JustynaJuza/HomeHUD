@@ -1,8 +1,10 @@
 // react
 import * as React from 'react'
 import * as classNames from 'classnames';
-import { Link } from 'react-router'
-//import { NavLink } from 'react-router-dom'
+//import { Link } from 'react-router'
+import { NavLink } from 'react-router-dom'
+import { IRouterParams } from '../../router';
+import { withRouter } from 'react-router-dom'
 
 // redux
 import { connect } from 'react-redux';
@@ -15,7 +17,7 @@ import * as style from '../../css/components/roomNav.tab.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IRoomNavTabPublicProps {
+interface IRoomNavTabPublicProps  {
     id: number;
     hash: string;
     isActive: boolean;
@@ -35,11 +37,11 @@ export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
 
         return (
             <li className={tabClasses}>
-                <Link to={`/rooms/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
+                <NavLink to={`/rooms/${this.props.hash}`}>
                     <span className={style.name}>
                         {this.props.children}
                     </span>
-                </Link>
+                </NavLink>
             </li>
         );
     }

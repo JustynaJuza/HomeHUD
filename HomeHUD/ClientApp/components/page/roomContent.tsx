@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
 import { IRouterParams } from '../../router';
+import { withRouter } from 'react-router-dom'
 
 // props
 import { ISelectedContent, IError } from '../../state/nav/navState';
@@ -29,8 +30,18 @@ interface IContentProps extends IRouterParams {
 
 class RoomContent extends React.Component<IContentProps, {}> {
 
+    public componentWillReceiveProps(nextProps) {
+        console.log(this.props)
+    }
+
+    //public shouldComponentUpdate(nextProps, nextState) {
+
+    //    console.log(this.props, nextProps)
+    //}
+
     private getSelectedRoom(): any {
-        var roomHash = this.props.params['hash'];
+        console.log(this.props)
+        var roomHash = this.props.location.pathname.replace('rooms/', '').replace('/','');
         console.log(roomHash)
         return roomHash
             ? <RoomPanel hash={roomHash} showName={false} showBulkSwitches={true}/>
@@ -50,7 +61,7 @@ class RoomContent extends React.Component<IContentProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState, ownProps: IRouterParams) => {
+const mapStateToProps = (state: IAppState, ownProps: IContentProps) => {
     return {
         isAuthenticated: true,
         selectedContent: state.navigation.selectedContent,
@@ -61,4 +72,4 @@ const mapStateToProps = (state: IAppState, ownProps: IRouterParams) => {
 const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: IRouterParams) => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RoomContent);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RoomContent));
