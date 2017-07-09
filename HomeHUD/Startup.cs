@@ -1,10 +1,9 @@
-using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
+using HomeHUD.Models.Identity;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -65,9 +64,11 @@ namespace HomeHUD
                     Configuration.GetConnectionString("HomeHUD"),
                     x => x.MigrationsAssembly("HomeHUD.Models")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<User, Role>()
+                .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>()
+                .AddUserStore<ApplicationUserStore>()
                 .AddDefaultTokenProviders();
+            //services.AddScoped<IUserClaimsPrincipalFactory<User>, AppClaimsPrincipalFactory>();
 
             services.AddMvc();
 

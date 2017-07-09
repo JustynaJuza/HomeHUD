@@ -26,5 +26,16 @@ namespace HomeHUD.Models.Identity
         //    var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
         //    return userIdentity;
         //}
+
+        //public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User> manager)
+        //{
+        //    var authenticationType = "Basic";
+        //    var userIdentity = new ClaimsIdentity(await manager.GetClaimsAsync(this), authenticationType);
+
+        //    // Add custom user claims here
+        //    userIdentity.AddClaim(new Claim("FirstName", this.FirstName));
+
+        //    return userIdentity;
+        //}
     }
 }

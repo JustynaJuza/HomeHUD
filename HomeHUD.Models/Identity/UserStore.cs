@@ -1,9 +1,9 @@
-using System;
-using System.Security.Claims;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
+using System.Security.Claims;
 
 public class ApplicationUserStore : UserStore<User, Role, ApplicationDbContext, int, UserClaim, UserRole, UserLogin, UserToken, RoleClaim>
 {
