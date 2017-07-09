@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 // components
 import { Header } from './header';
-import { Api } from '../../state/api';
 //import ConfigMenu from './configMenu';
 
 import { initialStateLoader } from '../../state/initialStateLoader';
@@ -18,15 +17,31 @@ import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
-type ILayoutProps = IAppState
+type ILayoutPropsType =
+    ILayoutProps
     & IRouterParams
     & typeof initialStateLoader;
 
-class Layout extends React.Component<ILayoutProps, {}> {
-    private api: Api;
+interface ILayoutProps extends IRouterParams {
+    isAuthenticated: boolean;
+};
 
-    componentWillMount() {
+class Layout extends React.Component<ILayoutPropsType, {}> {
+
+    public componentWillMount() {
         this.props.getInitialState();
+    }
+
+    public componentDidUpdate(prevProps) {
+        //const { dispatch, redirectUrl } = this.props
+        const isLoggingOut = prevProps.isAuthenticated && !this.props.isAuthenticated
+        const isLoggingIn = !prevProps.isAuthenticated && this.props.isAuthenticated
+
+        if (isLoggingIn) {
+            //dispatch(navigateTo(redirectUrl))
+        } else if (isLoggingOut) {
+          // do any kind of cleanup or post-logout redirection here
+        }
     }
 
     public render() {
@@ -49,6 +64,10 @@ class Layout extends React.Component<ILayoutProps, {}> {
 }
 
 export default connect(
-    (state: IAppState) => state,            // Selects which state properties are merged into the component's props
+    (state: IAppState) => {
+        return {
+            isAuthenticated: state.request.isAuthenticated
+        }
+    },                                      // Selects which state properties are merged into the component's props
     initialStateLoader                      // Selects which action creators are merged into the component's props
 )(Layout);

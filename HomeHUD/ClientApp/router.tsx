@@ -2,11 +2,11 @@ import * as _map from 'lodash/map';
 
 import * as React from 'react';
 import { Router, Route } from 'react-router';
+
 import Layout from './components/page/layout';
 import RoomContent from './components/page/roomContent';
-//import Home from './components/Home';
-//import FetchData from './components/FetchData';
-//import Counter from './components/Counter';
+import LoginForm from './components/page/loginForm';
+import LoginGuard from './components/containers/loginGuard';
 
 export interface IRouterParams {
     params: Router.Params
@@ -14,34 +14,75 @@ export interface IRouterParams {
 }
 
 export interface IRouteConfig {
-    path: string,
+    path: string;
     component: any;
-    routes?: IRouteConfig[]
+    routes?: IRouteConfig[];
+    requireLogin?: boolean;
 }
 
-const routesConfig: IRouteConfig[] = [
-    {
-        path: '/',
-        component: Layout,
-        routes: [{
-            path: '/rooms(/:hash)',
-            component: RoomContent
-        }]
-    }
-]
 
-var renderSubroutes = (subroutes: IRouteConfig[]) => {
-    if (subroutes)
-        return _map(subroutes, renderRoutesRecursive);
+const routesConfig =
+    <Route path='/' component={Layout}>
+        <Route path='/login' component={LoginForm} />
+
+        <Route component={LoginGuard}>
+            <Route path='/rooms(/:hash)' component={RoomContent} />
+        </Route>;
+    </Route>;
+
+export default routesConfig;
+
+// Enable Hot Module Replacement (HMR)
+if (module.hot) {
+    module.hot.accept();
 }
 
-const renderRoutesRecursive = (route: IRouteConfig, index) => (
-    <Route key={index} path={route.path} component={route.component}>
-        {renderSubroutes(route.routes)}
-    </Route>
-)
+//const routesConfig: IRouteConfig[] = [
+//    {
+//        path: '/',
+//        component: Layout,
+//        routes: [{
+//            path: '/rooms(/:hash)',
+//            component: RoomContent,
+//            requireLogin: true
+//        },
+//        {
+//            path: '/login',
+//            component: LoginForm
+//        }]
+//    }
+//]
 
-export default _map(routesConfig, renderRoutesRecursive);
+//const renderSubroutes = (subroutes: IRouteConfig[], parentHasLogin) => {
+//    if (subroutes)
+//        return _map(subroutes, (r, i) => renderRoutesRecursive(r, i, parentHasLogin));
+//}
+
+//const renderRoute = (route: IRouteConfig, index) => {
+//    return (
+//        <Route key={index} path={route.path} component={route.component}>
+//            {renderSubroutes(route.routes, route.requireLogin)}
+//        </Route>
+//    );
+//}
+
+//const renderRoutesRecursive = (route: IRouteConfig, index, parentHasLogin) => {
+//    console.log(route, index, parentHasLogin)
+//    if (!route.requireLogin || parentHasLogin) {
+//        return renderRoute(route, index);
+//    }
+
+//    console.log("wrapping with login guard")
+//    return (
+//        <Route component={LoginGuard}>
+//            renderRoute(route, index)
+//        </Route>
+//    );
+//}
+
+//const routes = _map(routesConfig, (r, i) => renderRoutesRecursive(r, i, false));
+
+//export default _map(routesConfig, renderRoutesRecursive);
 
 
 //const RouteWithSubRoutes = (route) => (
@@ -69,8 +110,3 @@ export default _map(routesConfig, renderRoutesRecursive);
 //<Route path='/fetchdata' components={{ body: FetchData }}>
 //    <Route path='(:startDateIndex)' /> { /* Optional route segment that does not affect NavMenu highlighting */ }
 //</Route>
-
-// Enable Hot Module Replacement (HMR)
-if (module.hot) {
-    module.hot.accept();
-}
