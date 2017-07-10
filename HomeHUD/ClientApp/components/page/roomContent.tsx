@@ -31,7 +31,6 @@ class RoomContent extends React.Component<IContentProps, {}> {
 
     private getSelectedRoom(): any {
         var roomHash = this.props.params['hash'];
-        console.log(roomHash)
         return roomHash
             ? <RoomPanel hash={roomHash} showName={false} showBulkSwitches={true}/>
             : <ControlPanel />

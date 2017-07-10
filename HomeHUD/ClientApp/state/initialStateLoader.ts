@@ -1,18 +1,13 @@
-import { fetch, addTask } from 'domain-task';
-import { Action, Reducer, ActionCreator } from 'redux';
-import { AppThunkAction } from './state';
-import { IAppState } from './state';
+import { addTask } from 'domain-task';
+
+import { AppThunkAction, IAppState } from './state';
 import { Api } from './api';
 
 import * as ConfigActionTypes from './config/configActionTypes';
-import { ConfigAction } from './config/configActions';
-import { IConfigState } from './config/configState';
+import * as ConfigActions from './config/configActions';
 
 import * as LightActionTypes from './lights/lightActionTypes';
-import { LightAction } from './lights/lightActions';
-import { ILightsState } from './lights/lightsState';
-
-var initialStateLoadingTask;
+import * as LightActions from './lights/lightActions';
 
 export const initialStateLoader = {
 
@@ -21,11 +16,13 @@ export const initialStateLoader = {
 
         if(currentState.config.rooms.length === 0) {
             var api = new Api();
-            initialStateLoadingTask =
+            var initialStateLoadingTask =
                 api.getJson<IAppState>(currentState.request.baseUrl + '/initialState')
                     .then((initialState) => {
-                        dispatch({ type: ConfigActionTypes.SetConfigState, config: initialState.config })
-                        dispatch({ type: LightActionTypes.SetAllLights, lights: initialState.lights });
+                        dispatch(<ConfigActions.SetConfigStateAction>
+                            { type: ConfigActionTypes.SetConfigState, config: initialState.config })
+                        dispatch(<LightActions.SetAllLightsAction>
+                            { type: LightActionTypes.SetAllLights, lights: initialState.lights });
                     });
 
             // ensures server-side prerendering waits for this to complete

@@ -1,6 +1,7 @@
 //react
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 // components
 import { Header } from './header';
@@ -11,6 +12,7 @@ import { IConfigState } from '../../state/config/configState';
 import { IAppState } from '../../state/state';
 import { IRouterParams } from '../../router';
 
+import { requestActionCreators } from '../../state/request/requestActionCreators';
 
 // style
 import * as style from '../../css/components/layout.css';
@@ -20,10 +22,12 @@ import * as style from '../../css/components/layout.css';
 type ILayoutPropsType =
     ILayoutProps
     & IRouterParams
-    & typeof initialStateLoader;
+    & typeof initialStateLoader
+    & typeof requestActionCreators;
 
 interface ILayoutProps extends IRouterParams {
-    isAuthenticated: boolean;
+    isAuthenticated: boolean,
+    redirectUrl: string
 };
 
 class Layout extends React.Component<ILayoutPropsType, {}> {
@@ -32,21 +36,23 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
         this.props.getInitialState();
     }
 
-    public componentDidUpdate(prevProps) {
-        //const { dispatch, redirectUrl } = this.props
+    public componentDidUpdate(prevProps: ILayoutProps) {
         const isLoggingOut = prevProps.isAuthenticated && !this.props.isAuthenticated
         const isLoggingIn = !prevProps.isAuthenticated && this.props.isAuthenticated
 
         if (isLoggingIn) {
-            //dispatch(navigateTo(redirectUrl))
+
+            if (this.props.redirectUrl) {
+                browserHistory.replace(this.props.redirectUrl);
+                this.props.setLoginRedirectUrl(null);
+            }
+
         } else if (isLoggingOut) {
-          // do any kind of cleanup or post-logout redirection here
+
         }
     }
 
     public render() {
-
-        const { location, params } = this.props;
 
         return (
             <div className={style.layout}>
@@ -56,6 +62,7 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
         );
     }
 
+    //const { location, params } = this.props;
     //<Content {...{ location, params }} />
     //<Header />
     //<Navigation />
@@ -63,11 +70,12 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
     //<ConfigMenu />
 }
 
+// redux ---------------------------------------------------------------------------------
 export default connect(
-    (state: IAppState) => {
-        return {
-            isAuthenticated: state.request.isAuthenticated
-        }
-    },                                      // Selects which state properties are merged into the component's props
-    initialStateLoader                      // Selects which action creators are merged into the component's props
+    (state: IAppState) => ({
+        isAuthenticated: state.request.isAuthenticated,
+        redirectUrl: state.request.loginRedirectUrl
+    }),
+
+    Object.assign(initialStateLoader, requestActionCreators)
 )(Layout);

@@ -7,6 +7,7 @@ import { IRequestState } from './requestState';
 
 const initialRequestState: IRequestState = {
     baseUrl: null,
+    loginRedirectUrl: null,
     isAuthenticated: false,
     authenticationToken: null
 };
@@ -18,9 +19,21 @@ export const requestReducer: Reducer<IRequestState> = (state: IRequestState, act
                 baseUrl: (<RequestActions.SetBaseUrlAction>action).baseUrl
             });
 
-        case RequestActionTypes.SetAuthentication:
+        case RequestActionTypes.SetLoginRedirectUrl:
             return Object.assign({}, state, {
-                //(<RequestActions.SetAuthenticationAction>action).data
+                loginRedirectUrl: (<RequestActions.SetLoginRedirectUrlAction>action).redirectUrl
+            });
+
+        case RequestActionTypes.LogIn:
+            return Object.assign({}, state, {
+                isAuthenticated: true,
+                authenticationToken: (<RequestActions.LogInAction>action).authenticationToken
+            });
+
+        case RequestActionTypes.LogOff:
+            return Object.assign({}, state, {
+                isAuthenticated: false,
+                authenticationToken: null
             });
 
         default:

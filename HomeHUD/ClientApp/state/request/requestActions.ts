@@ -6,8 +6,18 @@ export interface SetBaseUrlAction {
     baseUrl: string
 }
 
-export interface SetAuthenticationAction {
-    type: typeof RequestActionTypes.SetAuthentication
+export interface SetLoginRedirectUrlAction {
+    type: typeof RequestActionTypes.SetLoginRedirectUrl
+    redirectUrl: string;
 }
 
-export type RequestAction = SetBaseUrlAction | SetAuthenticationAction;
+export interface LogInAction {
+    type: typeof RequestActionTypes.LogIn
+    authenticationToken: string;
+}
+
+export interface LogOffAction {
+    type: typeof RequestActionTypes.LogOff
+}
+
+export type RequestAction = SetBaseUrlAction | LogInAction | LogOffAction;

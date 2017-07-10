@@ -10,31 +10,36 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
 
+import { requestActionCreators } from '../../state/request/requestActionCreators';
 
 // style
 import * as style from '../../css/components/roomNav.css';
 
 // component ---------------------------------------------------------------------------------
 
+type ILoginFormPropsType =
+    ILoginFormProps
+    & typeof requestActionCreators;
+
 interface ILoginFormProps {
 }
 
-class LoginForm extends React.Component<ILoginFormProps, {}> {
+class LoginForm extends React.Component<ILoginFormPropsType, {}> {
+
+    private setAuthenticationToken() {
+        this.props.logIn('helloToken');
+    }
 
     public render() {
         return (
-            <div>Login form</div>
+            <button onClick={() => this.setAuthenticationToken()}>Login form</button>
         );
     }
 }
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState) => {
-    return {
-    }
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(
+    null,
+    requestActionCreators
+)(LoginForm);

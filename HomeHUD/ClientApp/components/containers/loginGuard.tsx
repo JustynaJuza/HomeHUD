@@ -3,36 +3,39 @@ import * as React from 'react'
 
 // redux
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
 import { IRouterParams } from '../../router';
 import { browserHistory } from 'react-router';
 
+import { requestActionCreators } from '../../state/request/requestActionCreators';
+
 // style
 import * as style from '../../css/components/layout.css';
 
+
 // component ---------------------------------------------------------------------------------
+
+type ILoginGuardPropsType =
+    ILoginGuardProps
+    & typeof requestActionCreators;
 
 interface ILoginGuardProps extends IRouterParams {
     isAuthenticated: boolean;
     currentPath: string;
 };
 
-
-class LoginGuard extends React.Component<ILoginGuardProps, {}> {
+class LoginGuard extends React.Component<ILoginGuardPropsType, {}> {
 
     public componentDidMount() {
-        //const { dispatch, currentURL } = this.props
-
         if (!this.props.isAuthenticated) {
-          //dispatch(setRedirectUrl(currentURL))
-          browserHistory.replace("/login")
+            this.props.setLoginRedirectUrl(this.props.currentPath);
+            browserHistory.replace("/login")
         }
     }
 
     public render() {
         return this.props.isAuthenticated
-            ? <div> { this.props.children } </div>
+            ? <div> {this.props.children} </div>
             : null;
     }
 
@@ -40,14 +43,11 @@ class LoginGuard extends React.Component<ILoginGuardProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState, ownProps: ILoginGuardProps) => {
-    return {
+export default connect(
+    (state: IAppState, ownProps: ILoginGuardProps) => ({
         isAuthenticated: state.request.isAuthenticated,
         currentPath: ownProps.location.pathname
-    }
-};
+    }),
 
-const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: IRouterParams) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginGuard);
+    requestActionCreators
+)(LoginGuard);
