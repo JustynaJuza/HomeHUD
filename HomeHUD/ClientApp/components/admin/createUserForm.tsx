@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
 
 import { IAppState } from '../../state/state';
-import { requestActionCreators } from '../../state/request/requestActionCreators';
 
 import * as Validation from '../../state/formValidation';
 
@@ -21,31 +20,29 @@ import * as style from '../../css/components/login-panel.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface LoginFormData {
+interface CreateUserFormData {
     username: string;
     password: string;
+    confirmPassword: string;
+    email: string;
+    roles: string[];
 }
 
-interface ILoginFormProps {
+interface ICreateUserFormProps {
     baseUrl: string;
 }
 
-type ILoginFormPropsType =
-    ILoginFormProps
-    & FormProps<LoginFormData, void, void>
-    & typeof requestActionCreators;
+type ICreateUserFormPropsType =
+    ICreateUserFormProps
+    & FormProps<CreateUserFormData, void, void>
 
-class LoginForm extends React.Component<ILoginFormPropsType, {}> {
+class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
     private api: Api = new Api();
 
     constructor(props) {
         super(props);
         this.submit = this.submit.bind(this);
-    }
-
-    private setAuthenticationToken() {
-        this.props.logIn('helloToken');
     }
 
     private renderField = ({ input, label, type, meta: { touched, error, warning }, placeholder }) => (
@@ -60,7 +57,6 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
 
     public processResponse(formResult: any) {
         if (formResult.success) {
-            this.setAuthenticationToken();
             return Promise.resolve();
         }
 
@@ -80,7 +76,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     public submit(values: any) {
-        this.api.postJson(this.props.baseUrl + '/Account/Login', values)
+        this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }
@@ -92,14 +88,19 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
                 <Field name="username"
-                    component={this.renderField} validate={[Validation.required]} placeholder="Username" label="Name" />
-                <Field name="password" type="password"
-                    component={this.renderField} validate={[Validation.required]} placeholder="Secret stuff" label="Password" />
+                    component={this.renderField} validate={[Validation.required]} label="Username" />
+                <Field name="password"
+                    component={this.renderField} validate={[Validation.required]} label="Password" />
+                <Field name="confirmPassword"
+                    component={this.renderField} validate={[Validation.required]} label="Password" />
+                <Field name="email"
+                    component={this.renderField} validate={[Validation.required]} label="Email" />
+                <Field name="roles"
+                    component={this.renderField} validate={[Validation.required]} label="Roles" />
 
                 {error && <span className={style.form_error}>{error}</span>}
 
                 <button type="submit" disabled={pristine || submitting}>Submit</button>
-                <button onClick={() => this.setAuthenticationToken()}>Login form</button>
 
             </form>
         );
@@ -110,13 +111,12 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
 
 const form =
     reduxForm({
-        form: 'LoginForm'
-    })(LoginForm);
+        form: 'CreateUserForm'
+    })(CreateUserForm);
 
 export default connect(
     (state: IAppState) => ({
         baseUrl: state.request.baseUrl
     }),
-
-    requestActionCreators
+    null
 )(form);

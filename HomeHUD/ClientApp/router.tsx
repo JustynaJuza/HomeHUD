@@ -7,6 +7,7 @@ import Layout from './components/page/layout';
 import RoomContent from './components/page/roomContent';
 import LoginForm from './components/page/loginForm';
 import LoginGuard from './components/containers/loginGuard';
+import CreateUserForm from './components/admin/createUserForm';
 
 export interface IRouterParams {
     params: Router.Params
@@ -24,6 +25,7 @@ export interface IRouteConfig {
 const routesConfig =
     <Route path='/' component={Layout}>
         <Route path='/login' component={LoginForm} />
+        <Route path='/users' component={CreateUserForm} />
 
         <Route component={LoginGuard}>
             <Route path='/rooms(/:hash)' component={RoomContent} />

@@ -1,3 +1,5 @@
+using HomeHUD.Models.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,20 +8,22 @@ namespace HomeHUD.Models.DbContext
 {
     public static class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context)
+        public async static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
 
-            //context.Rooms.RemoveRange(context.Rooms);
-            //context.SaveChanges();
+            context.Roles.RemoveRange(context.Roles);
+            context.SaveChanges();
+
+            await SeedRoles(context);
 
             if (!context.Set<Room>().Any())
             {
-                Seed(context);
+                await SeedRooms(context);
             }
         }
 
-        private static async void Seed(ApplicationDbContext context)
+        private static async Task SeedRooms(ApplicationDbContext context)
         {
             var inserts = new List<Task>();
             inserts.Add(
@@ -72,6 +76,28 @@ namespace HomeHUD.Models.DbContext
                         }
                     }
                 }));
+
+            await Task.WhenAll(inserts);
+            await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedRoles(ApplicationDbContext context)
+        {
+            var inserts = new List<Task>();
+
+            foreach (var role in Enum.GetValues(typeof(RoleName)).Cast<RoleName>())
+            {
+                var roleName = role.ToString();
+                var existingRole = context.Roles.FirstOrDefault(r => r.Name == roleName);
+                if (existingRole == null)
+                {
+                    inserts.Add(
+                        context.Set<Role>().AddAsync(new Role
+                        {
+                            Name = roleName
+                        }));
+                }
+            }
 
             await Task.WhenAll(inserts);
             await context.SaveChangesAsync();
