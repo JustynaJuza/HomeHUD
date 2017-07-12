@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
 {
-    [Authorize]
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -39,30 +39,38 @@ namespace HomeHUD.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(CreateUserViewModel model)
         {
-            if (ModelState.IsValid)
+            string documentContents;
+            using (Stream receiveStream = Request.Body)
             {
-                var user = new User { UserName = model.Username, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                using (StreamReader readStream = new StreamReader(receiveStream))
                 {
-                    _logger.LogInformation(3, "Created a new account with password.");
-                    return Content("");
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    documentContents = readStream.ReadToEnd();
                 }
-
-                AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            if (ModelState.IsValid)
+            {
+                //var user = new User { UserName = model.Username, Email = model.Email };
+                //var result = await _userManager.CreateAsync(user, model.Password);
+                //if (result.Succeeded)
+                //{
+                //    _logger.LogInformation(3, "Created a new account with password.");
+                //    return Json(new { success = true });
+                //    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                //    // Send an email with this link
+                //    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                //    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                //    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                //    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                //}
+
+                //AddErrors(result);
+            }
+
+            return Json(new { success = false });
         }
 
         // GET: /Account/ConfirmEmail

@@ -92,7 +92,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
                 <Field name="password"
                     component={this.renderField} validate={[Validation.required]} label="Password" />
                 <Field name="confirmPassword"
-                    component={this.renderField} validate={[Validation.required]} label="Password" />
+                    component={this.renderField} validate={[Validation.required]} label="Confirm password" />
                 <Field name="email"
                     component={this.renderField} validate={[Validation.required]} label="Email" />
                 <Field name="roles"
