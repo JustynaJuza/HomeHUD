@@ -67,6 +67,7 @@ namespace HomeHUD
             services.AddIdentity<User, Role>()
                 .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>()
                 .AddUserStore<ApplicationUserStore>()
+                .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
             //services.AddScoped<IUserClaimsPrincipalFactory<User>, AppClaimsPrincipalFactory>();
 
