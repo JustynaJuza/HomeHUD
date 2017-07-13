@@ -4,6 +4,12 @@ import * as _sortBy from 'lodash/sortBy';
 
 // react
 import * as React from 'react'
+import Select from 'react-select';
+import MenuItem from 'material-ui/MenuItem'
+import {
+    TextField,
+    SelectField
+} from 'redux-form-material-ui'
 
 // redux
 import { connect } from 'react-redux';
@@ -40,9 +46,31 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
     private api: Api = new Api();
 
+    private roles: any;
+
     constructor(props) {
         super(props);
         this.submit = this.submit.bind(this);
+    }
+
+    public componentDidMount() {
+        this.getRoleOptions();
+    }
+
+    private getRoleOptions() {
+        return this.api.getJson(this.props.baseUrl + '/Users/GetRoles')
+            .then(data => this.roles = data);
+    }
+
+    private menuItems() {
+        return _map(this.roles, (role) => (
+            <MenuItem
+                key={role.name}
+                checked={this.roles.isSelected}
+                value={role.id}
+                primaryText={role.name}
+            />
+        ));
     }
 
     private renderField = ({ input, label, type, meta: { touched, error, warning }, placeholder }) => (
@@ -87,16 +115,25 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
         return (
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
-                <Field name="username"
-                    component={this.renderField} validate={[Validation.required]} label="Username" />
-                <Field name="password"
-                    component={this.renderField} validate={[Validation.required]} label="Password" />
-                <Field name="confirmPassword"
-                    component={this.renderField} validate={[Validation.required]} label="Confirm password" />
-                <Field name="email"
-                    component={this.renderField} validate={[Validation.required]} label="Email" />
-                <Field name="roles"
-                    component={this.renderField} validate={[Validation.required]} label="Roles" />
+                <Field name="username" id="create-user_username"
+                    component={TextField} validate={[Validation.required]} hintText="Username" />
+
+                <Field name="password" id="create-user_password"
+                    component={TextField} validate={[Validation.required]} hintText="Password" />
+
+                <Field name="confirmPassword" id="create-user_confirmPassword"
+                    component={TextField} validate={[Validation.required]} hintText="Confirm password" />
+
+                <Field name="email" id="create-user_email"
+                    component={TextField} validate={[Validation.required]} hintText="Email" />
+
+                <Field name="roles" id="create-user_roles"
+                    component={SelectField} hintText="Roles"
+                    multiple={true}>
+
+                    {this.menuItems()}
+
+                </Field>
 
                 {error && <span className={style.form_error}>{error}</span>}
 

@@ -5,6 +5,11 @@ import * as ReactDOM from 'react-dom';
 import { browserHistory, Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import routes from './router';
 import configureStore from './configureStore-client';
 import { IAppState }  from './state/state';
@@ -14,11 +19,15 @@ const initialState = (window as any).initialReduxState as IAppState;
 export const store = configureStore(initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
+injectTapEventPlugin()
+
 // This code starts up the React app when it runs in a browser. It sets up the routing configuration
 // and injects the app into a DOM element.
 ReactDOM.render(
-    <Provider store={ store }>
-        <Router history={ history } children={ routes } />
-    </Provider>,
+    <MuiThemeProvider muiTheme={getMuiTheme(null, { userAgent: 'all' })}>
+        <Provider store={ store }>
+            <Router history={ history } children={ routes } />
+        </Provider>
+    </MuiThemeProvider>,
     document.getElementById('react-app')
 );

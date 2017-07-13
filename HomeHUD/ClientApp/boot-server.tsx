@@ -4,6 +4,10 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import routes from './router';
 import configureStore from './configureStore-server';
 import { Api } from './state/api';
@@ -37,9 +41,11 @@ export default createServerRenderer(params => {
 
             // Build an instance of the application
             const app = (
-                <Provider store={ store }>
-                    <RouterContext {...renderProps} />
-                </Provider>
+                <MuiThemeProvider muiTheme={getMuiTheme(null, { userAgent: 'all' })}>
+                    <Provider store={ store }>
+                        <RouterContext {...renderProps} />
+                    </Provider>
+                </MuiThemeProvider>
             );
 
             // Perform an initial render that will cause any async tasks (e.g., data access) to begin
