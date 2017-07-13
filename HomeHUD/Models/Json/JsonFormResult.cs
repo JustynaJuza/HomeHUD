@@ -1,31 +1,52 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HomeHUD.Models.Json
 {
     public class JsonFormResult
     {
-        public JsonFormResult()
+        public class Error
         {
-            success = false;
-            errors = new List<FormError>();
+            public string FieldName { get; set; }
+            public string ErrorMessage { get; set; }
         }
 
-        public bool success { get; set; }
-        public IList<FormError> errors { get; set; }
+        public JsonFormResult()
+        {
+            Errors = new List<Error>();
+        }
+
+        public bool Success { get; set; }
+        public IList<Error> Errors { get; set; }
 
         public void MapErrorsFromModelState(ModelStateDictionary modelState)
         {
-            errors = modelState.SelectMany(x =>
-                x.Value.Errors.Select(y =>
-                    new FormError { fieldName = x.Key, errorMessage = y.ErrorMessage }))
-                    .ToList();
+            Errors = modelState
+                .SelectMany(x => x.Value.Errors
+                    .Select(y => new Error
+                    {
+                        FieldName = x.Key,
+                        ErrorMessage = y.ErrorMessage
+                    }))
+                .ToList();
         }
-    }
 
-    public class FormError
-    {
-        public string fieldName { get; set; }
-        public string errorMessage { get; set; }
+        public void AddFieldError(string fieldName, string errorMessage)
+        {
+            Errors.Add(new Error
+            {
+                FieldName = fieldName,
+                ErrorMessage = errorMessage
+            });
+        }
+
+        public void AddGeneralError(string errorMessage)
+        {
+            Errors.Add(new Error
+            {
+                ErrorMessage = errorMessage
+            });
+        }
     }
 }

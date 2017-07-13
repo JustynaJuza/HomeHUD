@@ -44,7 +44,6 @@
     <Compile Remove="Models\AppSettingsService.cs" />
     <Compile Remove="Models\ErrorHandler.cs" />
     <Compile Remove="Models\JsonCamelCaseResult.cs" />
-    <Compile Remove="Models\Json\JsonFormResult.cs" />
     <Compile Remove="Models\ManageViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="exclude\_components\" />
-    <Folder Include="Models\Json\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exclude\authentication\authenticationActions.ts" />

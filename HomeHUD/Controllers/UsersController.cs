@@ -1,12 +1,15 @@
 ﻿using HomeHUD.Models.AccountViewModels;
+using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
+using HomeHUD.Models.Json;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.IO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
@@ -19,6 +22,7 @@ namespace HomeHUD.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        private readonly ApplicationDbContext _context;
 
         public UsersController(
             UserManager<User> userManager,
@@ -26,7 +30,8 @@ namespace HomeHUD.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -34,44 +39,52 @@ namespace HomeHUD.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
-        //
-        // POST: /Account/Register
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(CreateUserViewModel model)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserViewModel model)
         {
-            string documentContents;
-            using (Stream receiveStream = Request.Body)
+
+            var result = new JsonFormResult();
+
+            if (!ModelState.IsValid)
             {
-                using (StreamReader readStream = new StreamReader(receiveStream))
+                result.MapErrorsFromModelState(ModelState);
+                return Json(result);
+            }
+
+            var user = new User { UserName = model.Username, Email = model.Email };
+            var createUserTask = await _userManager.CreateAsync(user, model.Password);
+            if (createUserTask.Succeeded)
+            {
+                _logger.LogInformation(3, "Created a new account with password.");
+                result.Success = true;
+                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                // Send an email with this link
+                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+                //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+            }
+            else
+            {
+                foreach (var error in createUserTask.Errors)
                 {
-                    documentContents = readStream.ReadToEnd();
+                    result.AddGeneralError(error.Description);
                 }
             }
 
-            if (ModelState.IsValid)
-            {
-                //var user = new User { UserName = model.Username, Email = model.Email };
-                //var result = await _userManager.CreateAsync(user, model.Password);
-                //if (result.Succeeded)
-                //{
-                //    _logger.LogInformation(3, "Created a new account with password.");
-                //    return Json(new { success = true });
-                //    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                //    // Send an email with this link
-                //    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                //    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                //    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                //    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                //}
-
-                //AddErrors(result);
-            }
-
-            return Json(new { success = false });
+            return Json(result);
         }
+
+        [HttpGet]
+        public async Task<IEnumerable<Role>> GetRoles()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+
 
         // GET: /Account/ConfirmEmail
         [HttpGet]

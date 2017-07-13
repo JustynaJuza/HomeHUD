@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace HomeHUD
 {
@@ -38,13 +38,13 @@ namespace HomeHUD
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = new JsonSerializerSettings();
-            settings.ContractResolver = new SignalRContractResolver();
+            //var settings = new JsonSerializerSettings();
+            //settings.ContractResolver = new SignalRContractResolver();
 
-            var serializer = JsonSerializer.Create(settings);
-            services.Add(new ServiceDescriptor(typeof(JsonSerializer),
-                         provider => serializer,
-                         ServiceLifetime.Transient));
+            //var serializer = JsonSerializer.Create(settings);
+            //services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+            //             provider => serializer,
+            //             ServiceLifetime.Transient));
 
             services.AddSignalR();
             services.AddMemoryCache();
@@ -71,7 +71,12 @@ namespace HomeHUD
                 .AddDefaultTokenProviders();
             //services.AddScoped<IUserClaimsPrincipalFactory<User>, AppClaimsPrincipalFactory>();
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddJsonOptions(opts =>
+              {
+                  opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+              });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
