@@ -3,7 +3,6 @@ import { IRequestState } from './requestState';
 
 import * as RequestActionTypes from './requestActionTypes';
 
-
 export const requestActionCreators = {
 
     logIn: (authenticationToken) => (dispatch, getState) => {

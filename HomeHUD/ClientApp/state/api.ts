@@ -9,7 +9,7 @@ export class Api {
     constructor() {
 
         var jsonHeaders = new Headers();
-        jsonHeaders.set('Content-Type', 'application/json');
+        jsonHeaders.set('Content-Type', 'application/json; charset=UTF-8');
 
         this.getRequestSettings = {
             method: 'get',

@@ -22,7 +22,6 @@ namespace HomeHUD.Controllers
         public IActionResult Index()
         {
             var baseUrl = _pathProvider.GetAppBaseUrl();
-
             return View(new { baseUrl = baseUrl });
         }
 
