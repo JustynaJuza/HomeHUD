@@ -1,8 +1,7 @@
-﻿using HomeHUD.Models.Identity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeHUD.Models.AccountViewModels
+namespace HomeHUD.Models.Identity.AccountViewModels
 {
     public class CreateUserViewModel
     {

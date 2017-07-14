@@ -4,16 +4,15 @@ import * as _sortBy from 'lodash/sortBy';
 
 // react
 import * as React from 'react'
-import Select from 'react-select';
+
+// redux
+import { connect } from 'react-redux';
+import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
 import MenuItem from 'material-ui/MenuItem'
 import {
     TextField,
     SelectField
 } from 'redux-form-material-ui'
-
-// redux
-import { connect } from 'react-redux';
-import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
 
 import { IAppState } from '../../state/state';
 

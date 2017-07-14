@@ -1,6 +1,6 @@
-﻿using HomeHUD.Models.AccountViewModels;
-using HomeHUD.Models.DbContext;
+﻿using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
+using HomeHUD.Models.Identity.AccountViewModels;
 using HomeHUD.Models.Json;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
@@ -46,7 +47,6 @@ namespace HomeHUD.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserViewModel model)
         {
-
             var result = new JsonFormResult();
 
             if (!ModelState.IsValid)
@@ -59,18 +59,13 @@ namespace HomeHUD.Controllers
             var createUserTask = await _userManager.CreateAsync(user, model.Password);
             if (createUserTask.Succeeded)
             {
-                var inserts = new List<Task>();
-                foreach (var roleName in model.Roles)
-                {
-                    inserts.Add(_userManager.AddToRoleAsync(user, roleName.ToString()));
-                }
+                var roleNames = model.Roles.Select(r => r.ToString());
+                var addingToRolesTask = _userManager.AddToRolesAsync(user, roleNames);
 
                 _logger.LogInformation(3, "Created a new account with password and roles.");
-
-                await Task.WhenAll(inserts);
-                await _context.SaveChangesAsync();
-
                 result.Success = true;
+
+                await addingToRolesTask;
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link

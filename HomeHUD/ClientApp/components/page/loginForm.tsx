@@ -8,6 +8,9 @@ import * as React from 'react'
 // redux
 import { connect } from 'react-redux';
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
+import {
+    TextField
+} from 'redux-form-material-ui'
 
 import { IAppState } from '../../state/state';
 import { requestActionCreators } from '../../state/request/requestActionCreators';
@@ -60,7 +63,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
 
     public processResponse(formResult: any) {
         if (formResult.success) {
-            this.setAuthenticationToken();
+           // this.setAuthenticationToken();
             return Promise.resolve();
         }
 
@@ -91,15 +94,21 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
         return (
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
-                <Field name="username"
-                    component={this.renderField} validate={[Validation.required]} placeholder="Username" label="Name" />
-                <Field name="password" type="password"
-                    component={this.renderField} validate={[Validation.required]} placeholder="Secret stuff" label="Password" />
+                <Field name="username" id="login_username"
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Username"
+                    floatingLabelFixed={true} />
+
+                <Field name="password" id="login_password"
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Password"
+                    floatingLabelFixed={true} />
 
                 {error && <span className={style.form_error}>{error}</span>}
 
                 <button type="submit" disabled={pristine || submitting}>Submit</button>
-                <button onClick={() => this.setAuthenticationToken()}>Login form</button>
 
             </form>
         );

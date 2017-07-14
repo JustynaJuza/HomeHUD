@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace HomeHUD.Models.AccountViewModels
+namespace HomeHUD.Models.Identity.AccountViewModels
 {
     public class ResetPasswordViewModel
     {
