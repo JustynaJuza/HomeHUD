@@ -67,21 +67,11 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
             <MenuItem
                 key={role.name}
                 checked={this.roles.isSelected}
-                value={role.id}
+                value={role.name}
                 primaryText={role.name}
             />
         ));
     }
-
-    private renderField = ({ input, label, type, meta: { touched, error, warning }, placeholder }) => (
-        <div>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} type={type} />
-                {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-            </div>
-        </div>
-    )
 
     public processResponse(formResult: any) {
         if (formResult.success) {
@@ -92,19 +82,18 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
     }
 
     private formatSubmitErrors(formErrors) {
-
         var errorSummary = {};
 
         for (var i=0; i < formErrors.length; i++){
             var formError = formErrors[i];
-            errorSummary[formError.fieldName ? formError.fieldName.toLowerCase() : '_error'] = formError.errorMessage;
+            errorSummary[formError.fieldName ? formError.fieldName : '_error'] = formError.errorMessage;
         }
 
         return Promise.reject(new SubmissionError(errorSummary));
     }
 
     public submit(values: any) {
-        this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
+        return this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }
@@ -116,20 +105,34 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
                 <Field name="username" id="create-user_username"
-                    component={TextField} validate={[Validation.required]} hintText="Username" />
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Username"
+                    floatingLabelFixed={true} />
 
                 <Field name="password" id="create-user_password"
-                    component={TextField} validate={[Validation.required]} hintText="Password" />
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Password"
+                    floatingLabelFixed={true} />
 
                 <Field name="confirmPassword" id="create-user_confirmPassword"
-                    component={TextField} validate={[Validation.required]} hintText="Confirm password" />
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Confirm password"
+                    floatingLabelFixed={true} />
 
                 <Field name="email" id="create-user_email"
-                    component={TextField} validate={[Validation.required]} hintText="Email" />
+                    component={TextField}
+                    validate={[Validation.required]}
+                    floatingLabelText="Email"
+                    floatingLabelFixed={true} />
 
                 <Field name="roles" id="create-user_roles"
-                    component={SelectField} hintText="Roles"
-                    multiple={true}>
+                    component={SelectField}
+                    multiple={true}
+                    floatingLabelText="Roles"
+                    floatingLabelFixed={true}>
 
                     {this.menuItems()}
 

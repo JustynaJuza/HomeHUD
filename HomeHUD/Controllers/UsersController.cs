@@ -59,8 +59,19 @@ namespace HomeHUD.Controllers
             var createUserTask = await _userManager.CreateAsync(user, model.Password);
             if (createUserTask.Succeeded)
             {
-                _logger.LogInformation(3, "Created a new account with password.");
+                var inserts = new List<Task>();
+                foreach (var roleName in model.Roles)
+                {
+                    inserts.Add(_userManager.AddToRoleAsync(user, roleName.ToString()));
+                }
+
+                _logger.LogInformation(3, "Created a new account with password and roles.");
+
+                await Task.WhenAll(inserts);
+                await _context.SaveChangesAsync();
+
                 result.Success = true;
+
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                 // Send an email with this link
                 //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

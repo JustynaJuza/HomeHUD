@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using HomeHUD.Models.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,7 @@ namespace HomeHUD.Models.Json
                 .SelectMany(x => x.Value.Errors
                     .Select(y => new Error
                     {
-                        FieldName = x.Key,
+                        FieldName = x.Key.ToCamelCase(),
                         ErrorMessage = y.ErrorMessage
                     }))
                 .ToList();
@@ -36,7 +37,7 @@ namespace HomeHUD.Models.Json
         {
             Errors.Add(new Error
             {
-                FieldName = fieldName,
+                FieldName = fieldName.ToCamelCase(),
                 ErrorMessage = errorMessage
             });
         }

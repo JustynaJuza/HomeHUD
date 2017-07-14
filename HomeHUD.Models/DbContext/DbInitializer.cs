@@ -94,7 +94,8 @@ namespace HomeHUD.Models.DbContext
                     inserts.Add(
                         context.Set<Role>().AddAsync(new Role
                         {
-                            Name = roleName
+                            Name = roleName,
+                            NormalizedName = roleName.ToUpperInvariant()
                         }));
                 }
             }

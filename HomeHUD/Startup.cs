@@ -64,7 +64,14 @@ namespace HomeHUD
                     Configuration.GetConnectionString("HomeHUD"),
                     x => x.MigrationsAssembly("HomeHUD.Models")));
 
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
                 .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()
