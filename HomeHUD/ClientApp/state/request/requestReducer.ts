@@ -9,7 +9,8 @@ const initialRequestState: IRequestState = {
     baseUrl: null,
     loginRedirectUrl: null,
     isAuthenticated: false,
-    authenticationToken: null
+    authenticationToken: null,
+    user: null
 };
 
 export const requestReducer: Reducer<IRequestState> = (state: IRequestState, action: RequestActions.RequestAction) => {
@@ -27,10 +28,11 @@ export const requestReducer: Reducer<IRequestState> = (state: IRequestState, act
         case RequestActionTypes.LogIn:
             return Object.assign({}, state, {
                 isAuthenticated: true,
+                user: (<RequestActions.LogInAction>action).user,
                 authenticationToken: (<RequestActions.LogInAction>action).authenticationToken
             });
 
-        case RequestActionTypes.LogOff:
+        case RequestActionTypes.LogOut:
             return Object.assign({}, state, {
                 isAuthenticated: false,
                 authenticationToken: null

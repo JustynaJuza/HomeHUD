@@ -3,4 +3,9 @@ export interface IRequestState {
     loginRedirectUrl: string;
     isAuthenticated: boolean;
     authenticationToken: string;
+    user?: IUser;
+}
+
+export interface IUser {
+    name: string;
 }

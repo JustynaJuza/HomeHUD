@@ -1,23 +1,24 @@
-import { IRequestState } from './requestState';
+import { IRequestState, IUser } from './requestState';
 import * as RequestActionTypes from './requestActionTypes';
 
 export interface SetBaseUrlAction {
-    type: typeof RequestActionTypes.SetBaseUrl,
-    baseUrl: string
+    type: typeof RequestActionTypes.SetBaseUrl;
+    baseUrl: string;
 }
 
 export interface SetLoginRedirectUrlAction {
-    type: typeof RequestActionTypes.SetLoginRedirectUrl
+    type: typeof RequestActionTypes.SetLoginRedirectUrl;
     redirectUrl: string;
 }
 
 export interface LogInAction {
-    type: typeof RequestActionTypes.LogIn
-    authenticationToken: string;
+    type: typeof RequestActionTypes.LogIn;
+    user: IUser;
+    authenticationToken?: string;
 }
 
-export interface LogOffAction {
-    type: typeof RequestActionTypes.LogOff
+export interface LogOutAction {
+    type: typeof RequestActionTypes.LogOut;
 }
 
-export type RequestAction = SetBaseUrlAction | LogInAction | LogOffAction;
+export type RequestAction = SetBaseUrlAction | LogInAction | LogOutAction;

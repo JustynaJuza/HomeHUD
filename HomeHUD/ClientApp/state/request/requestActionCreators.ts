@@ -1,27 +1,31 @@
 import { AppThunkAction, IAppState } from '../state';
-import { IRequestState } from './requestState';
+import { IRequestState, IUser } from './requestState';
 
 import * as RequestActionTypes from './requestActionTypes';
+import * as RequestActions from './requestActions';
 
 export const requestActionCreators = {
 
-    logIn: (authenticationToken) => (dispatch, getState) => {
+    logIn: (user: IUser, authenticationToken?: string) => (dispatch, getState) => {
         var currentState: IAppState = getState();
 
         if (!currentState.request.isAuthenticated) {
-            dispatch({ type: RequestActionTypes.LogIn, authenticationToken: authenticationToken });
+            dispatch(<RequestActions.LogInAction>
+                { type: RequestActionTypes.LogIn, authenticationToken: authenticationToken });
         }
     },
 
-    logOff: () => (dispatch, getState) => {
+    logOut: () => (dispatch, getState) => {
         var currentState: IAppState = getState();
 
         if (currentState.request.isAuthenticated) {
-            dispatch({ type: RequestActionTypes.LogOff });
+            dispatch(<RequestActions.LogOutAction>
+                { type: RequestActionTypes.LogOut });
         }
     },
 
     setLoginRedirectUrl: (redirectUrl) => (dispatch, getState) => {
-        dispatch({ type: RequestActionTypes.SetLoginRedirectUrl, redirectUrl: redirectUrl });
+        dispatch(<RequestActions.SetLoginRedirectUrlAction>
+            { type: RequestActionTypes.SetLoginRedirectUrl, redirectUrl: redirectUrl });
     }
 };
