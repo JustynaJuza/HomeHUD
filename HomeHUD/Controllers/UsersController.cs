@@ -1,7 +1,7 @@
 ﻿using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using HomeHUD.Models.Identity.AccountViewModels;
-using HomeHUD.Models.Json;
+using HomeHUD.Models.ResponseModels;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +47,7 @@ namespace HomeHUD.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserViewModel model)
         {
-            var result = new JsonFormResult();
+            var result = new FormResultResponse();
 
             if (!ModelState.IsValid)
             {

@@ -3,9 +3,14 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HomeHUD.Models.Json
+namespace HomeHUD.Models.ResponseModels
 {
-    public class JsonFormResult
+    public class SuccessResultResponse
+    {
+        public bool Success { get; set; } = true;
+    }
+
+    public class FormResultResponse : SuccessResultResponse
     {
         public class Error
         {
@@ -13,12 +18,13 @@ namespace HomeHUD.Models.Json
             public string ErrorMessage { get; set; }
         }
 
-        public JsonFormResult()
+        public FormResultResponse()
         {
+            // set success to default, since parent has true
+            Success = default(bool);
             Errors = new List<Error>();
         }
 
-        public bool Success { get; set; }
         public IList<Error> Errors { get; set; }
 
         public void MapErrorsFromModelState(ModelStateDictionary modelState)

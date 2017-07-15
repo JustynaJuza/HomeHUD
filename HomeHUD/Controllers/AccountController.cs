@@ -1,6 +1,6 @@
 ﻿using HomeHUD.Models.Identity;
 using HomeHUD.Models.Identity.AccountViewModels;
-using HomeHUD.Models.Json;
+using HomeHUD.Models.ResponseModels;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -51,14 +51,12 @@ namespace HomeHUD.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
         {
-            var result = new JsonFormResult();
+            var result = new LoginResponse();
 
             if (!ModelState.IsValid)
             {
@@ -72,6 +70,10 @@ namespace HomeHUD.Controllers
                 _logger.LogInformation(1, "User logged in.");
                 var loginTime = DateTime.UtcNow;
 
+                result.User = new LoginResponse._User
+                {
+                    Name = User.Identity.Name
+                };
                 result.Success = true;
             }
             //if (signInTask.IsLockedOut)
@@ -86,15 +88,13 @@ namespace HomeHUD.Controllers
             return Json(result);
         }
 
-        //
-        // POST: /Account/Logout
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return Json(new SuccessResultResponse());
         }
 
         // GET: /Account/ConfirmEmail
