@@ -7,16 +7,15 @@ import * as React from 'react'
 
 // redux
 import { connect } from 'react-redux';
-import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import {
-    TextField
-} from 'redux-form-material-ui'
-
 import { IAppState } from '../../state/state';
 import { requestActionCreators } from '../../state/request/requestActionCreators';
 
-import * as Validation from '../../state/formValidation';
-
+// redux-form
+import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
+import { TextField } from 'redux-form-material-ui'
+import * as Validation from '../../state/form/formValidation';
+import { IFormResult, IFormError } from '../../state/form/formResult';
+import { IUser } from '../../state/request/requestState';
 import { Api } from '../../state/api';
 
 // style
@@ -24,9 +23,13 @@ import * as style from '../../css/components/login-panel.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface LoginFormData {
+interface ILoginFormData {
     username: string;
     password: string;
+}
+
+interface ILoginFormResult extends IFormResult {
+    user: IUser;
 }
 
 interface ILoginFormProps {
@@ -35,7 +38,7 @@ interface ILoginFormProps {
 
 type ILoginFormPropsType =
     ILoginFormProps
-    & FormProps<LoginFormData, void, void>
+    & FormProps<ILoginFormData, void, void>
     & typeof requestActionCreators;
 
 class LoginForm extends React.Component<ILoginFormPropsType, {}> {
@@ -47,31 +50,22 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
         this.submit = this.submit.bind(this);
     }
 
-    private setAuthenticationToken() {
-        this.props.logIn(null);
+    public submit(values: ILoginFormData) {
+        return this.api.postJson(this.props.baseUrl + '/Account/Login', values)
+            .then(this.processResponse.bind(this))
+            .catch(this.formatSubmitErrors);
     }
 
-    private renderField = ({ input, label, type, meta: { touched, error, warning }, placeholder }) => (
-        <div>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} type={type} />
-                {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-            </div>
-        </div>
-    )
-
-    public processResponse(formResult: any) {
-        if (formResult.success) {
-            this.setAuthenticationToken();
-            return Promise.resolve();
+    private processResponse(formResult: ILoginFormResult) {
+        if (!formResult.success) {
+            return Promise.reject(formResult.errors);
         }
 
-        return Promise.reject(formResult.errors);
+        this.props.logIn(formResult.user, null);
+        return Promise.resolve();
     }
 
-    private formatSubmitErrors(formErrors) {
-
+    private formatSubmitErrors(formErrors: IFormError[]) {
         var errorSummary = {};
 
         for (var i=0; i < formErrors.length; i++){
@@ -80,12 +74,6 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
         }
 
         return Promise.reject(new SubmissionError(errorSummary));
-    }
-
-    public submit(values: any) {
-        return this.api.postJson(this.props.baseUrl + '/Account/Login', values)
-            .then(this.processResponse.bind(this))
-            .catch(this.formatSubmitErrors);
     }
 
     public render() {

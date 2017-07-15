@@ -5,5 +5,5 @@ export interface IFormError {
 
 export interface IFormResult {
     success: boolean;
-    errors: Array<IFormError>;
+    errors: IFormError[];
 }

@@ -7,17 +7,14 @@ import * as React from 'react'
 
 // redux
 import { connect } from 'react-redux';
-import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import MenuItem from 'material-ui/MenuItem'
-import {
-    TextField,
-    SelectField
-} from 'redux-form-material-ui'
-
 import { IAppState } from '../../state/state';
 
-import * as Validation from '../../state/formValidation';
-
+// redux-form
+import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
+import { TextField, SelectField } from 'redux-form-material-ui'
+import MenuItem from 'material-ui/MenuItem'
+import * as Validation from '../../state/form/formValidation';
+import { IFormResult, IFormError } from '../../state/form/formResult';
 import { Api } from '../../state/api';
 
 // style
@@ -25,7 +22,7 @@ import * as style from '../../css/components/login-panel.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface CreateUserFormData {
+interface ICreateUserFormData {
     username: string;
     password: string;
     confirmPassword: string;
@@ -39,7 +36,7 @@ interface ICreateUserFormProps {
 
 type ICreateUserFormPropsType =
     ICreateUserFormProps
-    & FormProps<CreateUserFormData, void, void>
+    & FormProps<ICreateUserFormData, void, void>
 
 class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
@@ -72,29 +69,29 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
         ));
     }
 
-    public processResponse(formResult: any) {
-        if (formResult.success) {
-            return Promise.resolve();
-        }
-
-        return Promise.reject(formResult.errors);
+    public submit(values: ICreateUserFormData) {
+        return this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
+            .then(this.processResponse.bind(this))
+            .catch(this.formatSubmitErrors);
     }
 
-    private formatSubmitErrors(formErrors) {
+    private processResponse(formResult: IFormResult) {
+        if (!formResult.success) {
+            return Promise.reject(formResult.errors);
+        }
+
+        return Promise.resolve();
+    }
+
+    private formatSubmitErrors(formErrors: IFormError[]) {
         var errorSummary = {};
 
-        for (var i=0; i < formErrors.length; i++){
+        for (var i = 0; i < formErrors.length; i++) {
             var formError = formErrors[i];
             errorSummary[formError.fieldName ? formError.fieldName : '_error'] = formError.errorMessage;
         }
 
         return Promise.reject(new SubmissionError(errorSummary));
-    }
-
-    public submit(values: any) {
-        return this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
-            .then(this.processResponse.bind(this))
-            .catch(this.formatSubmitErrors);
     }
 
     public render() {
@@ -123,7 +120,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
                 <Field name="email" id="create-user_email"
                     component={TextField}
-                    validate={[Validation.required]}
+                    validate={[Validation.required, Validation.email]}
                     floatingLabelText="Email"
                     floatingLabelFixed={true} />
 

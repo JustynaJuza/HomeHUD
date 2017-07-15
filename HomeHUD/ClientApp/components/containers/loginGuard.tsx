@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { IAppState } from '../../state/state';
 import { IRouterParams } from '../../router';
 import { browserHistory } from 'react-router';
-
 import { requestActionCreators } from '../../state/request/requestActionCreators';
 
 // style
