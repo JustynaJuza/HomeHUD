@@ -39,11 +39,11 @@ export class Api {
             .then(response => response.json() as Promise<T>);
     }
 
-    public postJson(url: string, data: any): Promise<any> {
+    public postJson<T>(url: string, data?: any): Promise<T> {
         this.postRequestSettings.body = JSON.stringify(data);
 
         return fetch(url, this.postRequestSettings)
             .then(this.processStatus)
-            .then(response => response.json());;
+            .then(response => response.json() as Promise<T>);
     }
 }

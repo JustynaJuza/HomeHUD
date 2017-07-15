@@ -3,13 +3,10 @@ import * as React from 'react'
 
 // redux
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
-//import { authenticationActions } from '../../state/authentication/authenticationActions';
+import { requestActionCreators } from '../../state/request/requestActionCreators';
 
-// props
-import { IRoomConfig } from '../../state/config/configState';
-import { ISelectedContent } from '../../state/nav/navState';
+import { Api } from '../../state/api';
 
 // style
 import * as style from '../../css/components/config-menu.css';
@@ -17,12 +14,28 @@ import * as style from '../../css/components/config-menu.css';
 // component ---------------------------------------------------------------------------------
 
 interface IConfigMenuProps {
+    baseUrl: string;
     isAuthenticated: boolean;
     userName: string;
-    logoff: () => void;
 }
 
-class ConfigMenu extends React.Component<IConfigMenuProps, {}> {
+type IConfigMenuPropsType =
+    IConfigMenuProps
+    & typeof requestActionCreators;
+
+class ConfigMenu extends React.Component<IConfigMenuPropsType, {}> {
+
+    private api: Api = new Api();
+
+    constructor(props) {
+        super(props);
+        this.logOut = this.logOut.bind(this);
+    }
+
+    private logOut() {
+        return this.api.postJson(this.props.baseUrl + '/Account/Logout')
+            .then(() => this.props.logOut())
+    }
 
     public render() {
         if (!this.props.isAuthenticated) {
@@ -38,9 +51,9 @@ class ConfigMenu extends React.Component<IConfigMenuProps, {}> {
                     </button>
                 </li>
                 <li>
-                    <button className={style.button} title="Log off" onClick={() => this.props.logoff()}>
+                    <button className={style.button} title="Log out" onClick={this.logOut}>
                         <div className={style.logoff}></div>
-                        <span className={style.title}>Log off</span>
+                        <span className={style.title}>Log out</span>
                     </button>
                 </li>
             </ul>
@@ -50,16 +63,12 @@ class ConfigMenu extends React.Component<IConfigMenuProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState) => {
+export default connect(
+    (state: IAppState) => ({
+        baseUrl: state.request.baseUrl,
+        isAuthenticated: state.request.isAuthenticated,
+        userName: state.request.user ? state.request.user.name : null
+    }),
 
-    return {
-        //isAuthenticated: state.authentication.isAuthenticated,
-        //userName: state.authentication.userName
-    }
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    //logoff() { dispatch(authenticationActions.LOGOFF()); }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ConfigMenu);
+    requestActionCreators
+)(ConfigMenu);

@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router';
 
 // components
 import { Header } from './header';
-//import ConfigMenu from './configMenu';
+import ConfigMenu from './configMenu';
 
 import { initialStateLoader } from '../../state/initialStateLoader';
 import { IConfigState } from '../../state/config/configState';
@@ -57,6 +57,7 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
         return (
             <div className={style.layout}>
                 <Header />
+                <ConfigMenu />
                 {this.props.children}
             </div>
         );
@@ -64,10 +65,6 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
 
     //const { location, params } = this.props;
     //<Content {...{ location, params }} />
-    //<Header />
-    //<Navigation />
-    //<Content />
-    //<ConfigMenu />
 }
 
 // redux ---------------------------------------------------------------------------------
