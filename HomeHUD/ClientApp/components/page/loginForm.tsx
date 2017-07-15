@@ -48,7 +48,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     private setAuthenticationToken() {
-        this.props.logIn('helloToken');
+        this.props.logIn(null);
     }
 
     private renderField = ({ input, label, type, meta: { touched, error, warning }, placeholder }) => (
@@ -63,7 +63,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
 
     public processResponse(formResult: any) {
         if (formResult.success) {
-           // this.setAuthenticationToken();
+            this.setAuthenticationToken();
             return Promise.resolve();
         }
 
@@ -83,7 +83,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     public submit(values: any) {
-        this.api.postJson(this.props.baseUrl + '/Account/Login', values)
+        return this.api.postJson(this.props.baseUrl + '/Account/Login', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }
@@ -101,6 +101,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
                     floatingLabelFixed={true} />
 
                 <Field name="password" id="login_password"
+                    type="password"
                     component={TextField}
                     validate={[Validation.required]}
                     floatingLabelText="Password"

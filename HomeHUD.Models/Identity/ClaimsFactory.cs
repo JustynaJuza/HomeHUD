@@ -26,8 +26,9 @@ namespace HomeHUD.Models.Identity
             var principal = await base.CreateAsync(user);
 
             ((ClaimsIdentity) principal.Identity).AddClaims(new[] {
-            new Claim(ClaimTypes.GivenName, user.FirstName),
-            new Claim(ClaimTypes.Surname, user.LastName),
+            new Claim("email", user.Email),
+            new Claim("firstName", user.FirstName ?? string.Empty),
+            new Claim("lastName", user.LastName ?? string.Empty)
         });
 
             return principal;

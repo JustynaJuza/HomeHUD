@@ -14,7 +14,8 @@ export class Api {
         this.getRequestSettings = {
             method: 'get',
             headers: jsonHeaders,
-            cache: 'default'
+            cache: 'default',
+            credentials: 'include'
         };
 
         this.postRequestSettings = {

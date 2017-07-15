@@ -15,6 +15,8 @@ namespace HomeHUD
 {
     public class Startup
     {
+        private readonly TokenAuthenticationProvider _tokenAuthenticationProvider;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -31,6 +33,8 @@ namespace HomeHUD
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            _tokenAuthenticationProvider = new TokenAuthenticationProvider(Configuration);
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -61,29 +65,37 @@ namespace HomeHUD
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("HomeHUD"),
-                    x => x.MigrationsAssembly("HomeHUD.Models")));
+                    Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));
 
-            services.AddIdentity<User, Role>(options =>
+
+            //services.Configure<TokenProviderOptions>(options =>
+            //    _tokenAuthenticationProvider.SetTokenProviderOptions(options));
+
+            services
+                .AddIdentity<User, Role>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 6;
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
+
+                    options.Cookies.ApplicationCookie = _tokenAuthenticationProvider.CookieAuthenticationOptions;
                 })
                 .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
-            //services.AddScoped<IUserClaimsPrincipalFactory<User>, AppClaimsPrincipalFactory>();
 
             services
-                .AddMvc()
-                .AddJsonOptions(opts =>
-              {
-                  opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-              });
+                .AddMvc(options =>
+                {
+                    //options.Filters.Add(new RequireHttpsAttribute());
+                })
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -91,6 +103,7 @@ namespace HomeHUD
             services.AddTransient<ILightSwitchService, LightSwitchService>();
             services.AddTransient<IRabbitMqService, RabbitMqService>();
             services.AddTransient<IPathProvider, PathProvider>();
+            //services.AddTransient<ITokenProvider, TokenProvider>();
 
             // Initialize Automapper
             services.AddAutoMapper();
@@ -122,12 +135,15 @@ namespace HomeHUD
             }
 
             app.UseStaticFiles();
+
+            // Authentication settings
+            app.UseCookieAuthentication(_tokenAuthenticationProvider.CookieAuthenticationOptions);
+            app.UseJwtBearerAuthentication(_tokenAuthenticationProvider.JwtBearerOptions);
             app.UseIdentity();
 
+            // SignalR
             app.UseWebSockets();
             app.UseSignalR();
-
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
             //app.MapWhen(c => c.Request.Path.Value.eHasValue, b => )
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System;
 using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
@@ -54,8 +55,8 @@ namespace HomeHUD.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
         {
             var result = new JsonFormResult();
 
@@ -69,6 +70,8 @@ namespace HomeHUD.Controllers
             if (signInTask.Succeeded)
             {
                 _logger.LogInformation(1, "User logged in.");
+                var loginTime = DateTime.UtcNow;
+
                 result.Success = true;
             }
             //if (signInTask.IsLockedOut)
