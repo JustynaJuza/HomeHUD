@@ -13,6 +13,7 @@ import configureStore from './configureStore-server';
 import { Api } from './state/api';
 
 import * as RequestActionTypes from './state/request/requestActionTypes';
+import * as RequestActions from './state/request/requestActions';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
@@ -21,7 +22,16 @@ export default createServerRenderer(params => {
         const store = configureStore();
         store.dispatch({
             type: RequestActionTypes.SetBaseUrl,
-            baseUrl: params.data.baseUrl })
+            baseUrl: params.data.baseUrl
+        } as RequestActions.SetBaseUrlAction)
+
+        if (params.data.isAuthenticated) {
+            console.log("Logged in already!")
+            store.dispatch({
+                type: RequestActionTypes.LogIn,
+                user: null
+            } as RequestActions.LogInAction)
+        }
 
         match({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {
             if (error) {

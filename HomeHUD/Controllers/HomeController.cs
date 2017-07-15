@@ -21,8 +21,11 @@ namespace HomeHUD.Controllers
 
         public IActionResult Index()
         {
-            var baseUrl = _pathProvider.GetAppBaseUrl();
-            return View(new { baseUrl = baseUrl });
+            return View(new
+            {
+                baseUrl = _pathProvider.GetAppBaseUrl(),
+                isAuthenticated = User.Identity.IsAuthenticated
+            });
         }
 
         [Route("/initialState")]
@@ -46,7 +49,7 @@ namespace HomeHUD.Controllers
                        })
                    }).ToList();
 
-            var initialState = new AppState
+            return new AppState
             {
                 Config = new AppState.AppConfiguration
                 {
@@ -64,8 +67,6 @@ namespace HomeHUD.Controllers
                     All = query.SelectMany(x => x.Lights).ToList()
                 }
             };
-
-            return initialState;
         }
 
         public IActionResult Error()
