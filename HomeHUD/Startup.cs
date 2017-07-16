@@ -44,15 +44,8 @@ namespace HomeHUD
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //var settings = new JsonSerializerSettings();
-            //settings.ContractResolver = new SignalRContractResolver();
+            services.AddSignalRFramework();
 
-            //var serializer = JsonSerializer.Create(settings);
-            //services.Add(new ServiceDescriptor(typeof(JsonSerializer),
-            //             provider => serializer,
-            //             ServiceLifetime.Transient));
-
-            services.AddSignalR();
             services.AddMemoryCache();
 
             // Allow injecting HttpContext (for PathProviver)
@@ -66,7 +59,7 @@ namespace HomeHUD
             services.Configure<AntiforgeryOptions>(
                 Configuration.GetSection("AntiForgery"));
 
-            // Add framework services.
+            // Add framework services
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));
@@ -91,15 +84,7 @@ namespace HomeHUD
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
 
-            services.AddAntiforgery(options =>
-            {
-                var antiforgeryOptions = new AntiforgeryOptions();
-                Configuration.GetSection("AntiForgery").Bind(antiforgeryOptions);
-
-                options.CookieName = antiforgeryOptions.CookieName;
-                options.HeaderName = antiforgeryOptions.HeaderName;
-                options.FormFieldName = antiforgeryOptions.HeaderName;
-            });
+            services.AddAntiforgeryToken(Configuration);
 
             services
                 .AddMvc(options =>
@@ -154,7 +139,7 @@ namespace HomeHUD
             app.UseCookieAuthentication(_tokenAuthenticationProvider.CookieAuthenticationOptions);
             app.UseJwtBearerAuthentication(_tokenAuthenticationProvider.JwtBearerOptions);
             app.UseIdentity();
-            app.UseValidateAntiForgeryToken();
+            app.UseValidateAntiforgeryToken();
 
             // SignalR
             app.UseWebSockets();
