@@ -52,15 +52,5 @@ namespace HomeHUD.Controllers
 
             return initialState;
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
-        }
     }
 }

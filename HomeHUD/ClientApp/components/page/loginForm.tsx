@@ -51,7 +51,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     public submit(values: ILoginFormData) {
-        return this.api.postJson(this.props.baseUrl + '/Account/Login', values)
+        return this.api.postJson(this.props.baseUrl + '/account/login', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }

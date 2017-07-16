@@ -28,7 +28,7 @@ class LoginGuard extends React.Component<ILoginGuardPropsType, {}> {
     public componentDidMount() {
         if (!this.props.isAuthenticated) {
             this.props.setLoginRedirectUrl(this.props.currentPath);
-            browserHistory.replace("/login")
+            browserHistory.replace('/login')
         }
     }
 

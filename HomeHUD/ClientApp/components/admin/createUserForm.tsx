@@ -54,7 +54,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
     }
 
     private getRoleOptions() {
-        return this.api.getJson(this.props.baseUrl + '/Users/GetRoles')
+        return this.api.getJson(this.props.baseUrl + '/users/getRoles')
             .then(data => this.roles = data);
     }
 
@@ -70,7 +70,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
     }
 
     public submit(values: ICreateUserFormData) {
-        return this.api.postJson(this.props.baseUrl + '/Users/CreateUser', values)
+        return this.api.postJson(this.props.baseUrl + '/users/createUser', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }
