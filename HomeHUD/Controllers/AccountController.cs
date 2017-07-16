@@ -1,4 +1,5 @@
-﻿using HomeHUD.Models.Identity;
+﻿using HomeHUD.Models.DbContext;
+using HomeHUD.Models.Identity;
 using HomeHUD.Models.Identity.AccountViewModels;
 using HomeHUD.Models.ResponseModels;
 using HomeHUD.Services;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 
@@ -15,45 +15,38 @@ namespace HomeHUD.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
-        private readonly string _externalCookieScheme;
 
         public AccountController(
+            ApplicationDbContext context,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory)
         {
+            _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        //
-        // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string returnUrl = null)
+        public async Task<IActionResult> Login()
         {
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
-
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
         {
             var result = new LoginResponse();
@@ -68,13 +61,19 @@ namespace HomeHUD.Controllers
             if (signInTask.Succeeded)
             {
                 _logger.LogInformation(1, "User logged in.");
-                var loginTime = DateTime.UtcNow;
+
+                var user = await _userManager.FindByNameAsync(model.UserName);
+                user.LastLoginDate = DateTime.UtcNow;
+
+                var savingChangesTask = _context.SaveChangesAsync();
 
                 result.User = new LoginResponse._User
                 {
-                    Name = User.Identity.Name
+                    Name = user.UserName
                 };
                 result.Success = true;
+
+                await savingChangesTask;
             }
             //if (signInTask.IsLockedOut)
             //{
