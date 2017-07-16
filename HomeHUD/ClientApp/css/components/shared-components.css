@@ -1,7 +1,6 @@
 @import './variables.css';
 
-.small_rounded_container {
-    @mixin containerBorder;
+@define-extend small_rounded_container {
     width: 40%;
     min-width: 300px;
     max-width: 430px;
@@ -9,7 +8,6 @@
     margin-bottom: 20px;
     background: #fff;
     border-radius: 15px;
-    border: 3px solid $color_accent_ternary;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -19,16 +17,15 @@
     align-content: stretch;
 }
 
-.small_container_item_spacing {
+@define-extend small_container_item_spacing {
     padding: 8px;
     width: 70%;
     min-width: 250px;
     max-width: 300px;
 }
 
-.uppercase_name {
+@define-extend uppercase_name {
     @mixin textShadow;
-
     font-family: 'Roboto';
     text-transform: uppercase;
     font-size: 1.3em;
@@ -36,24 +33,23 @@
     word-wrap: break-word;
 }
 
-.button {
+@define-extend config_icon {
+    @mixin square 40px;
+}
+
+@define-mixin button {
     @mixin softerEdges;
     @mixin textShadow;
     @mixin boxShadow;
-
     cursor: pointer;
-
     font-size: 1em;
     font-family: 'Roboto';
-
     text-transform: uppercase;
     border: 1px solid $default_border;
     background-color: $default_button_color;
     color: $default_button_text_color;
-
     padding: 12px 22px;
     margin: 12px;
-
     text-decoration: none;
     font-weight: bolder;
 

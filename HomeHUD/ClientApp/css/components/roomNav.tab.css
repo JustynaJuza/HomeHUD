@@ -1,4 +1,5 @@
 @import './variables.css';
+@import './shared-components.css';
 
 .tab {
     @mixin navTabBorder;
@@ -53,7 +54,7 @@
 }
 
 .name {
-    composes: uppercase_name from './shared-components.css';
+    @extend uppercase_name;
 
     max-height: calc(2*$nav_tab_line_height);
     overflow: hidden;

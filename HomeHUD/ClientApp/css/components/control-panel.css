@@ -1,11 +1,11 @@
 @import './variables.css';
+@import './shared-components.css';
 
 .container {
-    composes: small_rounded_container from './shared-components.css';
+    @extend small_rounded_container;
 }
 
 .button {
-    composes: button from './shared-components.css';
-    
+    @mixin button;
     min-width: 190px;
 }

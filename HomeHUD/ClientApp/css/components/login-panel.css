@@ -1,15 +1,16 @@
 @import './variables.css';
+@import './shared-components.css';
 
 .container {
-    composes: small_rounded_container from './shared-components.css';
+    @extend small_rounded_container;
 }
 
 .button {
-    composes: button from './shared-components.css';
+    @mixin button;
 }
 
 .field {
-    composes: small_container_item_spacing from './shared-components.css';
+    @extend small_container_item_spacing;
 }
 
 .input {
@@ -24,8 +25,7 @@
 }
 
 .label {
-    composes: uppercase_name from './shared-components.css';
-    
+    @extend uppercase_name;
     @mixin textShadow;
 
     font-size: .7em;
@@ -40,9 +40,9 @@
     color: $error_color;
 }
 
-.form_error{
+.form_error {
+    @extend small_container_item_spacing;
     composes: label;
-    composes: small_container_item_spacing from './shared-components.css';
 
     color: $error_color;
     font-size: 0.85em;

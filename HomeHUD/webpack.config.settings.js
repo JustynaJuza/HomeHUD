@@ -66,13 +66,12 @@ const loaders = {
                     loader: 'postcss-loader',
                     options: {
                         plugins: () => [
-                            require('postcss-import')(),
+                            require('precss')(),
                             require('postcss-functions')({ functions: postcssFunctions }),
                             require('postcss-font-magician')(),
                             require('postcss-url')(),
                             require('postcss-cssnext')({ browsers: ['last 3 versions'] }),
-                            require('precss')(),
-                            require('postcss-nesting')(),
+                            // following plugins are for showing errors in console and html
                             require('postcss-browser-reporter')(),
                             require('postcss-reporter')()
                         ]

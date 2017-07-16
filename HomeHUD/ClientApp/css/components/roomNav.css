@@ -1,4 +1,6 @@
 @import './variables.css';
+@import './shared-components.css';
+
 .list {
     flex-shrink: 0;
 
