@@ -34,7 +34,7 @@ class LoginGuard extends React.Component<ILoginGuardPropsType, {}> {
 
     public render() {
         return this.props.isAuthenticated
-            ? <div> {this.props.children} </div>
+            ? React.Children.only(this.props.children)
             : null;
     }
 

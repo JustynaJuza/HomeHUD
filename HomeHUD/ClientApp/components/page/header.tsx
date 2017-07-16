@@ -6,10 +6,7 @@ import * as style from '../../css/components/header.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IHeaderProps {
-}
-
-export class Header extends React.Component<IHeaderProps, {}> {
+export class Header extends React.Component<{}, {}> {
 
     public render() {
 

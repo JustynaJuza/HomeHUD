@@ -4,25 +4,14 @@ import * as classNames from 'classnames';
 import { Link } from 'react-router'
 //import { NavLink } from 'react-router-dom'
 
-// redux
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { IAppState } from '../../state/state';
-import { navActionCreators } from '../../state/nav/navActionCreators';
-
 // style
 import * as style from '../../css/components/roomNav.tab.css';
 
 // component ---------------------------------------------------------------------------------
 
-interface IRoomNavTabPublicProps {
-    id: number;
+interface IRoomNavTabProps {
     hash: string;
     isActive: boolean;
-}
-
-interface IRoomNavTabProps extends IRoomNavTabPublicProps {
-    onSelectTab: (e: any, id: number) => void;
 }
 
 export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
@@ -35,7 +24,7 @@ export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
 
         return (
             <li className={tabClasses}>
-                <Link to={`/r/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
+                <Link to={`/r/${this.props.hash}`} className={style.link}>
                     <span className={style.name}>
                         {this.props.children}
                     </span>
@@ -46,18 +35,4 @@ export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
 }
 
 // redux ---------------------------------------------------------------------------------
-
-const mapStateToProps = (state: IAppState, publicProps: IRoomNavTabPublicProps) => {
-    return {};
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>, publicProps: IRoomNavTabPublicProps) => ({
-    onSelectTab(e: any, id: number) {
-        //e.preventDefault();
-        //history.pushState(null, null, publicProps.hash);
-
-        //dispatch(navActionCreators.selectContent({ type: 'ROOM', id: id }));
-    }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomNavTab);
+export default RoomNavTab;

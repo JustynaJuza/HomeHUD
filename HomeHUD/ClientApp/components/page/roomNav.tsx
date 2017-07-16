@@ -9,6 +9,7 @@ import * as React from 'react'
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IAppState } from '../../state/state';
+import { IRouterParams } from '../../router';
 
 // props
 import { IRoomConfig } from '../../state/config/configState';
@@ -23,25 +24,20 @@ import * as style from '../../css/components/roomNav.css';
 // component ---------------------------------------------------------------------------------
 
 interface IRoomNavProps {
-    isAuthenticated: boolean;
-    selectedContent: ISelectedContent;
     rooms: IRoomConfig[];
 }
 
-class RoomNav extends React.Component<IRoomNavProps, {}> {
+type IRoomNavPropsType =
+    IRoomNavProps
+    & IRouterParams;
 
-    private selectedRoomId: number = null;
 
-    private setSelectedRoom(): void {
-
-        if (this.props.selectedContent.type === 'ROOM') {
-            this.selectedRoomId = this.props.selectedContent.id;
-        }
-    }
+class RoomNav extends React.Component<IRoomNavPropsType, {}> {
 
     private renderControlPanelTab = () => {
+        console.log(this.props)
         return (
-            <RoomNavTab key={0} id={0} hash={''} isActive={this.selectedRoomId === 0}>
+            <RoomNavTab key={0} hash={''} isActive={!this.props.params['hash']}>
                 Control Panel
             </RoomNavTab>
         )
@@ -49,7 +45,7 @@ class RoomNav extends React.Component<IRoomNavProps, {}> {
 
     private renderRoomNavTab = (room: IRoomConfig, index: number) => {
         return (
-            <RoomNavTab key={index + 1} id={room.id} hash={room.hash} isActive={room.id === this.selectedRoomId}>
+            <RoomNavTab key={index + 1} hash={room.hash} isActive={room.hash == this.props.params['hash']}>
                 {room.name}
             </RoomNavTab>
         )
@@ -60,11 +56,6 @@ class RoomNav extends React.Component<IRoomNavProps, {}> {
     }
 
     public render() {
-        if (!this.props.isAuthenticated) {
-            return null;
-        }
-
-        this.setSelectedRoom();
 
         return (
             <ul className={style.list}>
@@ -77,15 +68,9 @@ class RoomNav extends React.Component<IRoomNavProps, {}> {
 
 // redux ---------------------------------------------------------------------------------
 
-const mapStateToProps = (state: IAppState) => {
-
-    return {
-        isAuthenticated: true, //state.authentication.isAuthenticated,
-        selectedContent: state.navigation.selectedContent,
+export default connect(
+    (state: IAppState, publicProps: IRouterParams) => ({
         rooms: _filter(state.config.rooms, room => room.lights.length > 0) as IRoomConfig[]
-    }
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoomNav);
+    }),
+    null
+)(RoomNav);

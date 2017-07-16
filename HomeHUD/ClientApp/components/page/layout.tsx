@@ -19,16 +19,16 @@ import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
+interface ILayoutProps {
+    isAuthenticated: boolean,
+    redirectUrl: string
+};
+
 type ILayoutPropsType =
     ILayoutProps
     & IRouterParams
     & typeof initialStateLoader
     & typeof requestActionCreators;
-
-interface ILayoutProps extends IRouterParams {
-    isAuthenticated: boolean,
-    redirectUrl: string
-};
 
 class Layout extends React.Component<ILayoutPropsType, {}> {
 
@@ -58,7 +58,9 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
             <div className={style.layout}>
                 <Header />
                 <ConfigMenu />
-                {this.props.children}
+                <div className={style.content}>
+                    {this.props.children}
+                </div>
             </div>
         );
     }
@@ -73,6 +75,6 @@ export default connect(
         isAuthenticated: state.request.isAuthenticated,
         redirectUrl: state.request.loginRedirectUrl
     }),
-
+    // merge multiple action creators
     Object.assign(initialStateLoader, requestActionCreators)
 )(Layout);
