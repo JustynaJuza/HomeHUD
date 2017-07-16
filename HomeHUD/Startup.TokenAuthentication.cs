@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -84,12 +86,19 @@ namespace HomeHUD
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 AuthenticationScheme = "Cookie",
+                ExpireTimeSpan = _options.Duration,
+                SlidingExpiration = true,
                 CookieName = "access_token",
                 TicketDataFormat = new CustomJwtDataFormat(
                     _securityAlgorithm,
                     _tokenValidationParameters,
-                    _options)
-                //AccessDeniedPath = new PathString("/Account/Forbidden/")
+                    _options),
+                Events = new CookieAuthenticationEvents
+                {
+                    OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync,
+                    OnRedirectToLogin = async (context) => context.Response.StatusCode = 401,
+                    OnRedirectToAccessDenied = async (context) => context.Response.StatusCode = 403
+                }
             };
     }
 }

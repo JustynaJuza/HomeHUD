@@ -35,7 +35,7 @@ export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
 
         return (
             <li className={tabClasses}>
-                <Link to={`/rooms/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
+                <Link to={`/r/${this.props.hash}`} onClick={(e) => this.props.onSelectTab(e, this.props.id)} className={style.link}>
                     <span className={style.name}>
                         {this.props.children}
                     </span>

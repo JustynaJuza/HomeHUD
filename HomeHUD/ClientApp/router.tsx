@@ -1,7 +1,7 @@
 import * as _map from 'lodash/map';
 
 import * as React from 'react';
-import { Router, Route } from 'react-router';
+import { Router, Route, Redirect } from 'react-router';
 
 import Layout from './components/page/layout';
 import RoomContent from './components/page/roomContent';
@@ -22,17 +22,21 @@ export interface IRouteConfig {
 }
 
 
-const routesConfig =
-    <Route path='/' component={Layout}>
-        <Route path='/login' component={LoginForm} />
-        <Route path='/users' component={CreateUserForm} />
+export const getRoutesConfig = (isAuthenticated: boolean) =>
+    (
+        <Route component={Layout}>
+            <Redirect from='/' to='/r' />
+            <Route path='/login' component={LoginForm} />
+            <Route path='/users' component={CreateUserForm} />
 
-        <Route component={LoginGuard}>
-            <Route path='/rooms(/:hash)' component={RoomContent} />
-        </Route>;
-    </Route>;
+            <Route component={LoginGuard}>
+                <Route path='/r(/:hash)' component={RoomContent} />
+            </Route>
+        </Route>
+    );
 
-export default routesConfig;
+//<Redirect from='/' to={isAuthenticated ? '/r' : '/login'} />
+
 
 // Enable Hot Module Replacement (HMR)
 if (module.hot) {

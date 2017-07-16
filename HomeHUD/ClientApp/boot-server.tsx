@@ -8,7 +8,7 @@ import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-import routes from './router';
+import { getRoutesConfig } from './router';
 import configureStore from './configureStore-server';
 import { Api } from './state/api';
 
@@ -26,13 +26,13 @@ export default createServerRenderer(params => {
         } as RequestActions.SetBaseUrlAction)
 
         if (params.data.isAuthenticated) {
-            console.log("Logged in already!")
             store.dispatch({
                 type: RequestActionTypes.LogIn,
                 user: null
             } as RequestActions.LogInAction)
         }
 
+        var routes = getRoutesConfig(params.data.isAuthenticated);
         match({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {
             if (error) {
                 throw error;

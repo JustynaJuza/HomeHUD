@@ -10,7 +10,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import routes from './router';
+import { getRoutesConfig } from './router';
 import configureStore from './configureStore-client';
 import { IAppState }  from './state/state';
 
@@ -25,8 +25,8 @@ injectTapEventPlugin()
 // and injects the app into a DOM element.
 ReactDOM.render(
     <MuiThemeProvider muiTheme={getMuiTheme(null, { userAgent: 'all' })}>
-        <Provider store={ store }>
-            <Router history={ history } children={ routes } />
+        <Provider store={store}>
+            <Router history={history} children={getRoutesConfig(initialState.request.isAuthenticated)} />
         </Provider>
     </MuiThemeProvider>,
     document.getElementById('react-app')

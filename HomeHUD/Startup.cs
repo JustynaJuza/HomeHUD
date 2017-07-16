@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using System.IO;
+using System.Linq;
 
 namespace HomeHUD
 {
@@ -158,43 +160,47 @@ namespace HomeHUD
             app.UseWebSockets();
             app.UseSignalR();
 
-            //app.MapWhen(c => c.Request.Path.Value.eHasValue, b => )
+            app.UseStatusCodePages();
 
             app.UseMvc(routes =>
-            {
-                routes.MapSpaFallbackRoute(
-                    name: "rooms-spa-fallback",
-                    templatePrefix: "rooms",
-                    defaults: new { controller = "Home", action = "Index" });
+                {
+                    routes.MapRoute(
+                        name: "default",
+                        template: "{controller=Home}/{action=Index}/{id?}");
+                });
 
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+            app.MapWhen(
+                httpContext =>
+                    !new[] { 400, 401, 402, 403 }.Contains(httpContext.Response.StatusCode) // is not permission error
+                    && !(httpContext.Response.StatusCode == 404 && Path.HasExtension(httpContext.Request.Path.Value)), // is not failed file request
+                appBuilder =>
+                {
+                    // then try spa fallback
+                    appBuilder.UseMvc(routes =>
+                    {
+                        routes.MapSpaFallbackRoute(
+                            name: "spa-fallback",
+                            defaults: new { controller = "Home", action = "Index" });
+                    });
+                });
 
-                //routes.MapRoute(
-                //    name: "gaming",
-                //    template: "gaming",
-                //    defaults: new { controller = "Home", action = "Index" });
+            //app.MapWhen(httpContext => httpContext.Response.StatusCode == 404
+            //    && Path.HasExtension(httpContext.Request.Path.Value),
+            //        appBuilder =>
+            //        {
+            //            appBuilder.Use((context, next) =>
+            //            {
+            //                context.Request.Path = new PathString("/index.html");
+            //                Console.WriteLine("Path changed to:" + context.Request.Path.Value);
+            //                return next();
+            //            });
 
-                //routes.MapRoute(
-                //    name: "bed",
-                //    template: "bed",
-                //    defaults: new { controller = "Home", action = "Index" });
+            //            branch.UseStaticFiles();
+            //        });
 
-                //routes.MapRoute(
-                //   name: "living",
-                //   template: "living",
-                //    defaults: new { controller = "Home", action = "Index" });
+            //app.MapWhen(x => !x.Request.Path.Value.StartsWith("/api"),
+            //app.MapWhen(c => c.Request.Path.Value.eHasValue, b => )
 
-                //routes.MapSpaFallbackRoute(
-                //    name: "gaming",
-                //    templatePrefix: "gaming",
-                //    defaults: new { controller = "Home", action = "Index" });
-
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
-            });
 
             DbInitializer.Initialize(context);
         }
