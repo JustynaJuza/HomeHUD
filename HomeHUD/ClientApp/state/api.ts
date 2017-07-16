@@ -1,5 +1,10 @@
 ﻿import 'isomorphic-fetch';
 
+interface IAntiforgeryToken {
+    headerName: string;
+    token: string;
+}
+
 
 export class Api {
 
@@ -25,12 +30,12 @@ export class Api {
         };
     }
 
-    private processStatus(response: Response): any {
+    private processStatus(response: Response): Response {
         if (response.status === 200 || response.status === 0) {
             return response;
-        } else {
-            return Promise.reject(new Error(response.headers.get('message') || response.statusText));
         }
+
+        Promise.reject(new Error(response.headers.get('message') || response.statusText));
     }
 
     public getJson<T>(url: string): Promise<T> {
@@ -39,11 +44,19 @@ export class Api {
             .then(response => response.json() as Promise<T>);
     }
 
-    public postJson<T>(url: string, data?: any): Promise<T> {
-        this.postRequestSettings.body = JSON.stringify(data);
+    private getAntiforgeryToken() {
+        return this.getJson<IAntiforgeryToken>('/token/antiforgery')
+            .then(antiforgeryToken => this.postRequestSettings.headers.set(antiforgeryToken.headerName, antiforgeryToken.token));
+    }
 
-        return fetch(url, this.postRequestSettings)
-            .then(this.processStatus)
-            .then(response => response.json() as Promise<T>);
+    public postJson<T>(url: string, data?: any): Promise<T> {
+        return Promise.resolve(this.getAntiforgeryToken())
+            .then(() => {
+                this.postRequestSettings.body = JSON.stringify(data);
+
+                return fetch(url, this.postRequestSettings)
+                    .then(this.processStatus)
+                    .then(response => response.json() as Promise<T>)
+            });
     }
 }

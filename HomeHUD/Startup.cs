@@ -61,6 +61,8 @@ namespace HomeHUD
                 Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}"));
             services.Configure<RabbitMq.Queue>(
                 Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Queue)}"));
+            services.Configure<AntiforgeryOptions>(
+                Configuration.GetSection("AntiForgery"));
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -86,6 +88,16 @@ namespace HomeHUD
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
+
+            services.AddAntiforgery(options =>
+            {
+                var antiforgeryOptions = new AntiforgeryOptions();
+                Configuration.GetSection("AntiForgery").Bind(antiforgeryOptions);
+
+                options.CookieName = antiforgeryOptions.CookieName;
+                options.HeaderName = antiforgeryOptions.HeaderName;
+                options.FormFieldName = antiforgeryOptions.HeaderName;
+            });
 
             services
                 .AddMvc(options =>
@@ -140,6 +152,7 @@ namespace HomeHUD
             app.UseCookieAuthentication(_tokenAuthenticationProvider.CookieAuthenticationOptions);
             app.UseJwtBearerAuthentication(_tokenAuthenticationProvider.JwtBearerOptions);
             app.UseIdentity();
+            app.UseValidateAntiForgeryToken();
 
             // SignalR
             app.UseWebSockets();
