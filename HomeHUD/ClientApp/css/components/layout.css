@@ -43,12 +43,12 @@ body {
     align-content: stretch;
 }
 
-.content{
+.content {
     flex-grow: 1;
-
     width: 100%;
     margin: 0 auto;
-    padding: 2em 0;
-    background: $content_background;
+    background: $content_background_gradient_1;
+    background: -webkit-linear-gradient(to top, $content_background_gradient_2, $content_background_gradient_1);
+    background: linear-gradient(to top, $content_background_gradient_2, $content_background_gradient_1);
     background-size: cover;
 }

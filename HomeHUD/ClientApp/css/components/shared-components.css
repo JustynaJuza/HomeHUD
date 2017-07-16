@@ -1,6 +1,7 @@
 @import './variables.css';
 
 .small_rounded_container {
+    @mixin containerBorder;
     width: 40%;
     min-width: 300px;
     max-width: 430px;
@@ -8,8 +9,8 @@
     margin-bottom: 20px;
     background: #fff;
     border-radius: 15px;
+    border: 3px solid $color_accent_ternary;
     padding: 10px;
-
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -27,7 +28,7 @@
 
 .uppercase_name {
     @mixin textShadow;
-    
+
     font-family: 'Roboto';
     text-transform: uppercase;
     font-size: 1.3em;
@@ -49,7 +50,7 @@
     border: 1px solid $default_border;
     background-color: $default_button_color;
     color: $default_button_text_color;
-    
+
     padding: 12px 22px;
     margin: 12px;
 

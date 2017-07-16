@@ -1,14 +1,12 @@
 @custom-media --medium-viewport (min-width: 768px) and (max-width: 992px);
+@custom-media --small-viewport (max-width: 768px);
 @custom-media --phone (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)
 
 $base_font_size: 12px;
 $mobile_font_size: 20px;
 
-$content_background: url('../media/background.jpg');
-
 $nav_height: 5em;
 
-$white: #efefef;
 $default_border: #bcbcbc;
 
 $color_accent_green: #BBFF33;
@@ -30,6 +28,20 @@ $color_background_4: #f1f1f1;
 $color_text_dark: #ccc;
 $color_text_black: #222;
 
+
+$white: #efefef;
+$black: #222;
+$color_accent_primary: #22c1c3;
+$color_accent_secondary: #fdbb2d;
+$color_accent_ternary: #C70039;
+$color_backing_primary: #f1f1f1;
+$color_backing_secondary: #e1e1e1;
+$color_backing_black: #081017;
+
+$content_background: url('../media/background.jpg');
+$content_background_gradient_1: $color_accent_primary;
+$content_background_gradient_2: $color_accent_secondary;
+
 $body_color: #fff;
 $content_color: #fff;
 $error_color: #C70039;
@@ -40,15 +52,17 @@ $header_text_color: #fff;
 $header_color: #fff;
 $header_border_color: $color_text_black;
 
-$nav_color: $color_background_4;
-$nav_text_color: $color_text_black;
-$nav_border_color: $color_text_dark;
+$nav_color: $color_backing_primary;
+$nav_text_color: $black;
+$nav_text_color--hover: $black;
+$nav_border_color: $black;
+$nav_border_color--hover: $color_accent_ternary;
 
-$nav_active_color: #081017;
+$nav_active_color: $color_backing_black;
 $nav_active_text_color: $white;
+$nav_active_border_color: $nav_border_color;
 
-$nav_hover_color: $color_background_3;
-$nav_hover_text_color: inherit;
+$nav_hover_color: $color_backing_secondary;
 $nav_active_hover_color: $color_text_black;
 $nav_active_hover_text_color: $white;
 
@@ -67,17 +81,19 @@ $lightSwitchingOff_color: $color_accent_lightBrown;
 }
 
 @define-mixin accentFont {
-    font-family: 'Anton', sans-serif;
+    /*font-family: 'Anton', sans-serif;*/
+    font-family: 'Fjalla One', sans-serif;
 }
 
 @define-mixin hugeShadow {
     color: rgba(255,255,255,1);
     text-overflow: clip;
-    text-shadow: longTextShadow(3, 10, #333);
+    text-shadow: longTextShadow(3, 16, #333);
 }
 
 @define-mixin hugeShadowOutline {
     color: rgba(255,255,255,1);
+    letter-spacing: 0.03em;
     text-overflow: clip;
     text-shadow:
         -1px -1px 0 $color_text_black,
@@ -98,4 +114,20 @@ $lightSwitchingOff_color: $color_accent_lightBrown;
 @define-mixin square $size {
     width: $(size);
     height: $(size);
+}
+
+@define-mixin containerBorder {
+    border: 3px solid $color_accent_ternary;
+}
+
+@define-mixin navTabBorder {
+    border-bottom: 3px solid $nav_border_color;
+
+    &.active {
+        border-color: $nav_active_border_color;
+    }
+
+    &:hover {
+        border-color: $nav_border_color--hover;
+    }
 }
