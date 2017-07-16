@@ -7,6 +7,22 @@ const paths = {
     styles: path.join(__dirname, 'dist/')
 };
 
+const postcssFunctions = {
+    longTextShadow:
+        function (offset, length, color) {
+            var formatSingleRow = function(index, color) {
+                return index + 'px ' + index + 'px 0 ' + color;
+            }
+
+            var values = [];
+            for (var i = parseInt(offset); i <= parseInt(length); i++){
+                values.push(formatSingleRow(i, color));
+            }
+
+            return values.join(',')
+        }
+}
+
 const loaders = {
     jsx: {
         test: /\.jsx$/,
@@ -51,10 +67,11 @@ const loaders = {
                     options: {
                         plugins: () => [
                             require('postcss-import')(),
-                            require('postcss-font-magician'),
+                            require('postcss-functions')({ functions: postcssFunctions }),
+                            require('postcss-font-magician')(),
                             require('postcss-url')(),
                             require('postcss-cssnext')({ browsers: ['last 3 versions'] }),
-                            require('precss'),
+                            require('precss')(),
                             require('postcss-nesting')(),
                             require('postcss-browser-reporter')(),
                             require('postcss-reporter')()

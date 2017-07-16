@@ -2,7 +2,6 @@
 
 .container {
     width: 100%;
-    height: $header_height;
 
     background: $header_color;
     color: $header_text_color;
@@ -11,8 +10,8 @@
 }
 
 .logo {
-    @mixin textShadow;
-
-    font-size: 2em;
+    @mixin hugeShadowOutline;
+    @mixin accentFont;
+    font-size: 3em;
     color: $header_text_color;
 }

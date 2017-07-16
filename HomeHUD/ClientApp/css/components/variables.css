@@ -6,7 +6,6 @@ $mobile_font_size: 20px;
 
 $content_background: url('../media/background.jpg');
 
-$header_height: 4.5em;
 $nav_height: 5em;
 
 $white: #efefef;
@@ -37,9 +36,9 @@ $error_color: #C70039;
 
 $focus_outline_color: $color_accent_blue;
 
-$header_text_color: $color_accent_blue;
+$header_text_color: #fff;
 $header_color: #fff;
-$header_border_color: $color_accent_blue;
+$header_border_color: $color_text_black;
 
 $nav_color: $color_background_4;
 $nav_text_color: $color_text_black;
@@ -65,6 +64,27 @@ $lightSwitchingOff_color: $color_accent_lightBrown;
 
 @define-mixin softerEdges {
     border-radius: 2px;
+}
+
+@define-mixin accentFont {
+    font-family: 'Anton', sans-serif;
+}
+
+@define-mixin hugeShadow {
+    color: rgba(255,255,255,1);
+    text-overflow: clip;
+    text-shadow: longTextShadow(3, 10, #333);
+}
+
+@define-mixin hugeShadowOutline {
+    color: rgba(255,255,255,1);
+    text-overflow: clip;
+    text-shadow:
+        -1px -1px 0 $color_text_black,
+        1px -1px 0 $color_text_black,
+        -1px 1px 0 $color_text_black,
+        1px 1px 0 $color_text_black,
+        longTextShadow(3, 10, $color_text_black);
 }
 
 @define-mixin textShadow {
