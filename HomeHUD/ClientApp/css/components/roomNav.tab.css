@@ -27,8 +27,8 @@
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: space-around;
-    align-items: stretch;
-    align-content: stretch;
+    align-items: center;
+    align-content: center;
 
     &:hover {
         background-color: transparent;

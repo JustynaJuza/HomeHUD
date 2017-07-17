@@ -11,7 +11,7 @@ import * as LightAction from '../../../state/lights/lightActions';
 import * as LightActionTypes from '../../../state/lights/lightActionTypes';
 
 // props
-import { LIGHT_SWITCH_STATE } from '../../../state/lights/lightsState';
+import { lightSwitchState } from '../../../state/lights/lightsState';
 
 // style
 import * as style from '../../../css/components/light-switch.css';
@@ -108,7 +108,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         dispatch({
             type: LightActionTypes.TrySetLightState,
             lightId: id,
-            state: LIGHT_SWITCH_STATE.ON
+            state: lightSwitchState.on
         } as LightAction.TrySetLightStateAction)
     },
     onSwitchOff(id: string | number) {
@@ -116,7 +116,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         dispatch({
             type: LightActionTypes.TrySetLightState,
             lightId: id,
-            state: LIGHT_SWITCH_STATE.OFF
+            state: lightSwitchState.off
         } as LightAction.TrySetLightStateAction)
     }
 });

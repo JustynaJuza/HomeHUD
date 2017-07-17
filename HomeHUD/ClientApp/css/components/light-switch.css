@@ -1,7 +1,9 @@
 @import './variables.css';
 @import './shared-components.css';
 
-.on, .off, .switching_on, .switching_off {}
+.switching_on, .switching_off {
+    pointer-events: none;
+}
 
 .light {
     display: flex;

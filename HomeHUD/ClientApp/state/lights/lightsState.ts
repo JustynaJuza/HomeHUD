@@ -1,7 +1,9 @@
-export const LIGHT_SWITCH_STATE =
+export const lightSwitchState =
 {
-    OFF: 0,
-    ON: 1
+    off: 0,
+    on: 1,
+    switchingOn: 2,
+    switchingOff: 3
 }
 
 export interface ILightSwitchState {

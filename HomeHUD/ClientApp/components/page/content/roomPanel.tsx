@@ -15,7 +15,7 @@ import { Dispatch } from 'redux';
 import { IAppState } from '../../../state/state';
 
 // props
-import { LIGHT_SWITCH_STATE, ILightSwitchState } from '../../../state/lights/lightsState';
+import { lightSwitchState, ILightSwitchState } from '../../../state/lights/lightsState';
 
 // components
 import LightSwitch from './lightSwitch';
@@ -110,14 +110,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         dispatch({
             type: LightActionTypes.TrySetAllLightsState,
             lightIds: _map(lights, light => light.id),
-            state: LIGHT_SWITCH_STATE.ON
+            state: lightSwitchState.on
         } as LightAction.TrySetAllLightsStateAction)
     },
     onSwitchAllOff(lights: Array<ILightSwitchState>) {
         dispatch({
             type: LightActionTypes.TrySetAllLightsState,
             lightIds: _map(lights, light => light.id),
-            state: LIGHT_SWITCH_STATE.OFF
+            state: lightSwitchState.off
         } as LightAction.TrySetAllLightsStateAction)
     }
 });

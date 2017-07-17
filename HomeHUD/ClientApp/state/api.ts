@@ -20,13 +20,13 @@ export class Api {
             method: 'get',
             headers: jsonHeaders,
             cache: 'default',
-            credentials: 'include'
+            credentials: 'same-origin'
         };
 
         this.postRequestSettings = {
             method: 'post',
             headers: jsonHeaders,
-            credentials: 'include'
+            credentials: 'same-origin'
         };
     }
 

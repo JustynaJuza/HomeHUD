@@ -15,7 +15,7 @@ import * as LightActionTypes from '../../../state/lights/lightActionTypes';
 
 // props
 import { IRoomConfig } from '../../../state/config/configState';
-import { LIGHT_SWITCH_STATE } from '../../../state/lights/lightsState';
+import { lightSwitchState } from '../../../state/lights/lightsState';
 
 // components
 import LightSwitch from './lightSwitch';
@@ -75,14 +75,14 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
         dispatch({
             type: LightActionTypes.TrySetAllLightsState,
             lightIds: [],
-            state: LIGHT_SWITCH_STATE.ON
+            state: lightSwitchState.on
         } as LightAction.TrySetAllLightsStateAction)
     },
     onSwitchAllOff() {
         dispatch({
             type: LightActionTypes.TrySetAllLightsState,
             lightIds: [],
-            state: LIGHT_SWITCH_STATE.OFF
+            state: lightSwitchState.off
         } as LightAction.TrySetAllLightsStateAction)
     }
 });

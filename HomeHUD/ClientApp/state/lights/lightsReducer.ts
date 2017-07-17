@@ -5,7 +5,7 @@ import * as _indexOf from 'lodash/indexOf';
 import * as LightActions from './lightActions';
 import * as LightActionTypes from './lightActionTypes';
 
-import { ILightsState } from './lightsState';
+import { ILightsState, ILightSwitchState, lightSwitchState } from './lightsState';
 
 import { IControlHub, ControlHub } from '../controlHub';
 
@@ -20,6 +20,16 @@ export class LightsReducer implements ILightsReducer {
 
     private initialLightsState: ILightsState = {
         all: []
+    }
+
+    private getDesiredTargetState(switchingState: number) {
+        switch (switchingState) {
+            case lightSwitchState.switchingOn:
+            case lightSwitchState.on:
+                return lightSwitchState.on;
+            default:
+                return lightSwitchState.off;
+        }
     }
 
     private reducer: Reducer<ILightsState> = (state: ILightsState, action: LightActions.LightAction) => {
@@ -44,13 +54,14 @@ export class LightsReducer implements ILightsReducer {
 
             case LightActionTypes.SetLightState:
                 var needsSwitching: boolean;
+                var desiredState = this.getDesiredTargetState((<LightActions.SetLightStateAction>action).state);
 
                 return Object.assign({}, state, {
-                    all: _map(state.all, (light) => {
+                    all: _map(state.all, (light: ILightSwitchState) => {
 
                         needsSwitching =
                             light.id === (<LightActions.SetLightStateAction>action).lightId
-                            && light.state !== (<LightActions.SetLightStateAction>action).state;
+                            && light.state !== desiredState;
 
                         if (needsSwitching) {
                             light.state = (<LightActions.SetLightStateAction>action).state;
@@ -62,16 +73,19 @@ export class LightsReducer implements ILightsReducer {
 
             case LightActionTypes.SetAllLightsState:
                 var switchAllLights = !(<LightActions.SetAllLightsStateAction>action).lightIds.length;
+                var desiredState = this.getDesiredTargetState((<LightActions.SetAllLightsStateAction>action).state);
 
                 return Object.assign({}, state,
                     {
-                        all: _map(state.all, (light) => {
+                        all: _map(state.all, (light: ILightSwitchState) => {
 
-                            if (switchAllLights) {
+                            if (switchAllLights && light.state !== desiredState) {
                                 light.state = (<LightActions.SetAllLightsStateAction>action).state;
                             }
                             else {
-                                needsSwitching = _indexOf((<LightActions.SetAllLightsStateAction>action).lightIds, light.id) > -1;
+                                needsSwitching =
+                                    _indexOf((<LightActions.SetAllLightsStateAction>action).lightIds, light.id) > -1
+                                    && light.state !== desiredState;
 
                                 if (needsSwitching) {
                                     light.state = (<LightActions.SetAllLightsStateAction>action).state;
