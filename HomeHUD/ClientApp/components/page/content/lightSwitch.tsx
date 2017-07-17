@@ -73,10 +73,10 @@ class LightSwitch extends React.Component<ILightSwitchProps, {}> {
             <div className={lightClasses}>
 
                 <div className={style.light_switcher}
-                    disabled={this.isDisabled()}
                     onClick={() => this.onSwitchChange()}>
 
-                    <button className={style.switcher}></button>
+                    <button className={style.switcher}
+                        disabled={this.isDisabled()}></button>
 
                 </div>
 
