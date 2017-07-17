@@ -8,11 +8,17 @@
     color: $header_text_color;
     padding: 1em 1.25em;
     border-bottom: 3px solid $header_border_color;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
     @mixin hugeShadowOutline;
-    @mixin accentFont;
+    @mixin logoFont;
     font-size: 3em;
     color: $header_text_color;
 }

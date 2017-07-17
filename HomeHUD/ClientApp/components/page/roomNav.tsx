@@ -58,10 +58,12 @@ class RoomNav extends React.Component<IRoomNavPropsType, {}> {
     public render() {
 
         return (
-            <ul className={style.list}>
-                { this.renderControlPanelTab() }
-                { this.renderRoomTabs() }
-            </ul>
+            <div className={style.container}>
+                <ul className={style.list}>
+                    { this.renderControlPanelTab() }
+                    { this.renderRoomTabs() }
+                </ul>
+            </div>
         );
     }
 }

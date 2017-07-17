@@ -13,7 +13,7 @@
     }
 
     width: 100%;
-    min-width: 150px;
+    min-width: 155px;
 }
 
 .link {
@@ -55,6 +55,7 @@
 
 .name {
     @extend uppercase_name;
+    @mixin navFont;
 
     max-height: calc(2*$nav_tab_line_height);
     overflow: hidden;

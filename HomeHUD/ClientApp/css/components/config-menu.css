@@ -1,14 +1,10 @@
 @import './variables.css';
 @import './shared-components.css';
 
-.list{
+.list {
     list-style-type: none;
-
-    position: absolute;
-    top: 0;
-    right: 0;
     margin: 0;
-
+    padding: 0;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -18,12 +14,12 @@
 }
 
 .settings {
-    @extend config_icon;
+    @mixin config_icon;
     background: url('../media/settings.svg') no-repeat;
 }
 
 .logoff {
-    @extend config_icon;
+    @mixin config_icon;
     background: url('../media/logoff.svg') no-repeat;
 }
 
@@ -61,5 +57,9 @@
     &:hover, &:active {
         color: $nav_active_hover_text_color;
         background-color: $nav_active_hover_color;
+    }
+
+    @media (--tiny-viewport){
+        @mixin square 55px;
     }
 }

@@ -25,25 +25,30 @@
 }
 
 @define-extend uppercase_name {
+    @mixin featureFont;
     @mixin textShadow;
-    font-family: 'Roboto';
     text-transform: uppercase;
     font-size: 1.3em;
     line-height: 1em;
     word-wrap: break-word;
 }
 
-@define-extend config_icon {
+@define-mixin config_icon {
     @mixin square 40px;
+
+    @media (--tiny-viewport) {
+        @mixin square 30px;
+    }
 }
 
 @define-mixin button {
+    @mixin featureFont;
     @mixin softerEdges;
     @mixin textShadow;
-    @mixin boxShadow;
+    /*@mixin boxShadow;*/
     cursor: pointer;
-    font-size: 1em;
-    font-family: 'Roboto';
+    font-size: 1.1em;
+    line-height: 1em;
     text-transform: uppercase;
     border: 1px solid $default_border;
     background-color: $default_button_color;
@@ -51,7 +56,6 @@
     padding: 12px 22px;
     margin: 12px;
     text-decoration: none;
-    font-weight: bolder;
 
     &:hover {
         background-color: $default_button_hover_color;
