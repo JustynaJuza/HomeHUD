@@ -1,6 +1,8 @@
 // react
 import * as React from 'react';
 
+import ConfigMenu from './configMenu';
+
 // style
 import * as style from '../../css/components/header.css';
 
@@ -13,6 +15,7 @@ export class Header extends React.Component<{}, {}> {
         return (
             <div className={style.container}>
                 <span className={style.logo}>Home HUD</span>
+                <ConfigMenu />
             </div>
         );
     }
