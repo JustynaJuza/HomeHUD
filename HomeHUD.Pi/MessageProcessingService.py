@@ -19,12 +19,12 @@ class MessageProcessingService(object):
 
     def __init__(self, requestServer):
         self._api = ApiHandler()
-        self._url = self.format_url(requestServer)
+        self._hostUrl = requestServer.ServerLocal if debuggingOnPC else requestServer.ServerExternal
+        self._lightsPath = requestServer.ConfirmLights
+        self._antiforgeryTokenPath = requestServer.AntiforgeryToken
 
-    def format_url(self, requestServer):
-        return 'http://{0}/{1}'.format(
-            requestServer.ServerLocal if debuggingOnPC else requestServer.ServerExternal,
-            requestServer.ConfirmLights)
+    def format_url(self, host, path):
+        return '{0}/{1}'.format(host, path)
 
     def process_message(self, message):
         lightSwitcher = EnergenieLightSwitcher()
@@ -48,4 +48,8 @@ class MessageProcessingService(object):
             light = Light(piLight.Id, piLight.State)
             lightsState.append(light)
 
-        self._api.postJson(self._url, None, lightsState)
+        self._api.postJsonWithAntiforgery(
+            url=self.format_url(self._hostUrl, self._lightsPath),
+            antiforgeryPath=self.format_url(self._hostUrl, self._antiforgeryTokenPath),
+            data=lightsState,
+            params=None)

@@ -33,13 +33,9 @@
     <AdditionalFiles Include="docs.md">
       <SubType>Code</SubType>
     </AdditionalFiles>
-    <Compile Include="old stuff\dailycyclelights.py" />
-    <Compile Include="old stuff\manager.py" />
     <Compile Include="ApiHandler.py" />
     <Compile Include="AppSettingsModels.py" />
     <Compile Include="AppSettingsProvider.py" />
-    <Compile Include="old\dailycyclelights.py" />
-    <Compile Include="old\manager.py" />
     <Compile Include="QueueConsumer.py" />
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +43,8 @@
     <Content Include="HomeHUDPi.service" />
     <Content Include="appsettings.youShallNotCommitThis.json" />
     <Content Include="homehudPi.log" />
-    <Content Include="old stuff\switchers.cfg" />
-    <Content Include="old\switchers.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="old\" />
     <Folder Include="old\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

@@ -18,7 +18,8 @@ class RabbitMqQueue(object):
 
 class HomeHud(object):
 
-    def __init__(self, serverLocal, serverExternal, confirmLights):
+    def __init__(self, serverLocal, serverExternal, antiforgeryToken, confirmLights):
         self.ServerLocal = serverLocal
         self.ServerExternal = serverExternal
+        self.AntiforgeryToken = antiforgeryToken
         self.ConfirmLights = confirmLights

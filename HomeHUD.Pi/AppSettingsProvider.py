@@ -43,5 +43,6 @@ class AppSettingsProvider(object):
         return HomeHud(
             homehudWeb['ServerLocal'],
             homehudWeb['ServerExternal'],
+            homehudWeb['AntiforgeryToken'],
             homehudWeb['ConfirmLights'])
 
