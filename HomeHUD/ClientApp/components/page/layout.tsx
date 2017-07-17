@@ -3,15 +3,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-// components
-import { Header } from './header';
-
-import { initialStateLoader } from '../../state/initialStateLoader';
+// redux
 import { IConfigState } from '../../state/config/configState';
 import { IAppState } from '../../state/state';
-import { IRouterParams } from '../../router';
+import { IRouterParams, defaultRedirect } from '../../router';
 
+import { initialStateLoader } from '../../state/initialStateLoader';
 import { requestActionCreators } from '../../state/request/requestActionCreators';
+
+// components
+import { Header } from './header';
 
 // style
 import * as style from '../../css/components/layout.css';
@@ -45,9 +46,12 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
                 browserHistory.replace(this.props.redirectUrl);
                 this.props.setLoginRedirectUrl(null);
             }
+            else {
+                browserHistory.push(defaultRedirect);
+            }
 
         } else if (isLoggingOut) {
-
+            // in future, use some external api to show some fun facts or quotes on logout :)
         }
     }
 
@@ -62,9 +66,6 @@ class Layout extends React.Component<ILayoutPropsType, {}> {
             </div>
         );
     }
-
-    //const { location, params } = this.props;
-    //<Content {...{ location, params }} />
 }
 
 // redux ---------------------------------------------------------------------------------

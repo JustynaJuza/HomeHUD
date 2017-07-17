@@ -13,7 +13,7 @@ import ControlPanel from './content/controlPanel';
 
 class RoomContent extends React.Component<IRouterParams, {}> {
 
-    private getSelectedRoom() {
+    private renderSelectedRoom() {
         var roomHash = this.props.params['hash'];
         return roomHash
             ? <RoomPanel hash={roomHash} showName={false} showBulkSwitches={true}/>
@@ -26,7 +26,7 @@ class RoomContent extends React.Component<IRouterParams, {}> {
         return (
             <div>
                 <RoomNav {...{ params, location }}/>
-                { this.getSelectedRoom() }
+                { this.renderSelectedRoom() }
             </div>
         );
     }

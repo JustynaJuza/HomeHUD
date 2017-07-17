@@ -9,6 +9,8 @@ import LoginForm from './components/page/loginForm';
 import LoginGuard from './components/containers/loginGuard';
 import CreateUserForm from './components/admin/createUserForm';
 
+export const defaultRedirect = '/r';
+
 export interface IRouterParams {
     params: Router.Params
     location: Router.LocationDescriptor

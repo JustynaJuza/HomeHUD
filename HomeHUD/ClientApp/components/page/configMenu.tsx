@@ -1,5 +1,6 @@
 // react
 import * as React from 'react'
+import { browserHistory } from 'react-router';
 
 // redux
 import { connect } from 'react-redux';
@@ -37,25 +38,44 @@ class ConfigMenu extends React.Component<IConfigMenuPropsType, {}> {
             .then(() => this.props.logOut())
     }
 
-    public render() {
-        if (!this.props.isAuthenticated) {
-            return null;
-        }
-
-        return (
-            <ul className={style.list}>
+    private renderManagementLinks() {
+        return this.props.isAuthenticated
+            ? (
                 <li>
                     <button className={style.button} title="Manage rooms">
                         <div className={style.settings}></div>
                         <span className={style.title}>Manage rooms</span>
                     </button>
                 </li>
-                <li>
-                    <button className={style.button} title="Log out" onClick={this.logOut}>
-                        <div className={style.logoff}></div>
-                        <span className={style.title}>Log out</span>
-                    </button>
-                </li>
+            )
+            : null;
+    }
+
+    private renderAuthenticationLink() {
+        var hintText = this.props.isAuthenticated ? 'Log out' : 'Log in';
+        var linkAction = this.props.isAuthenticated
+            ? this.logOut
+            : () => { browserHistory.push('/login') };
+
+        return (
+            <li>
+                <button className={style.button} title={hintText} onClick={linkAction}>
+                    <div className={style.logoff}></div>
+                    <span className={style.title}>{hintText}</span>
+                </button>
+            </li>
+        );
+    }
+
+    public render() {
+
+        return (
+            <ul className={style.list}>
+
+                {this.renderManagementLinks()}
+
+                {this.renderAuthenticationLink()}
+
             </ul>
         );
     }
