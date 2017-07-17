@@ -12,14 +12,14 @@ import { requestActionCreators } from '../../state/request/requestActionCreators
 
 // redux-form
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import { TextField } from 'redux-form-material-ui'
+import { TextField } from 'material-ui';
 import * as Validation from '../../state/form/formValidation';
 import { IFormResult, IFormError } from '../../state/form/formResult';
 import { IUser } from '../../state/request/requestState';
 import { Api } from '../../state/api';
 
 // style
-import * as style from '../../css/components/login-panel.css';
+import * as style from '../../css/components/forms.css';
 
 // component ---------------------------------------------------------------------------------
 
@@ -48,6 +48,22 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     constructor(props) {
         super(props);
         this.submit = this.submit.bind(this);
+    }
+
+    public renderTextField({
+  input,
+        label,
+        meta: { touched, error }, hintText,
+        ...custom
+}) {
+        return (
+            <TextField
+                hintText={hintText}
+                floatingLabelText={label}
+                errorText={touched && error}
+                {...input}
+                {...custom}
+            />)
     }
 
     public submit(values: ILoginFormData) {
@@ -83,14 +99,18 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
                 <Field name="username" id="login_username"
-                    component={TextField}
+                    component={this.renderTextField}
+                    inputStyle={style.input}
+                    underlineStyle={style.fieldUnderline}
+                    floatingLabelStyle={{ color: 'red' }}
                     validate={[Validation.required]}
                     floatingLabelText="Username"
-                    floatingLabelFixed={true} />
+                    floatingLabelFixed={true}/>
 
                 <Field name="password" id="login_password"
+                    className={style.field}
+                    component={this.renderTextField}
                     type="password"
-                    component={TextField}
                     validate={[Validation.required]}
                     floatingLabelText="Password"
                     floatingLabelFixed={true} />

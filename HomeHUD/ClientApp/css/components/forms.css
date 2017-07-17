@@ -10,16 +10,16 @@
 }
 
 .field {
+    border: 3px solid #333;
     @extend small_container_item_spacing;
 }
 
+
 .input {
     @mixin boxShadow inset;
-
     width: 100%;
     padding: 14px 10px 8px 10px;
     border: none;
-
     font-size: 1.1em;
     text-align: center;
 }
