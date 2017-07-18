@@ -1,6 +1,4 @@
 import * as _map from 'lodash/map';
-import * as _filter from 'lodash/filter';
-import * as _sortBy from 'lodash/sortBy';
 
 // react
 import * as React from 'react'
@@ -13,8 +11,9 @@ import { IAppState } from '../../state/state';
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
 import { TextField, SelectField } from 'redux-form-material-ui'
 import MenuItem from 'material-ui/MenuItem'
-import * as Validation from '../../state/form/formValidation';
-import { IFormResult, IFormError } from '../../state/form/formResult';
+import * as FieldRenderer from '../forms/fieldRendering'
+import * as Validation from '../forms/validation';
+import { IFormResult, IFormError } from '../forms/formResult';
 import { Api } from '../../state/api';
 
 // style
@@ -101,34 +100,29 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
                 <Field name="username" id="create-user_username"
-                    component={TextField}
-                    validate={[Validation.required]}
-                    floatingLabelText="Username"
-                    floatingLabelFixed={true} />
+                    label="Username"
+                    component={FieldRenderer.textField}
+                    validate={[Validation.required]} />
 
                 <Field name="password" id="create-user_password"
-                    component={TextField}
-                    validate={[Validation.required]}
-                    floatingLabelText="Password"
-                    floatingLabelFixed={true} />
+                    label="Password"
+                    component={FieldRenderer.textField}
+                    validate={[Validation.required]} />
 
                 <Field name="confirmPassword" id="create-user_confirmPassword"
-                    component={TextField}
-                    validate={[Validation.required]}
-                    floatingLabelText="Confirm password"
-                    floatingLabelFixed={true} />
+                    label="Confirm password"
+                    component={FieldRenderer.textField}
+                    validate={[Validation.required]} />
 
                 <Field name="email" id="create-user_email"
-                    component={TextField}
-                    validate={[Validation.required, Validation.email]}
-                    floatingLabelText="Email"
-                    floatingLabelFixed={true} />
+                    label="Email"
+                    component={FieldRenderer.textField}
+                    validate={[Validation.required, Validation.email]} />
 
                 <Field name="roles" id="create-user_roles"
-                    component={SelectField}
-                    multiple={true}
-                    floatingLabelText="Roles"
-                    floatingLabelFixed={true}>
+                    label="Roles"
+                    component={FieldRenderer.textField}
+                    multiple={true}>
 
                     {this.menuItems()}
 
@@ -147,7 +141,9 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
 const form =
     reduxForm({
-        form: 'CreateUserForm'
+        form: 'CreateUserForm',
+        validate: Validation.validate(
+            Validation.compare('password', 'confirmPassword'))
     })(CreateUserForm);
 
 export default connect(

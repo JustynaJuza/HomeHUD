@@ -27,13 +27,14 @@
     letter-spacing: 0.03em;
     text-align: center;
 
-    &.filled {
-        border: 1px solid $color_accent_primary;
-    }
-
-    .errored & {
+    .errored &,
+    .errored &.filled {
         border: 1px solid $error_color;
         margin: 0;
+    }
+
+    &.filled {
+        border: 1px solid $color_accent_primary;
     }
 }
 

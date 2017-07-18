@@ -12,9 +12,9 @@ import { requestActionCreators } from '../../state/request/requestActionCreators
 
 // redux-form
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import { Input } from 'react-toolbox/lib/input';
-import * as Validation from '../../state/form/formValidation';
-import { IFormResult, IFormError } from '../../state/form/formResult';
+import * as FieldRenderer from '../forms/fieldRendering'
+import * as Validation from '../forms/validation';
+import { IFormResult, IFormError } from '../forms/formResult';
 import { IUser } from '../../state/request/requestState';
 import { Api } from '../../state/api';
 
@@ -48,20 +48,6 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     constructor(props) {
         super(props);
         this.submit = this.submit.bind(this);
-    }
-
-    public renderTextField({
-        input,
-        meta: { touched, error },
-        ...custom
-}) {
-        return (
-            <Input
-                floating={true}
-                error={touched && error}
-                {...input}
-                {...custom}
-            />)
     }
 
     public submit(values: ILoginFormData) {
@@ -98,17 +84,13 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
 
                 <Field name="username" id="login_username"
                     label="Username"
-                    component={this.renderTextField}
-                    className={style.field}
-                    theme={style}
+                    component={FieldRenderer.textField}
                     validate={[Validation.required]} />
 
                 <Field name="password" id="login_password"
                     type="password"
                     label="Password"
-                    component={this.renderTextField}
-                    className={style.field}
-                    theme={style}
+                    component={FieldRenderer.textField}
                     validate={[Validation.required]} />
 
                 {error && <span className={style._error}>{error}</span>}
