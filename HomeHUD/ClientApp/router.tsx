@@ -29,16 +29,13 @@ export const getRoutesConfig = (isAuthenticated: boolean) =>
         <Route component={Layout}>
             <Redirect from='/' to='/r' />
             <Route path='/login' component={LoginForm} />
-            <Route path='/users' component={CreateUserForm} />
 
             <Route component={LoginGuard}>
                 <Route path='/r(/:hash)' component={RoomContent} />
+                <Route path='/users' component={CreateUserForm} />
             </Route>
         </Route>
     );
-
-//<Redirect from='/' to={isAuthenticated ? '/r' : '/login'} />
-
 
 // Enable Hot Module Replacement (HMR)
 if (module.hot) {
