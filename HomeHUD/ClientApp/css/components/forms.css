@@ -3,6 +3,8 @@
 
 .container {
     @extend small_rounded_container;
+    margin: 2.5em auto;
+    padding-top: 20px;
 }
 
 .button {
@@ -10,42 +12,75 @@
 }
 
 .field {
-    border: 3px solid #333;
-    @extend small_container_item_spacing;
+    @extend small_container;
 }
 
 
-.input {
+.inputElement {
     @mixin boxShadow inset;
+
+    margin: 0;
     width: 100%;
-    padding: 14px 10px 8px 10px;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 10px 8px 10px;
     font-size: 1.1em;
+    letter-spacing: 0.03em;
     text-align: center;
+
+    &.filled {
+        border: 1px solid $color_accent_primary;
+    }
+
+    .errored & {
+        border: 1px solid $error_color;
+        margin: 0;
+    }
+}
+
+.bar {
+    display: none;
 }
 
 .label {
     @extend uppercase_name;
     @mixin textShadow;
 
-    font-size: .7em;
+    font-size: .8em;
+    font-weight: 400;
     letter-spacing: 1px;
-    margin-bottom: -5px;
-    margin-top: 10px;
+    margin: 28px 8px 0 8px;
+    top: 0;
+    color: $color_text_shadow;
+    transition-property: font-size, color, margin, font-weight;
+    .errored & {
+        color: $color_text_shadow;
+    }
+
+    .inputElement:focus:not([disabled]):not([readonly]) ~ &:not(.fixed):not(.error),
+    .inputElement.filled ~ &:not(.fixed):not(.error),
+    .inputElement[type='date'] ~ &:not(.fixed):not(.error),
+    .inputElement[type='time'] ~ &:not(.fixed):not(.error) {
+        color: $color_text_black;
+        margin: 0 5px;
+        font-weight: bolder;
+        font-size: .85em;
+    }
 }
 
-.field_error {
+.error {
     composes: label;
-
     color: $error_color;
+
+    .errored & {
+        color: $error_color;
+    }
 }
 
-.form_error {
-    @extend small_container_item_spacing;
+._error {
+    @extend small_container;
     composes: label;
-
     color: $error_color;
-    font-size: 0.85em;
+    font-size: 1em;
     text-align: center;
-    margin: 0;
+    margin: 8px auto;
 }

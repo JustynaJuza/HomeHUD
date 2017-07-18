@@ -1,6 +1,8 @@
 @import './variables.css';
 
 @define-extend small_rounded_container {
+    @mixin hugeShadowOutline_box;
+
     width: 40%;
     min-width: 300px;
     max-width: 430px;
@@ -17,8 +19,7 @@
     align-content: stretch;
 }
 
-@define-extend small_container_item_spacing {
-    padding: 8px;
+@define-extend small_container {
     width: 70%;
     min-width: 250px;
     max-width: 300px;
@@ -63,5 +64,9 @@
 
     &:active {
         background-color: $default_button_active_color;
+    }
+
+    &:disabled {
+        background-color: rgba(0, 0, 0, 0.1);
     }
 }

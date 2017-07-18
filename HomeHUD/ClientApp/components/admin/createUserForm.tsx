@@ -18,7 +18,7 @@ import { IFormResult, IFormError } from '../../state/form/formResult';
 import { Api } from '../../state/api';
 
 // style
-import * as style from '../../css/components/login-panel.css';
+import * as style from '../../css/components/forms.css';
 
 // component ---------------------------------------------------------------------------------
 
@@ -134,7 +134,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
 
                 </Field>
 
-                {error && <span className={style.form_error}>{error}</span>}
+                {error && <span className={style._error}>{error}</span>}
 
                 <button type="submit" disabled={pristine || submitting}>Submit</button>
 

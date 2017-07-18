@@ -12,7 +12,7 @@ import { requestActionCreators } from '../../state/request/requestActionCreators
 
 // redux-form
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import { TextField } from 'material-ui';
+import { Input } from 'react-toolbox/lib/input';
 import * as Validation from '../../state/form/formValidation';
 import { IFormResult, IFormError } from '../../state/form/formResult';
 import { IUser } from '../../state/request/requestState';
@@ -51,16 +51,14 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     public renderTextField({
-  input,
-        label,
-        meta: { touched, error }, hintText,
+        input,
+        meta: { touched, error },
         ...custom
 }) {
         return (
-            <TextField
-                hintText={hintText}
-                floatingLabelText={label}
-                errorText={touched && error}
+            <Input
+                floating={true}
+                error={touched && error}
                 {...input}
                 {...custom}
             />)
@@ -84,7 +82,7 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     private formatSubmitErrors(formErrors: IFormError[]) {
         var errorSummary = {};
 
-        for (var i=0; i < formErrors.length; i++){
+        for (var i = 0; i < formErrors.length; i++) {
             var formError = formErrors[i];
             errorSummary[formError.fieldName ? formError.fieldName.toLowerCase() : '_error'] = formError.errorMessage;
         }
@@ -93,31 +91,34 @@ class LoginForm extends React.Component<ILoginFormPropsType, {}> {
     }
 
     public render() {
-        const { error, handleSubmit, pristine, reset, submitting } = this.props;
+        const { error, handleSubmit, pristine, reset, submitting, valid } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
 
                 <Field name="username" id="login_username"
+                    label="Username"
                     component={this.renderTextField}
-                    inputStyle={style.input}
-                    underlineStyle={style.fieldUnderline}
-                    floatingLabelStyle={{ color: 'red' }}
-                    validate={[Validation.required]}
-                    floatingLabelText="Username"
-                    floatingLabelFixed={true}/>
+                    className={style.field}
+                    theme={style}
+                    validate={[Validation.required]} />
 
                 <Field name="password" id="login_password"
-                    className={style.field}
-                    component={this.renderTextField}
                     type="password"
-                    validate={[Validation.required]}
-                    floatingLabelText="Password"
-                    floatingLabelFixed={true} />
+                    label="Password"
+                    component={this.renderTextField}
+                    className={style.field}
+                    theme={style}
+                    validate={[Validation.required]} />
 
-                {error && <span className={style.form_error}>{error}</span>}
+                {error && <span className={style._error}>{error}</span>}
 
-                <button type="submit" disabled={pristine || submitting}>Submit</button>
+                <button
+                    type="submit"
+                    disabled={pristine || !valid || submitting}
+                    className={style.button}>
+                    Submit
+                </button>
 
             </form>
         );

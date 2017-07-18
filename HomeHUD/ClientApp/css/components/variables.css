@@ -25,10 +25,12 @@ $color_background_3: #c3c3c3;
 $color_background_4: #f1f1f1;
 $color_text_dark: #ccc;
 $color_text_black: #222;
+$color_text_shadow: rgba(0, 0, 0, .26);
 
 
 $white: #efefef;
 $black: #222;
+$shadow: rgba(0, 0, 0, 0.11);
 $color_accent_primary: #22c1c3;
 $color_accent_secondary: #fdbb2d;
 $color_accent_ternary: #C70039;
@@ -120,12 +122,17 @@ $lightSwitchingOff_color: $color_accent_lightBrown;
         longTextShadow(3, 10, $color_text_black);
 }
 
+@define-mixin hugeShadowOutline_box {
+    box-shadow: 3px 3px 0px $color_text_black;
+}
+
+
 @define-mixin textShadow {
     text-shadow: 0 1px 1px rgba(150, 150, 150, 0.5);
 }
 
-@define-mixin boxShadow $mode {
-    box-shadow: $(mode) rgba(0, 0, 0, 0.117647) 0 1px 6px, $(mode) rgba(0, 0, 0, 0.117647) 0 1px 4px;
+@define-mixin boxShadow $mode, $color:$shadow {
+    box-shadow: $(mode) $(color) 0 1px 6px, $(mode) $(color) 0 1px 4px;
 }
 
 @define-mixin square $size {
