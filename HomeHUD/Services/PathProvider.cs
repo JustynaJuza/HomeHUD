@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
 namespace HomeHUD.Services
@@ -13,21 +12,17 @@ namespace HomeHUD.Services
 
     public class PathProvider : IPathProvider
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPathProviderContext _pathProviderContext;
 
         public PathProvider(
-            IHostingEnvironment hostingEnvironment,
-            IHttpContextAccessor httpContextAccessor)
+            IPathProviderContext pathProviderContext)
         {
-            _hostingEnvironment = hostingEnvironment;
-            _httpContextAccessor = httpContextAccessor;
+            _pathProviderContext = pathProviderContext;
         }
 
         public string GetAppBaseUrl()
         {
-            var request = _httpContextAccessor.HttpContext.Request;
-            return string.Format("{0}://{1}", request.Scheme, request.Host);
+            return string.Format("{0}://{1}", _pathProviderContext.Scheme, _pathProviderContext.Host);
         }
 
         public string ConvertToDirectImageUrl(string url)
@@ -66,4 +61,24 @@ namespace HomeHUD.Services
     //        return pathProvider.ConvertToDirectImageUrl(url);
     //    }
     //}
+
+    public interface IPathProviderContext
+    {
+        string Scheme { get; }
+        HostString Host { get; }
+    }
+
+    public sealed class PathProviderContext : IPathProviderContext
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public PathProviderContext(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public string Scheme => _httpContextAccessor.HttpContext.Request.Scheme;
+        public HostString Host => _httpContextAccessor.HttpContext.Request.Host;
+    }
+
 }

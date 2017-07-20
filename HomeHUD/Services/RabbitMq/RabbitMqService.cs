@@ -1,5 +1,4 @@
 ﻿using HomeHUD.Models;
-using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
@@ -19,9 +18,9 @@ namespace HomeHUD.Services
     {
         private readonly RabbitMq.Credentials _credentials;
 
-        public RabbitMqService(IOptions<RabbitMq.Credentials> credentials)
+        public RabbitMqService(RabbitMq.Credentials credentials)
         {
-            _credentials = credentials.Value;
+            _credentials = credentials;
         }
 
         private bool SendMessage(string message)

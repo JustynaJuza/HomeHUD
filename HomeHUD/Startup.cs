@@ -1,15 +1,14 @@
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
-using HomeHUD.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using SimpleInjector;
 using System.IO;
 using System.Linq;
 
@@ -18,6 +17,7 @@ namespace HomeHUD
     public class Startup
     {
         private readonly TokenAuthenticationProvider _tokenAuthenticationProvider;
+        private readonly Container _container = new Container();
 
         public Startup(IHostingEnvironment env)
         {
@@ -44,29 +44,10 @@ namespace HomeHUD
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalRFramework();
-
-            services.AddMemoryCache();
-
-            // Allow injecting HttpContext (for PathProviver)
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            // Map configuration
-            services.Configure<RabbitMq.Credentials>(
-                Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}"));
-            services.Configure<RabbitMq.Queue>(
-                Configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Queue)}"));
-            services.Configure<AntiforgeryOptions>(
-                Configuration.GetSection("AntiForgery"));
-
             // Add framework services
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));
-
-
-            //services.Configure<TokenProviderOptions>(options =>
-            //    _tokenAuthenticationProvider.SetTokenProviderOptions(options));
 
             services
                 .AddIdentity<User, Role>(options =>
@@ -84,8 +65,6 @@ namespace HomeHUD
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
 
-            services.AddAntiforgeryToken(Configuration);
-
             services
                 .AddMvc(options =>
                 {
@@ -97,20 +76,21 @@ namespace HomeHUD
                 });
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddTransient<ILightSwitchService, LightSwitchService>();
-            services.AddTransient<IRabbitMqService, RabbitMqService>();
-            services.AddTransient<IPathProvider, PathProvider>();
-            //services.AddTransient<ITokenProvider, TokenProvider>();
+            services.AddSignalRFramework();
 
-            // Initialize Automapper
+            services.AddSimpleInjector(_container);
+
             services.AddAutoMapper();
+
+            services.AddAntiforgeryToken(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context)
         {
+            app.InitializeSimpleInjectorContainer(_container, Configuration);
+            _container.Verify();
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 

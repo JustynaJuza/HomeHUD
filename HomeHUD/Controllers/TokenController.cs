@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace HomeHUD.Controllers
 {
@@ -11,10 +10,10 @@ namespace HomeHUD.Controllers
 
         public TokenController(
             IAntiforgery antiforgery,
-            IOptions<AntiforgeryOptions> antiforgeryOptions)
+            AntiforgeryOptions antiforgeryOptions)
         {
             _antiforgery = antiforgery;
-            _antiforgeryOptions = antiforgeryOptions.Value;
+            _antiforgeryOptions = antiforgeryOptions;
         }
 
         [Route("/token/antiforgery")]
