@@ -83,6 +83,9 @@ namespace HomeHUD
             services.AddAutoMapper();
 
             services.AddAntiforgeryToken(Configuration);
+
+            //services.AddHangfire(options => { });
+            //x => x.UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -148,6 +151,10 @@ namespace HomeHUD
                             defaults: new { controller = "Home", action = "Index" });
                     });
                 });
+
+            // Hangfire scheduler
+            //app.UseHangfireDashboard();
+            //app.UseHangfireServer();
 
             //app.MapWhen(httpContext => httpContext.Response.StatusCode == 404
             //    && Path.HasExtension(httpContext.Request.Path.Value),
