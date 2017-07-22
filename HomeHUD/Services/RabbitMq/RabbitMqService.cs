@@ -10,7 +10,7 @@ namespace HomeHUD.Services
 {
     public interface IRabbitMqService
     {
-        bool SendLightState(int lightId, LightSwitchState state);
+        bool SendLightState(LightStateViewModel lightState);
         bool SendLightsState(IEnumerable<int> lightIds, LightSwitchState state);
     }
 
@@ -70,9 +70,9 @@ namespace HomeHUD.Services
             return true;
         }
 
-        public bool SendLightState(int lightId, LightSwitchState state)
+        public bool SendLightState(LightStateViewModel lightState)
         {
-            var message = $"{(int) state}, {lightId}";
+            var message = $"{(int) lightState.State}, {lightState.LightId}";
             return SendMessage(message);
         }
 
