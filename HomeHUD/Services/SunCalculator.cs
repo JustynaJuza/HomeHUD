@@ -1,28 +1,45 @@
 ﻿using System;
 
-namespace Astronomy
+namespace HomeHUD.Services
 {
+    public interface ISunTimeService
+    {
+        DateTime GetSunsetTime(double latitude, double longitude, DateTime date);
+    }
+
+    public class SunTimeService : ISunTimeService
+    {
+        //private readonly SunCalculator _sunCalculator;
+
+        //public SunTimeService()
+        //{
+        //    _sunCalculator = new SunCalculator();
+        //}
+
+        public DateTime GetSunsetTime(double latitude, double longitude, DateTime date)
+        {
+            var sunCalculator = new SunCalculator(latitude, longitude, date.IsDaylightSavingTime());
+            return sunCalculator.CalculateSunSet(date);
+        }
+    }
+
     /// <summary>
     /// This class is responsible for calculating sun related parameters such as
     /// Sunrise, Sunset and maximum solar radiation of a specific date and time.
     /// </summary>
     public class SunCalculator
     {
-        private readonly double longitude;
-        private readonly double latituteInRadians;
-        private readonly double longituteTimeZone;
-        private readonly bool useSummerTime;
+        private readonly double _longitude;
+        private readonly double _longitudeTimeZone;
+        private readonly double _latitudeInRadians;
+        private readonly bool _isSummerTime;
 
-        public SunCalculator()
+        public SunCalculator(double latitude, double longitude, bool isSummerTime)
         {
-        }
-
-        public SunCalculator(double longitude, double latitude, double longituteTimeZone, bool useSummerTime)
-        {
-            this.longitude = longitude;
-            latituteInRadians = ConvertDegreeToRadian(latitude);
-            this.longituteTimeZone = longituteTimeZone;
-            this.useSummerTime = useSummerTime;
+            _longitude = longitude;
+            _latitudeInRadians = ConvertDegreeToRadian(latitude);
+            _longitudeTimeZone = Math.Round(longitude / 15d) * 15d;
+            _isSummerTime = isSummerTime;
         }
 
         public DateTime CalculateSunRise(DateTime dateTime)
@@ -43,20 +60,6 @@ namespace Astronomy
             var tanSunPosition = CalculateTanSunPosition(declanationOfTheSun);
             var sunSetInMinutes = CalculateSunSetInternal(tanSunPosition, differenceSunAndLocalTime);
             return CreateDateTime(dateTime, sunSetInMinutes);
-        }
-
-        public double CalculateMaximumSolarRadiation(DateTime dateTime)
-        {
-            var dayNumberOfDateTime = ExtractDayNumber(dateTime);
-            var differenceSunAndLocalTime = CalculateDifferenceSunAndLocalTime(dayNumberOfDateTime);
-            var numberOfMinutesThisDay = GetNumberOfMinutesThisDay(dateTime, differenceSunAndLocalTime);
-            var declanationOfTheSun = CalculateDeclination(dayNumberOfDateTime);
-            var sinSunPosition = CalculateSinSunPosition(declanationOfTheSun);
-            var cosSunPosition = CalculateCosSunPosition(declanationOfTheSun);
-            var sinSunHeight = sinSunPosition + cosSunPosition * Math.Cos(2.0 * Math.PI * (numberOfMinutesThisDay + 720.0) / 1440.0) + 0.08;
-            var sunConstantePart = Math.Cos(2.0 * Math.PI * dayNumberOfDateTime);
-            var sunCorrection = 1370.0 * (1.0 + (0.033 * sunConstantePart));
-            return CalculateMaximumSolarRadiationInternal(sinSunHeight, sunCorrection);
         }
 
         internal double CalculateDeclination(int numberOfDaysSinceFirstOfJanuary)
@@ -102,12 +105,12 @@ namespace Astronomy
 
         private double CalculateCosSunPosition(double declanationOfTheSun)
         {
-            return Math.Cos(latituteInRadians) * Math.Cos(declanationOfTheSun);
+            return Math.Cos(_latitudeInRadians) * Math.Cos(declanationOfTheSun);
         }
 
         private double CalculateSinSunPosition(double declanationOfTheSun)
         {
-            return Math.Sin(latituteInRadians) * Math.Sin(declanationOfTheSun);
+            return Math.Sin(_latitudeInRadians) * Math.Sin(declanationOfTheSun);
         }
 
         private double CalculateDifferenceSunAndLocalTime(int dayNumberOfDateTime)
@@ -115,9 +118,9 @@ namespace Astronomy
             var ellipticalOrbitPart1 = 7.95204 * Math.Sin((0.01768 * dayNumberOfDateTime) + 3.03217);
             var ellipticalOrbitPart2 = 9.98906 * Math.Sin((0.03383 * dayNumberOfDateTime) + 3.46870);
 
-            var differenceSunAndLocalTime = ellipticalOrbitPart1 + ellipticalOrbitPart2 + (longitude - longituteTimeZone) * 4;
+            var differenceSunAndLocalTime = ellipticalOrbitPart1 + ellipticalOrbitPart2 + (_longitude - _longitudeTimeZone) * 4;
 
-            if (useSummerTime)
+            if (_isSummerTime)
                 differenceSunAndLocalTime -= 60;
             return differenceSunAndLocalTime;
         }
@@ -156,20 +159,6 @@ namespace Astronomy
         private static double ConvertDegreeToRadian(double degree)
         {
             return degree * Math.PI / 180;
-        }
-
-        private static double CalculateMaximumSolarRadiationInternal(double sinSunHeight, double sunCorrection)
-        {
-            double maximumSolarRadiation;
-            if ((sinSunHeight > 0.0) && Math.Abs(0.25 / sinSunHeight) < 50.0)
-            {
-                maximumSolarRadiation = sunCorrection * sinSunHeight * Math.Exp(-0.25 / sinSunHeight);
-            }
-            else
-            {
-                maximumSolarRadiation = 0;
-            }
-            return maximumSolarRadiation;
         }
 
         private static int GetNumberOfMinutesThisDay(DateTime dateTime, double differenceSunAndLocalTime)

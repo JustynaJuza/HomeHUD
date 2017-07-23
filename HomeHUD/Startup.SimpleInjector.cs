@@ -66,7 +66,6 @@ namespace HomeHUD
             container.CrossWire<IConnectionManager>(app);
 
             // Register configration options
-
             var rabbitMqCredentials = configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}")
                 .Get<RabbitMq.Credentials>();
             container.RegisterSingleton(rabbitMqCredentials);
@@ -78,6 +77,10 @@ namespace HomeHUD
             var antiforgeryOptions = configuration.GetSection("Antiforgery")
                 .Get<AntiforgeryOptions>();
             container.RegisterSingleton(antiforgeryOptions);
+
+            var schedulerOptions = configuration.GetSection("Scheduler")
+                .Get<SchedulerOptions>();
+            container.RegisterSingleton(schedulerOptions);
 
             // NOTE: Do prevent cross-wired instances as much as possible.
             // See: https://simpleinjector.org/blog/2016/07/
