@@ -1,6 +1,7 @@
 ﻿using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using HomeHUD.Services;
+using HomeHUD.Services.Jobs;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -68,6 +69,8 @@ namespace HomeHUD
             container.Register<ILightSwitchDbService, LightSwitchDbService>();
             container.Register<IRabbitMqService, RabbitMqService>();
             container.Register<IPathProvider, PathProvider>();
+            container.Register<ISunTimeService, SunTimeService>();
+            container.Register<ITimeProvider, TimeProvider>();
 
             // Cross-wire ASP.NET services (if any). For instance:
             container.CrossWire<ILoggerFactory>(app);
@@ -90,11 +93,8 @@ namespace HomeHUD
             container.RegisterSingleton(antiforgeryOptions);
 
             var schedulerOptions = configuration.GetSection("Scheduler")
-                .Get<SchedulerOptions>();
+                .Get<LightSwitchScheduler.Options>();
             container.RegisterSingleton(schedulerOptions);
-
-            // NOTE: Do prevent cross-wired instances as much as possible.
-            // See: https://simpleinjector.org/blog/2016/07/
         }
     }
 }

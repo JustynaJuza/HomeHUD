@@ -40,7 +40,7 @@ namespace HomeHUD.Models
 
     public class LightsStateViewModel
     {
-        public int[] LightIds { get; set; }
+        public IEnumerable<int> LightIds { get; set; }
         public LightSwitchState State { get; set; }
     }
 

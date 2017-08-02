@@ -9,13 +9,6 @@ namespace HomeHUD.Services
 
     public class SunTimeService : ISunTimeService
     {
-        //private readonly SunCalculator _sunCalculator;
-
-        //public SunTimeService()
-        //{
-        //    _sunCalculator = new SunCalculator();
-        //}
-
         public DateTime GetSunsetTime(double latitude, double longitude, DateTime date)
         {
             var sunCalculator = new SunCalculator(latitude, longitude, date.IsDaylightSavingTime());

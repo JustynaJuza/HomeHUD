@@ -10,7 +10,7 @@ namespace HomeHUD.Models.Extensions
         public static IQueryable<TModel> WhereFilterIsEmptyOrContains<TModel, T>
             (this IQueryable<TModel> query, Expression<Func<TModel, T>> predicate, IEnumerable<T> filter) where TModel : class
         {
-            if (!filter.Any())
+            if (filter == null || !filter.Any())
             {
                 return query;
             }

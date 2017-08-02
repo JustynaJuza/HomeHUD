@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -79,7 +80,7 @@ namespace HomeHUD.Services
         public bool SendLightsState(IEnumerable<int> lightIds, LightSwitchState state)
         {
             var lightIdsMessage = new StringBuilder();
-            foreach (var id in lightIds)
+            foreach (var id in lightIds ?? Enumerable.Empty<int>())
             {
                 lightIdsMessage.Append($"{id} ");
             }
