@@ -38,13 +38,6 @@ namespace HomeHUD.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login()
-        {
-            return View();
-        }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model, string returnUrl = null)
@@ -81,7 +74,7 @@ namespace HomeHUD.Controllers
             //}
             else
             {
-                result.AddGeneralError("Invalid login attempt.");
+                result.AddGeneralError("Sorry, no luck logging in.");
             }
 
             return Json(result);

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using static HomeHUD.TokenAuthenticationProvider;
 
 namespace HomeHUD.Services
@@ -16,7 +15,7 @@ namespace HomeHUD.Services
 
     public interface ITokenProvider
     {
-        Task<TokenCookie> GenerateToken(string userName, DateTime loginTime);
+        TokenCookie GenerateToken(string userName, DateTime loginTime);
     }
 
     public class TokenProvider : ITokenProvider
@@ -29,7 +28,7 @@ namespace HomeHUD.Services
             _options = options.Value;
         }
 
-        public async Task<TokenCookie> GenerateToken(string userName, DateTime loginTime)
+        public TokenCookie GenerateToken(string userName, DateTime loginTime)
         {
             // Specifically add the jti (random nonce), iat (issued timestamp), and sub (subject/user) claims.
             // You can add other claims here, if you want:

@@ -63,7 +63,7 @@ namespace HomeHUD.Services
                     Console.WriteLine(" [x] Sent {0}", message);
                 }
             }
-            catch (BrokerUnreachableException ex)
+            catch (BrokerUnreachableException)
             {
                 return false;
             }

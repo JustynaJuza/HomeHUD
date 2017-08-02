@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HomeHUD
 {
@@ -96,8 +97,8 @@ namespace HomeHUD
                 Events = new CookieAuthenticationEvents
                 {
                     OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync,
-                    OnRedirectToLogin = async (context) => context.Response.StatusCode = 401,
-                    OnRedirectToAccessDenied = async (context) => context.Response.StatusCode = 403
+                    OnRedirectToLogin = (context) => Task.FromResult(context.Response.StatusCode = 401),
+                    OnRedirectToAccessDenied = (context) => Task.FromResult(context.Response.StatusCode = 403)
                 }
             };
     }
