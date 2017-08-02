@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.AspNetCore.SignalR.Hubs;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,6 @@ namespace HomeHUD
     {
         public static void AddSimpleInjector(this IServiceCollection services, Container container)
         {
-            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
-
             // Allow injecting HttpContext (for PathProviver)
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -42,6 +41,19 @@ namespace HomeHUD
 
         public static void InitializeSimpleInjectorContainer(this IApplicationBuilder app, Container container, IConfigurationRoot configuration)
         {
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+            var hybridLifestyle = Lifestyle.CreateHybrid(
+                lifestyleSelector: () => Lifestyle.Scoped.GetCurrentScope(container) != null,
+                trueLifestyle: Lifestyle.Scoped,
+                falseLifestyle: Lifestyle.Transient);
+
+            container.Register<ApplicationDbContext>(() =>
+            {
+                var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+                options.UseSqlServer(configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models"));
+                return new ApplicationDbContext(options.Options);
+            }, hybridLifestyle);
+
             // Add application presentation components:
             container.RegisterMvcControllers(app);
             container.RegisterMvcViewComponents(app);
@@ -60,7 +72,6 @@ namespace HomeHUD
             // Cross-wire ASP.NET services (if any). For instance:
             container.CrossWire<ILoggerFactory>(app);
             container.CrossWire<IAntiforgery>(app);
-            container.CrossWire<ApplicationDbContext>(app);
             container.CrossWire<UserManager<User>>(app);
             container.CrossWire<SignInManager<User>>(app);
             container.CrossWire<IConnectionManager>(app);
