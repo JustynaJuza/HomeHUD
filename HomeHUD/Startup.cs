@@ -65,6 +65,8 @@ namespace HomeHUD
                 .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders();
 
+            services.AddAntiforgeryToken(Configuration);
+
             services
                 .AddMvc(options =>
                 {
