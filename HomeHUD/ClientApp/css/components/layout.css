@@ -15,7 +15,12 @@ html{
 input, button, select, a {
     @mixin featureFont;
 
+    &:hover {
+        text-decoration: none;
+    }
+
     &:focus {
+        text-decoration: none;
         outline-color: $focus_outline_color;
     }
 }

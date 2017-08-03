@@ -1,5 +1,6 @@
 // react
 import * as React from 'react';
+import { Link } from 'react-router'
 
 import ConfigMenu from './configMenu';
 
@@ -14,7 +15,9 @@ export class Header extends React.Component<{}, {}> {
 
         return (
             <div className={style.container}>
-                <span className={style.logo}>Home HUD</span>
+                <Link to={`/`}>
+                    <span className={style.logo}>Home HUD</span>
+                </Link>
                 <ConfigMenu />
             </div>
         );
