@@ -9,8 +9,8 @@ namespace HomeHUD
     {
         public static void UseFluentScheduler(this IApplicationBuilder app, Container container)
         {
+            JobManager.UseUtcTime();
             JobManager.JobFactory = new JobFactory(container);
-            //Log.Fatal("An error just happened with a scheduled job: " + info.Exception);
             JobManager.Initialize(new ScheduledJobsRegistry());
         }
     }

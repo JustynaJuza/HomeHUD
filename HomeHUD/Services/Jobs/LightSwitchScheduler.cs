@@ -16,6 +16,8 @@ namespace HomeHUD.Services.Jobs
         {
             _timeProvider = timeProvider;
             _options = options;
+
+            _timeProvider.UseTimeZone(_options.TimeZone);
         }
 
         public void Execute()
@@ -26,14 +28,14 @@ namespace HomeHUD.Services.Jobs
                     return;
 
                 var switchOffTime = _timeProvider.Today.Add(_options.SwitchOffTime);
-                var switchOnTime = _timeProvider.Today.Add(_options.SunsetSwitchSchedulingTime);
+                var sunsetSwitchSchedulingTime = _timeProvider.Today.Add(_options.SunsetSwitchSchedulingTime);
 
-                JobManager.AddJob<LightSwitcherJob>(x => x.ToRunOnceAt(switchOffTime).AndEvery(1).Days());
-                JobManager.AddJob<LightSwitcherJob>(x => x.ToRunOnceAt(switchOnTime).AndEvery(1).Days());
+                JobManager.AddJob<LightSwitcherJob>(x => x.ToRunOnceAt(switchOffTime.ToUniversalTime()).AndEvery(1).Days());
+                JobManager.AddJob<LightSwitcherJob>(x => x.ToRunOnceAt(sunsetSwitchSchedulingTime.ToUniversalTime()).AndEvery(1).Days());
             }
         }
 
-        public void Stop(bool immediate)
+        public void Stop()
         {
             lock (_lock)
             {

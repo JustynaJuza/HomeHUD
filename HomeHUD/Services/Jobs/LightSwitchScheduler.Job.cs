@@ -27,6 +27,8 @@ namespace HomeHUD.Services.Jobs
                 _sunTimeService = sunTimeService;
                 _timeProvider = timeProvider;
                 _options = options;
+
+                _timeProvider.UseTimeZone(_options.TimeZone);
             }
 
             public void Execute()
@@ -40,7 +42,7 @@ namespace HomeHUD.Services.Jobs
                 }
             }
 
-            public void Stop(bool immediate)
+            public void Stop()
             {
                 lock (_lock)
                 {
@@ -61,21 +63,18 @@ namespace HomeHUD.Services.Jobs
                     var switchOnTime = GetSunsetTime().Subtract(_options.TimeToSwitchBeforeSunset);
                     JobManager.AddJob(
                         () => _lightSwitchService.SetLightsState(new LightsStateViewModel { State = LightSwitchState.On }),
-                        s => s.ToRunOnceAt(switchOnTime));
+                        s => s.ToRunOnceAt(switchOnTime.ToUniversalTime()));
                 }
             }
 
             private bool IsSwitchOffTime()
             {
-                return DateTime.UtcNow >= DateTime.UtcNow.Date.Add(_options.SwitchOffTime);
+                return _timeProvider.Now >= _timeProvider.Today.Add(_options.SwitchOffTime);
             }
 
             private DateTime GetSunsetTime()
             {
-                var timeZone = TimeZoneInfo.FindSystemTimeZoneById(_options.TimeZone);
-                var localTime = TimeZoneInfo.ConvertTime(_timeProvider.Now, timeZone);
-
-                return _sunTimeService.GetSunsetTime(_options.Latitude, _options.Longitude, localTime);
+                return _sunTimeService.GetSunsetTime(_options.Latitude, _options.Longitude, _timeProvider.Now);
             }
         }
     }
