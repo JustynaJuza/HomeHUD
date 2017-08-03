@@ -9,17 +9,23 @@ import { IAppState } from '../../state/state';
 
 // redux-form
 import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
+import { MultiSelect, OptionValue } from 'react-selectize';
 import { TextField, SelectField } from 'redux-form-material-ui'
-import MenuItem from 'material-ui/MenuItem'
 import * as FieldRenderer from '../forms/fieldRendering'
 import * as Validation from '../forms/validation';
 import { IFormResult, IFormError } from '../forms/formResult';
 import { Api } from '../../state/api';
 
 // style
+import 'react-selectize/themes/index.css'
 import * as style from '../../css/components/forms.css';
 
 // component ---------------------------------------------------------------------------------
+
+interface IRole {
+    id: number;
+    name: string;
+}
 
 interface ICreateUserFormData {
     username: string;
@@ -33,18 +39,21 @@ interface ICreateUserFormProps {
     baseUrl: string;
 }
 
+interface ICreateUserFormState {
+    roleOptions: OptionValue[];
+}
+
 type ICreateUserFormPropsType =
     ICreateUserFormProps
     & FormProps<ICreateUserFormData, void, void>
 
-class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
+class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUserFormState> {
 
     private api: Api = new Api();
 
-    private roles: any;
-
     constructor(props) {
         super(props);
+        this.state = { roleOptions: [] };
         this.submit = this.submit.bind(this);
     }
 
@@ -53,19 +62,11 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
     }
 
     private getRoleOptions() {
-        return this.api.getJson(this.props.baseUrl + '/users/getRoles')
-            .then(data => this.roles = data);
-    }
-
-    private menuItems() {
-        return _map(this.roles, (role) => (
-            <MenuItem
-                key={role.name}
-                checked={this.roles.isSelected}
-                value={role.name}
-                primaryText={role.name}
-            />
-        ));
+        return this.api.getJson<IRole[]>(this.props.baseUrl + '/users/getRoles')
+            .then(roles => {
+                var roleOptions: OptionValue[] = _map(roles, (role) => ({ label: role.name, value: role.id }));
+                this.setState((current) => ({ ...current, roleOptions: roleOptions }))
+            });
     }
 
     public submit(values: ICreateUserFormData) {
@@ -94,7 +95,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
     }
 
     public render() {
-        const { error, handleSubmit, pristine, reset, submitting } = this.props;
+        const { error, valid, handleSubmit, pristine, reset, submitting } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.submit)} className={style.container}>
@@ -119,18 +120,18 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, {}> {
                     component={FieldRenderer.textField}
                     validate={[Validation.required, Validation.email]} />
 
-                <Field name="roles" id="create-user_roles"
-                    label="Roles"
-                    component={FieldRenderer.textField}
-                    multiple={true}>
-
-                    {this.menuItems()}
-
-                </Field>
+                <MultiSelect name="roles"
+                    className={style.field}
+                    options={this.state.roleOptions} />
 
                 {error && <span className={style._error}>{error}</span>}
 
-                <button type="submit" disabled={pristine || submitting}>Submit</button>
+                <button
+                    type="submit"
+                    disabled={pristine || !valid || submitting}
+                    className={style.button}>
+                    Submit
+                </button>
 
             </form>
         );

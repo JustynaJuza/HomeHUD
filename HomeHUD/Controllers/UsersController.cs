@@ -1,4 +1,5 @@
-﻿using HomeHUD.Models.DbContext;
+﻿using HomeHUD.Models;
+using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using HomeHUD.Models.Identity.AccountViewModels;
 using HomeHUD.Models.ResponseModels;
@@ -78,9 +79,14 @@ namespace HomeHUD.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Role>> GetRoles()
+        public async Task<IEnumerable<RoleViewModel>> GetRoles()
         {
-            return await _context.Roles.ToListAsync();
+            return await _context.Roles.Select(x => new RoleViewModel
+            {
+                Id = x.Id,
+                Name = x.Name
+            })
+            .ToListAsync();
         }
 
 
