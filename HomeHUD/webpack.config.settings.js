@@ -7,6 +7,11 @@ const paths = {
     styles: path.join(__dirname, 'dist/')
 };
 
+const modularCssSources = [
+    /ClientApp/,
+     path.join(__dirname, 'node_modules/react-toolbox/')
+];
+
 const postcssFunctions = {
     longTextShadow:
         function (offset, length, color) {
@@ -48,9 +53,10 @@ const loaders = {
             }
         ]
     },
-    css:
+    modularCss:
     {
         test: /\.css$/,
+        include: modularCssSources,
         use: extractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
@@ -78,6 +84,15 @@ const loaders = {
                     }
                 }
             ]
+        })
+    },
+    css:
+    {
+        test: /\.css$/,
+        exclude: modularCssSources,
+        use: extractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [{ loader: 'css-loader' }]
         })
     },
     images:

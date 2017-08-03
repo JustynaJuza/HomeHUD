@@ -33,6 +33,8 @@ module.exports = (env) => {
                 'redux-form',
                 'redux-thunk',
                 'react-router-redux',
+                'react-selectize',
+                'html-entities',
                 'jquery'
             ],
         },

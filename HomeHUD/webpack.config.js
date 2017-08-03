@@ -26,6 +26,7 @@ module.exports = (env) => {
                 //{ test: /\.tsx?$/, include: /ClientApp/, use: 'babel-loader' },
                 //{ test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
                 settings.loaders.tsx,
+                settings.loaders.modularCss,
                 settings.loaders.css,
                 settings.loaders.images
             ]

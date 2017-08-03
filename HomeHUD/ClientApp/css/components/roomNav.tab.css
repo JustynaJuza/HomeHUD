@@ -57,7 +57,6 @@
     @extend uppercase_name;
     @mixin navFont;
 
-    max-height: calc(2*$nav_tab_line_height);
     overflow: hidden;
     text-overflow: ellipsis;
 }
