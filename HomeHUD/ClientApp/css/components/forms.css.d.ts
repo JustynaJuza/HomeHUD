@@ -1,3 +1,5 @@
+export const filled: string;
+export const errored: string;
 export const container: string;
 export const button: string;
 export const inputElement: string;

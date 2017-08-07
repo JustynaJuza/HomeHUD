@@ -8,16 +8,14 @@ import { connect } from 'react-redux';
 import { IAppState } from '../../state/state';
 
 // redux-form
-import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-form';
-import { MultiSelect, OptionValue } from 'react-selectize';
-import { TextField, SelectField } from 'redux-form-material-ui'
+import { Field, reduxForm, initialize, FormProps, SubmissionError, change, touch } from 'redux-form';
+import { OptionValue } from 'react-selectize';
 import * as FieldRenderer from '../forms/fieldRendering'
 import * as Validation from '../forms/validation';
 import { IFormResult, IFormError } from '../forms/formResult';
 import { Api } from '../../state/api';
 
 // style
-import 'react-selectize/themes/index.css'
 import * as style from '../../css/components/forms.css';
 
 // component ---------------------------------------------------------------------------------
@@ -37,6 +35,8 @@ interface ICreateUserFormData {
 
 interface ICreateUserFormProps {
     baseUrl: string;
+    changeField: (form: string, field: string, value: any) => any;
+    touchField: (form: string, ...fields: string[]) => any;
 }
 
 interface ICreateUserFormState {
@@ -48,7 +48,6 @@ type ICreateUserFormPropsType =
     & FormProps<ICreateUserFormData, void, void>
 
 class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUserFormState> {
-
     private api: Api = new Api();
 
     constructor(props) {
@@ -67,6 +66,12 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
                 var roleOptions: OptionValue[] = _map(roles, (role) => ({ label: role.name, value: role.id }));
                 this.setState((current) => ({ ...current, roleOptions: roleOptions }))
             });
+    }
+
+    private changeSelectedRoles(roles, fieldName){
+        var roleNames = _map(roles, (role) => role.label);
+        this.props.changeField(this.constructor.name, fieldName, roleNames);
+        this.props.touchField(this.constructor.name, fieldName);
     }
 
     public submit(values: ICreateUserFormData) {
@@ -120,9 +125,13 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
                     component={FieldRenderer.textField}
                     validate={[Validation.required, Validation.email]} />
 
-                <MultiSelect name="roles"
-                    className={style.multiselect}
-                    options={this.state.roleOptions} />
+                <Field name="roles" id="create-user_roles"
+                    label="Roles"
+                    component={FieldRenderer.multiSelect}
+                    options={this.state.roleOptions}
+                    onValuesChange={(values) => this.changeSelectedRoles(values, 'roles')}
+                    onBlurSelect={(data) => this.changeSelectedRoles(data.values, 'roles')}
+                />
 
                 {error && <span className={style._error}>{error}</span>}
 
@@ -142,7 +151,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
 
 const form =
     reduxForm({
-        form: 'CreateUserForm',
+        form: CreateUserForm.name,
         validate: Validation.validate(
             Validation.compare('password', 'confirmPassword'))
     })(CreateUserForm);
@@ -151,5 +160,8 @@ export default connect(
     (state: IAppState) => ({
         baseUrl: state.request.baseUrl
     }),
-    null
+    {
+        changeField: change,
+        touchField: touch
+    }
 )(form);

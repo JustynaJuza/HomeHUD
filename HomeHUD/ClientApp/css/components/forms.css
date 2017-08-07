@@ -1,6 +1,20 @@
 @import './variables.css';
 @import './shared-components.css';
 
+@define-mixin input {
+    @mixin boxShadow inset;
+
+    margin: 0;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 10px 8px 10px;
+    font-size: 1.1em;
+    letter-spacing: 0.03em;
+    text-align: center;
+}
+
+.filled, .errored {}
+
 .container {
     @extend small_rounded_container;
     margin: 2.5em auto;
@@ -16,15 +30,26 @@
 }
 
 .multiselect {
-    &:global(.multi-select.react-selectize.default.root-node) {
-            @extend small_container;
-            @mixin featureFont;
-            padding-top: 20px;
-            margin-bottom: 20px;
+    padding: 20px 0;
+    position: relative;
+    margin-top: -2px;
+
+    &.filled :global(.multi-select.react-selectize.default.root-node .react-selectize-control) {
+        border: 1px solid $color_accent_primary;
+    }
+
+    &.errored :global(.multi-select.react-selectize.default.root-node .react-selectize-control) {
+        border: 1px solid $error_color;
+    }
+
+    :global(.multi-select.react-selectize.default.root-node) {
+        @mixin featureFont;
+        width: 100%;
 
         :global(.react-selectize-control) {
             @mixin input;
-            padding: 4px 4px 4px 8px;
+            padding: 5px 5px 5px 8px;
+            border-radius: 2px !important;
 
             :global(.react-selectize-search-field-and-selected-values) {
                 padding: 0;
@@ -80,15 +105,8 @@
 }
 
 .inputElement {
-    @mixin boxShadow inset;
 
-    margin: 0;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 12px 10px 8px 10px;
-    font-size: 1.1em;
-    letter-spacing: 0.03em;
-    text-align: center;
+    @mixin input;
 
     .errored &,
     .errored &.filled {
@@ -116,23 +134,44 @@
     top: 0;
     color: $color_text_shadow;
     transition-property: font-size, color, margin, font-weight;
+    transition-duration: 0.35s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
     .errored & {
         color: $color_text_shadow;
     }
 
+    .multiselect & {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .multiselect.filled &,
+    :global(.react-selectize):global(.open) ~ & {
+        top: 6px;
+    }
+
+    .multiselect.filled &,
+    :global(.react-selectize):global(.open) ~ &,
     .inputElement:focus:not([disabled]):not([readonly]) ~ &:not(.fixed):not(.error),
     .inputElement.filled ~ &:not(.fixed):not(.error),
     .inputElement[type='date'] ~ &:not(.fixed):not(.error),
     .inputElement[type='time'] ~ &:not(.fixed):not(.error) {
         color: $color_text_black;
-        margin: 0 5px;
+        margin: 0 8px;
         font-weight: bolder;
         font-size: .85em;
     }
 }
 
 .error {
-    composes: label;
+    @extend uppercase_name;
+    @mixin textShadow;
+    font-size: .8em;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin: 0 8px;
     color: $error_color;
 
     .errored & {
