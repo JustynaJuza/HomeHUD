@@ -1,4 +1,4 @@
-﻿namespace HomeHUD.Models
+﻿namespace HomeHUD.Models.Identity.AccountViewModels
 {
     public class RoleViewModel
     {

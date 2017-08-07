@@ -1,5 +1,4 @@
-﻿using HomeHUD.Models;
-using HomeHUD.Models.DbContext;
+﻿using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using HomeHUD.Models.Identity.AccountViewModels;
 using HomeHUD.Models.ResponseModels;
