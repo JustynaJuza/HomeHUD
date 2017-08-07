@@ -4,5 +4,6 @@ export const inputElement: string;
 export const bar: string;
 export const label: string;
 export const field: string;
+export const multiselect: string;
 export const error: string;
 export const _error: string;

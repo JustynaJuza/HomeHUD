@@ -15,6 +15,69 @@
     @extend small_container;
 }
 
+.multiselect {
+    &:global(.multi-select.react-selectize.default.root-node) {
+            @extend small_container;
+            @mixin featureFont;
+            padding-top: 20px;
+            margin-bottom: 20px;
+
+        :global(.react-selectize-control) {
+            @mixin input;
+            padding: 4px 4px 4px 8px;
+
+            :global(.react-selectize-search-field-and-selected-values) {
+                padding: 0;
+                min-height: 0;
+            }
+        }
+
+        :global(.dropdown-menu) {
+
+            @mixin featureFont;
+            font-size: 1.1em;
+            padding: 0;
+            border-bottom: 3px solid $black;
+            border-radius: 10px;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+
+            :global(.option-wrapper) {
+
+                &:global(.highlight) {
+                    background: rgba(150, 150, 150, 0.1);
+                    background: transparent;
+                }
+
+                :global(.simple-option) {
+                    padding: 5px 10px;
+                    border-top: 1px solid transparent;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                }
+
+                &:global(.highlight) :global(.simple-option) {
+                    color: $color_accent_ternary;
+                    border-top: 1px solid $color_accent_ternary;
+                    border-bottom: 1px solid $color_accent_ternary;
+                }
+            }
+        }
+
+        :global(.simple-value) {
+            font-size: 1em;
+            margin: 2px 2px 0 0;
+            background: transparent;
+            border: 1px solid $color_text_shadow;
+            border-radius: 2px;
+            color: $color_text_black;
+        }
+
+        :global(.react-selectize-toggle-button-container),
+        :global(.react-selectize-reset-button-container) {
+            height: 33px !important;
+        }
+    }
+}
 
 .inputElement {
     @mixin boxShadow inset;

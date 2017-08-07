@@ -121,7 +121,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
                     validate={[Validation.required, Validation.email]} />
 
                 <MultiSelect name="roles"
-                    className={style.field}
+                    className={style.multiselect}
                     options={this.state.roleOptions} />
 
                 {error && <span className={style._error}>{error}</span>}
