@@ -10,13 +10,21 @@ namespace HomeHUD.Models.Extensions
         public static IQueryable<TModel> WhereFilterIsEmptyOrContains<TModel, T>
             (this IQueryable<TModel> query, Expression<Func<TModel, T>> predicate, IEnumerable<T> filter) where TModel : class
         {
-            if (filter == null || !filter.Any())
-            {
+            if (filter.IsNullOrEmptyOrHasNullElementsOnly())
                 return query;
-            }
 
             var predicateFunc = predicate.Compile();
-            return !filter.IsNullOrEmptyOrHasNullElementsOnly() ? query : query.Where(x => filter.Contains(predicateFunc(x)));
+            return query.Where(x => filter.Contains(predicateFunc(x)));
+        }
+
+        public static IQueryable<TModel> ExceptFilter<TModel, T>
+            (this IQueryable<TModel> query, Expression<Func<TModel, T>> predicate, IEnumerable<T> filter) where TModel : class
+        {
+            if (filter.IsNullOrEmptyOrHasNullElementsOnly())
+                return query;
+
+            var predicateFunc = predicate.Compile();
+            return query.Except(query.Where(x => filter.Contains(predicateFunc(x))));
         }
 
         public static IQueryable<TModel> FilterBy<TModel>(this IQueryable<TModel> query, IEnumerable<TModel> filter) where TModel : class

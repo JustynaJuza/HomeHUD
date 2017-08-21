@@ -1,3 +1,4 @@
+using HomeHUD.Models.Extensions;
 using HomeHUD.Models.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,6 @@ namespace HomeHUD.Models.DbContext
         public async static void Initialize(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
-
-            context.Roles.RemoveRange(context.Roles);
-            context.SaveChanges();
 
             await SeedRoles(context);
 
@@ -85,19 +83,19 @@ namespace HomeHUD.Models.DbContext
         {
             var inserts = new List<Task>();
 
-            foreach (var role in Enum.GetValues(typeof(RoleName)).Cast<RoleName>())
+            var roles = Enum.GetValues(typeof(RoleName)).Cast<RoleName>();
+            var roleNames = roles.Select(x => x.ToString());
+
+            var existingRoles = context.Roles.WhereFilterIsEmptyOrContains(x => x.Name, roleNames).Select(x => x.Name);
+
+            foreach (var role in roleNames.Except(existingRoles))
             {
-                var roleName = role.ToString();
-                var existingRole = context.Roles.FirstOrDefault(r => r.Name == roleName);
-                if (existingRole == null)
-                {
-                    inserts.Add(
-                        context.Set<Role>().AddAsync(new Role
-                        {
-                            Name = roleName,
-                            NormalizedName = roleName.ToUpperInvariant()
-                        }));
-                }
+                inserts.Add(
+                    context.Set<Role>().AddAsync(new Role
+                    {
+                        Name = role,
+                        NormalizedName = role.ToUpperInvariant()
+                    }));
             }
 
             await Task.WhenAll(inserts);
