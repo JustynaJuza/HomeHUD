@@ -1,6 +1,6 @@
 // react
 import * as React from 'react'
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 // redux
 import { connect } from 'react-redux';
@@ -42,10 +42,12 @@ class ConfigMenu extends React.Component<IConfigMenuPropsType, {}> {
         return this.props.isAuthenticated
             ? (
                 <li>
-                    <button className={style.button} title="Manage rooms">
-                        <div className={style.settings}></div>
-                        <span className={style.title}>Manage rooms</span>
-                    </button>
+                    <Link to='/users'>
+                        <button className={style.button} title="Manage">
+                            <div className={style.settings}></div>
+                            <span className={style.title}>Manage</span>
+                        </button>
+                    </Link>
                 </li>
             )
             : null;
