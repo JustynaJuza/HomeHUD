@@ -93,8 +93,7 @@ namespace HomeHUD
             app.InitializeSimpleInjectorContainer(_container, Configuration);
             _container.Verify();
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            app.AddLogging(loggerFactory, Configuration);
 
             if (env.IsDevelopment())
             {
