@@ -20,7 +20,7 @@ export class RoomNavTab extends React.Component<IRoomNavTabProps, {}> {
         var tabClasses = classNames({
                 [style.tab]: true,
                 [style.active]: this.props.isActive
-            })
+            });
 
         return (
             <li className={tabClasses}>

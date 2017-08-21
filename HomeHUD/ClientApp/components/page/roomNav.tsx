@@ -35,7 +35,6 @@ type IRoomNavPropsType =
 class RoomNav extends React.Component<IRoomNavPropsType, {}> {
 
     private renderControlPanelTab = () => {
-        console.log(this.props)
         return (
             <RoomNavTab key={0} hash={''} isActive={!this.props.params['hash']}>
                 Control Panel
