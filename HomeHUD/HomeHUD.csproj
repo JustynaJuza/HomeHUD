@@ -52,12 +52,16 @@
     <Compile Remove="Models\ManageViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="appsettings.template.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\HomeHUD.Models\HomeHUD.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="exclude\_components\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="appsettings.template.json" />
     <None Include="exclude\authentication\authenticationActions.ts" />
     <None Include="exclude\authentication\authenticationReducer.ts" />
     <None Include="exclude\authentication\authenticationState.ts" />
