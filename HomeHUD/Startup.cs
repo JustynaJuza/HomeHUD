@@ -19,6 +19,8 @@ namespace HomeHUD
         private readonly TokenAuthenticationProvider _tokenAuthenticationProvider;
         private readonly Container _container = new Container();
 
+        public IConfigurationRoot Configuration { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -27,24 +29,14 @@ namespace HomeHUD
                 .AddJsonFile("appsettings.youShallNotCommitThis.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
             _tokenAuthenticationProvider = new TokenAuthenticationProvider(Configuration);
         }
 
-        public IConfigurationRoot Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));
@@ -87,7 +79,6 @@ namespace HomeHUD
             services.AddAntiforgeryToken(Configuration);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context)
         {
             app.InitializeSimpleInjectorContainer(_container, Configuration);
