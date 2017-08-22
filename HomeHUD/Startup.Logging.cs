@@ -20,6 +20,8 @@ namespace HomeHUD
             loggerFactory.AddConsole(loggingConfig);
             loggerFactory.AddDebug();
             loggerFactory.AddProvider(new Log4NetProvider(loggingConfig.GetValue<string>("FormatPattern")));
+
+            loggerFactory.CreateLogger(Assembly.GetEntryAssembly().GetName().Name).LogInformation("Application starting.");
         }
     }
 
@@ -66,14 +68,6 @@ namespace HomeHUD
             var loggerRepository = LogManager.CreateRepository(
                 Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
 
-            //var layout = new PatternLayout("| %utcdate{dd/MM/yyyy HH:mm:ss} (%date{dd/MM/yyyy HH:mm:ss}) | %timestamp | %8level | [%thread: %logger%] %message%newline");
-            //var appender = new RollingFileAppender
-            //{
-            //    File = $"{Assembly.GetEntryAssembly().GetName()}.log",
-            //    Layout = layout
-            //};
-            //layout.ActivateOptions();
-            //appender.ActivateOptions();
             BasicConfigurator.Configure(loggerRepository, appender);
             _log = LogManager.GetLogger(loggerRepository.Name, name);
         }
