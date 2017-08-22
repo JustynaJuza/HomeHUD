@@ -4,14 +4,14 @@ namespace HomeHUD.Services
 {
     public interface ISunTimeService
     {
-        DateTime GetSunsetTime(double latitude, double longitude, DateTime date);
+        DateTime GetSunsetTime(double latitude, double longitude, DateTime date, bool isDaylightSavingTime);
     }
 
     public class SunTimeService : ISunTimeService
     {
-        public DateTime GetSunsetTime(double latitude, double longitude, DateTime date)
+        public DateTime GetSunsetTime(double latitude, double longitude, DateTime date, bool isDaylightSavingTime)
         {
-            var sunCalculator = new SunCalculator(latitude, longitude, date.IsDaylightSavingTime());
+            var sunCalculator = new SunCalculator(latitude, longitude, isDaylightSavingTime);
             return sunCalculator.CalculateSunSet(date);
         }
     }
@@ -25,14 +25,14 @@ namespace HomeHUD.Services
         private readonly double _longitude;
         private readonly double _longitudeTimeZone;
         private readonly double _latitudeInRadians;
-        private readonly bool _isSummerTime;
+        private readonly bool _isDaylightSavingTime;
 
-        public SunCalculator(double latitude, double longitude, bool isSummerTime)
+        public SunCalculator(double latitude, double longitude, bool isDaylightSavingTime)
         {
             _longitude = longitude;
             _latitudeInRadians = ConvertDegreeToRadian(latitude);
             _longitudeTimeZone = Math.Round(longitude / 15d) * 15d;
-            _isSummerTime = isSummerTime;
+            _isDaylightSavingTime = isDaylightSavingTime;
         }
 
         public DateTime CalculateSunRise(DateTime dateTime)
@@ -113,7 +113,7 @@ namespace HomeHUD.Services
 
             var differenceSunAndLocalTime = ellipticalOrbitPart1 + ellipticalOrbitPart2 + (_longitude - _longitudeTimeZone) * 4;
 
-            if (_isSummerTime)
+            if (_isDaylightSavingTime)
                 differenceSunAndLocalTime -= 60;
             return differenceSunAndLocalTime;
         }

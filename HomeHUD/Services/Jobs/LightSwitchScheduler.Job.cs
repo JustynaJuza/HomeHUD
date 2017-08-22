@@ -1,5 +1,7 @@
 ﻿using FluentScheduler;
 using HomeHUD.Models;
+using HomeHUD.Models.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 
@@ -9,6 +11,7 @@ namespace HomeHUD.Services.Jobs
     {
         public class LightSwitcherJob : IJob
         {
+            private readonly ILogger _logger;
             private readonly ILightSwitchService _lightSwitchService;
             private readonly ISunTimeService _sunTimeService;
             private readonly ITimeProvider _timeProvider;
@@ -18,11 +21,14 @@ namespace HomeHUD.Services.Jobs
             private bool _shuttingDown;
 
             public LightSwitcherJob(
+                ILoggerFactory loggerFactory,
                 ILightSwitchService lightSwitchService,
                 ISunTimeService sunTimeService,
                 ITimeProvider timeProvider,
                 Options options)
             {
+                _logger = loggerFactory.CreateLogger<LightSwitcherJob>();
+
                 _lightSwitchService = lightSwitchService;
                 _sunTimeService = sunTimeService;
                 _timeProvider = timeProvider;
@@ -33,6 +39,7 @@ namespace HomeHUD.Services.Jobs
 
             public void Execute()
             {
+                _logger.LogInformation("Executing scheduled job.");
                 JobManager.JobException += (info) => Debug.WriteLine("An error just happened with a scheduled job: " + info.Exception);
 
                 lock (_lock)
@@ -54,6 +61,7 @@ namespace HomeHUD.Services.Jobs
             {
                 if (IsSwitchOffTime())
                 {
+                    _logger.LogInformation("Switching lights off.");
                     JobManager.AddJob(
                         () => _lightSwitchService.SetLightsState(new LightsStateViewModel { State = LightSwitchState.Off }),
                         s => s.ToRunNow());
@@ -61,20 +69,32 @@ namespace HomeHUD.Services.Jobs
                 else
                 {
                     var switchOnTime = GetSunsetTime().Subtract(_options.TimeToSwitchBeforeSunset);
+                    var switchOnTimeUtc = switchOnTime.ConvertToUtc(_timeProvider.TimeZone);
+
+                    _logger.LogInformation($"Scheduling evening lights on switch at {switchOnTime} ({switchOnTimeUtc} UTC), " +
+                        $"{_options.TimeToSwitchBeforeSunset} before sunset.");
+
                     JobManager.AddJob(
                         () => _lightSwitchService.SetLightsState(new LightsStateViewModel { State = LightSwitchState.On }),
-                        s => s.ToRunOnceAt(switchOnTime.ToUniversalTime()));
+                        s => s.ToRunOnceAt(switchOnTimeUtc));
                 }
             }
 
             private bool IsSwitchOffTime()
             {
+                _logger.LogDebug("Checking if lights are supposed to be switched off: " +
+                    $"{_timeProvider.Now} >= {_timeProvider.Today.Add(_options.SwitchOffTime)}: " +
+                    $"{_timeProvider.Now >= _timeProvider.Today.Add(_options.SwitchOffTime)}.");
+
                 return _timeProvider.Now >= _timeProvider.Today.Add(_options.SwitchOffTime);
             }
 
             private DateTime GetSunsetTime()
             {
-                return _sunTimeService.GetSunsetTime(_options.Latitude, _options.Longitude, _timeProvider.Now);
+                var sunsetTime = _sunTimeService.GetSunsetTime(
+                    _options.Latitude, _options.Longitude, _timeProvider.Now, _timeProvider.TimeZone.IsDaylightSavingTime(_timeProvider.Now));
+                _logger.LogDebug($"Calculated sunset time: {sunsetTime}");
+                return sunsetTime;
             }
         }
     }
