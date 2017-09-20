@@ -53,9 +53,8 @@ namespace HomeHUD
                     options.Cookies.ApplicationCookie = _tokenAuthenticationProvider.CookieAuthenticationOptions;
                 })
                 .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>()
-                .AddUserStore<ApplicationUserStore>()
-                .AddRoleStore<ApplicationRoleStore>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddEntityFrameworkStores<ApplicationDbContext, int>();
 
             services.AddAntiforgeryToken(Configuration);
 

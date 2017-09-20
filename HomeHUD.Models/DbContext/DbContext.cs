@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HomeHUD.Models.DbContext
 {
-    public partial class ApplicationDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public partial class ApplicationDbContext : IdentityDbContext<User, Role, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,12 +21,12 @@ namespace HomeHUD.Models.DbContext
         public DbSet<Light> Lights { get; set; }
         public DbSet<Room> Rooms { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            ConventionsConfig.SetPropertyConventions(modelBuilder);
-            EntityConfig.ConfigureTables(modelBuilder);
+            ConventionsConfig.SetPropertyConventions(builder);
+            EntityConfig.ConfigureTables(builder);
         }
     }
 }

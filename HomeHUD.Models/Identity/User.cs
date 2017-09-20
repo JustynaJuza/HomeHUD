@@ -10,7 +10,7 @@ namespace HomeHUD.Models.Identity
         Admin
     }
 
-    public class User : IdentityUser<int, UserClaim, UserRole, UserLogin>
+    public class User : IdentityUser<int>
     {
         public DateTime DateCreated { get; set; }
 

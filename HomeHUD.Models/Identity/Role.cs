@@ -10,5 +10,5 @@ namespace HomeHUD.Models.Identity
         TempUser
     }
 
-    public class Role : IdentityRole<int, UserRole, RoleClaim> { }
+    public class Role : IdentityRole<int> { }
 }
