@@ -78,12 +78,18 @@ namespace HomeHUD
             services.AddAntiforgeryToken(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, ApplicationDbContext context)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            IApplicationLifetime lifetime,
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context)
         {
             app.InitializeSimpleInjectorContainer(_container, Configuration);
             _container.Verify();
 
             app.AddLogging(loggerFactory, Configuration);
+            app.AddApplicationLifetimeEvents(lifetime);
 
             if (env.IsDevelopment())
             {
