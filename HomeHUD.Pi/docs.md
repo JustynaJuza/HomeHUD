@@ -1,7 +1,13 @@
 # How to deploy on Pi
 ##### Prepare source folder
 Copy source via WinSCP.
-SSH to Pi.
+
+#### SSH to Pi.
+Obtain Pi IP, e.g. log in to your router and list devices to find IP.
+```sh
+ssh admin@192.rest.of.ip
+```
+
 ##### Prepare service file
 Create a service unit file - **HomeHUDPi.service** file is included.
 Set permission on service file.
