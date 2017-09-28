@@ -27,6 +27,7 @@ namespace HomeHUD.Models.DbContext
 
             ConventionsConfig.SetPropertyConventions(builder);
             EntityConfig.ConfigureTables(builder);
+            EntityConfig.ConfigureRelationships(builder);
         }
     }
 }

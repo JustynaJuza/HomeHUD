@@ -13,7 +13,7 @@ namespace HomeHUD.Models
         public string Name { get; set; }
         public short SortWeight { get; set; }
         public string Hash { get; set; }
-        public ICollection<Light> Lights { get; set; }
+        public ICollection<RoomLight> RoomLights { get; set; }
     }
 
     public class RoomViewModel

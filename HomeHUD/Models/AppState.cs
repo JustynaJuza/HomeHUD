@@ -1,4 +1,6 @@
-﻿namespace HomeHUD.Models
+﻿using System.Collections.Generic;
+
+namespace HomeHUD.Models
 {
     public class AppState
     {
@@ -9,7 +11,7 @@
         public class NavigationState { }
         public class AppConfiguration
         {
-            public RoomViewModel[] Rooms { get; set; }
+            public IEnumerable<RoomViewModel> Rooms { get; set; }
         }
     }
 }

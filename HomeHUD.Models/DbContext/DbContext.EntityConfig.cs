@@ -19,6 +19,22 @@ namespace HomeHUD.Models.DbContext
                 modelBuilder.Entity<IdentityUserRole<int>>().ToTable("UserRoles");
                 modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims");
             }
+
+            internal static void ConfigureRelationships(ModelBuilder modelBuilder)
+            {
+                modelBuilder.Entity<RoomLight>()
+                    .HasKey(x => new { x.RoomId, x.LightId });
+
+                modelBuilder.Entity<RoomLight>()
+                    .HasOne(x => x.Room)
+                    .WithMany(y => y.RoomLights)
+                    .HasForeignKey(x => x.RoomId);
+
+                modelBuilder.Entity<RoomLight>()
+                    .HasOne(x => x.Light)
+                    .WithMany(y => y.RoomLights)
+                    .HasForeignKey(x => x.LightId);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using HomeHUD.Models.Extensions;
 using HomeHUD.Models.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,16 +31,11 @@ namespace HomeHUD.Models.DbContext
                     Name = "Games room",
                     SortWeight = 10,
                     Hash = "gaming",
-                    Lights = new List<Light>
-                    {
-                        new Light
-                        {
-                            State = LightSwitchState.On
-                        },
-                        new Light
-                        {
-                            State = LightSwitchState.SwitchingOff,
-
+                    RoomLights = new[] {
+                        new RoomLight {
+                            Light = new Light {
+                                Id = 1,
+                                State = LightSwitchState.Off }
                         }
                     }
                 }));
@@ -50,11 +46,11 @@ namespace HomeHUD.Models.DbContext
                     Name = "Bedroom",
                     SortWeight = 20,
                     Hash = "bed",
-                    Lights = new List<Light>
-                    {
-                        new Light
-                        {
-                            State = LightSwitchState.Off
+                    RoomLights = new[] {
+                        new RoomLight {
+                            Light = new Light {
+                                Id = 4,
+                                State = LightSwitchState.Off }
                         }
                     }
                 }));
@@ -66,17 +62,26 @@ namespace HomeHUD.Models.DbContext
                     Name = "Living room",
                     SortWeight = 30,
                     Hash = "living",
-                    Lights = new List<Light>
-                    {
-                        new Light
-                        {
-                            State = LightSwitchState.SwitchingOn
+                    RoomLights = new[] {
+                        new RoomLight {
+                            Light = new Light {
+                                Id = 2,
+                                State = LightSwitchState.Off }
+                        },
+                        new RoomLight {
+                            Light = new Light {
+                                Id = 3,
+                                State = LightSwitchState.Off }
                         }
                     }
                 }));
 
             await Task.WhenAll(inserts);
+            context.Database.OpenConnection();
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Lights ON;");
             await context.SaveChangesAsync();
+            context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT Lights OFF;");
+            context.Database.CloseConnection();
         }
 
         private static async Task SeedRoles(ApplicationDbContext context)

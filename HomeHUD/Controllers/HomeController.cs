@@ -31,41 +31,30 @@ namespace HomeHUD.Controllers
         [Route("/initialState")]
         public AppState InitialState()
         {
-            var query = _context.Rooms
-                   .Select(x => new
+            var rooms = _context.Rooms
+                   .Select(x => new RoomViewModel
                    {
                        Id = x.Id,
                        Name = x.Name,
                        Hash = x.Hash,
                        SortWeight = x.SortWeight,
-                       Lights = x.Lights.Select(y => new LightViewModel
-                       {
-                           Id = y.Id,
-                           State = y.State,
-                           Color = y.Color,
-                           Brightness = y.Brightness,
-                           Description = y.Description,
-                           RoomId = y.RoomId
-                       })
+                       Lights = x.RoomLights.Select(y => y.LightId)
                    }).ToList();
+
+            var lights = _context.Lights
+                .Select(y => new LightViewModel
+                {
+                    Id = y.Id,
+                    State = y.State,
+                    Color = y.Color,
+                    Brightness = y.Brightness,
+                    Description = y.Description
+                }).ToList();
 
             return new AppState
             {
-                Config = new AppState.AppConfiguration
-                {
-                    Rooms = query.Select(x => new RoomViewModel
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Hash = x.Hash,
-                        SortWeight = x.SortWeight,
-                        Lights = x.Lights.Select(y => y.Id)
-                    }).ToArray()
-                },
-                Lights = new LightsState
-                {
-                    All = query.SelectMany(x => x.Lights).ToList()
-                }
+                Config = new AppState.AppConfiguration { Rooms = rooms },
+                Lights = new LightsState { All = lights }
             };
         }
 
