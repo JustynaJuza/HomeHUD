@@ -12,8 +12,8 @@ namespace HomeHUD.Services.Jobs
             public double Longitude { get; set; }
             public TimeSpan TimeToSwitchBeforeSunset { get; set; } = new TimeSpan(0, 0, 0);
             public TimeSpan SunsetSwitchSchedulingTime { get; set; } = new TimeSpan(0, 0, 0);
-            public TimeSpan SwitchOnTime { get; set; } = new TimeSpan(7, 0, 0);
-            public TimeSpan SwitchOffTime { get; set; } = new TimeSpan(23, 0, 0);
+            public TimeSpan[] SwitchOnTimes { get; set; } = new[] { new TimeSpan(19, 0, 0) };
+            public TimeSpan[] SwitchOffTimes { get; set; } = new[] { new TimeSpan(23, 0, 0) };
         }
     }
 }

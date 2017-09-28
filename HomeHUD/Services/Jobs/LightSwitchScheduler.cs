@@ -1,13 +1,14 @@
 ﻿using FluentScheduler;
-using HomeHUD.Models.Extensions;
+using HomeHUD.Models;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace HomeHUD.Services.Jobs
 {
     public partial class LightSwitchScheduler : IJob
     {
         private readonly ILogger _logger;
-        private readonly ITimeProvider _timeProvider;
+        private readonly ILightSwitchTimeService _lightSwitchTimeService;
         private readonly Options _options;
 
         private readonly object _lock = new object();
@@ -15,15 +16,13 @@ namespace HomeHUD.Services.Jobs
 
         public LightSwitchScheduler(
             ILoggerFactory loggerFactory,
-            ITimeProvider timeProvider,
+            ILightSwitchTimeService lightSwitchTimeService,
             Options options)
         {
             _logger = loggerFactory.CreateLogger<LightSwitchScheduler>();
 
-            _timeProvider = timeProvider;
+            _lightSwitchTimeService = lightSwitchTimeService;
             _options = options;
-
-            _timeProvider.UseTimeZone(_options.TimeZone);
         }
 
         public void Execute()
@@ -33,19 +32,9 @@ namespace HomeHUD.Services.Jobs
                 if (_options.IsDisabled || _shuttingDown)
                     return;
 
-                var switchOffTime = _timeProvider.Today.Add(_options.SwitchOffTime);
-                var sunsetSwitchSchedulingTime = _timeProvider.Today.Add(_options.SunsetSwitchSchedulingTime);
-                var switchOffTimeUtc = switchOffTime.ConvertToUtc(_timeProvider.TimeZone);
-                var sunsetSwitchSchedulingTimeUtc = sunsetSwitchSchedulingTime.ConvertToUtc(_timeProvider.TimeZone);
-
-                _logger.LogInformation("Scheduling light switcher job at " +
-                    $"{sunsetSwitchSchedulingTime} ({sunsetSwitchSchedulingTimeUtc} UTC) and {switchOffTime} ({switchOffTimeUtc} UTC) " +
-                    $"for timezone {_timeProvider.TimeZone.DisplayName}");
-
-                JobManager.AddJob<LightSwitcherJob>(
-                    x => x.ToRunNow().AndEvery(1).Days().At(sunsetSwitchSchedulingTimeUtc.Hour, sunsetSwitchSchedulingTimeUtc.Minute));
-                JobManager.AddJob<LightSwitcherJob>(
-                    x => x.ToRunEvery(0).Days().At(switchOffTimeUtc.Hour, switchOffTimeUtc.Minute));
+                ScheduleSunsetSwitchScheduling();
+                ScheduleSwitchTimes<LightSwitchStateOn>(_lightSwitchTimeService.GetSwitchOnTimes());
+                ScheduleSwitchTimes<LightSwitchStateOff>(_lightSwitchTimeService.GetSwitchOffTimes());
             }
         }
 
@@ -54,6 +43,28 @@ namespace HomeHUD.Services.Jobs
             lock (_lock)
             {
                 _shuttingDown = true;
+            }
+        }
+
+        private void ScheduleSunsetSwitchScheduling()
+        {
+            var sunsetSwitchSchedulingTime = _lightSwitchTimeService.GetSunsetSwitchSchedulingTime();
+            var sunsetSwitchSchedulingTimeUtc = sunsetSwitchSchedulingTime.ToUtc();
+
+            _logger.LogInformation($"Scheduling light switcher job at {sunsetSwitchSchedulingTime.Time} ({sunsetSwitchSchedulingTimeUtc} UTC)");
+
+            JobManager.AddJob<SunsetSwitchJob>(
+                x => x.ToRunNow().AndEvery(1).Days().At(sunsetSwitchSchedulingTimeUtc.Hour, sunsetSwitchSchedulingTimeUtc.Minute));
+        }
+
+        private void ScheduleSwitchTimes<T>(IEnumerable<LocalTime> switchTimes)
+            where T : ILightSwitchState
+        {
+            foreach (var switchTime in switchTimes)
+            {
+                var switchTimeUtc = switchTime.ToUtc();
+                JobManager.AddJob<SwitchJob<T>>(
+                    x => x.ToRunEvery(0).Days().At(switchTimeUtc.Hour, switchTimeUtc.Minute));
             }
         }
     }

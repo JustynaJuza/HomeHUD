@@ -67,6 +67,7 @@ namespace HomeHUD
             container.Register<ISmsSender, AuthMessageSender>();
             container.Register<ILightSwitchService, LightSwitchService>();
             container.Register<ILightSwitchDbService, LightSwitchDbService>();
+            container.Register<ILightSwitchTimeService, LightSwitchTimeService>();
             container.Register<IRabbitMqService, RabbitMqService>();
             container.Register<IPathProvider, PathProvider>();
             container.Register<ISunTimeService, SunTimeService>();

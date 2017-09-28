@@ -10,6 +10,10 @@ namespace HomeHUD.Models
         SwitchingOff = 3
     }
 
+    public interface ILightSwitchState { }
+    public class LightSwitchStateOn : ILightSwitchState { }
+    public class LightSwitchStateOff : ILightSwitchState { }
+
     public class Light
     {
         public int Id { get; set; }

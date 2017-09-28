@@ -16,7 +16,6 @@ namespace HomeHUD.Services
         Task SetLights(IList<LightViewModel> lights);
     }
 
-    //[Authorize]
     public class LightSwitchService : ILightSwitchService
     {
         private readonly ILightSwitchDbService _lightSwitchDbService;
