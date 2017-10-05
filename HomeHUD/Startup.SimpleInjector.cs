@@ -1,4 +1,5 @@
-﻿using HomeHUD.Models.DbContext;
+﻿using HomeHUD.Models;
+using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using HomeHUD.Services;
 using HomeHUD.Services.Jobs;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -81,6 +83,8 @@ namespace HomeHUD
             container.CrossWire<IConnectionManager>(app);
 
             // Register configration options
+            container.Register(app.ApplicationServices.GetRequiredService<IOptionsSnapshot<AppOptions>>);
+
             var rabbitMqCredentials = configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Credentials)}")
                 .Get<RabbitMq.Credentials>();
             container.RegisterSingleton(rabbitMqCredentials);

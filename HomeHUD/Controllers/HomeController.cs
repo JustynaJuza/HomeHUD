@@ -2,6 +2,7 @@ using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Linq;
 
 namespace HomeHUD.Controllers
@@ -10,21 +11,25 @@ namespace HomeHUD.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IPathProvider _pathProvider;
+        private readonly AppOptions _appOptions;
 
         public HomeController(
             ApplicationDbContext context,
-            IPathProvider pathProvider)
+            IPathProvider pathProvider,
+            IOptionsSnapshot<AppOptions> appOptions)
         {
             _context = context;
             _pathProvider = pathProvider;
+            _appOptions = appOptions.Value;
         }
 
         public IActionResult Index()
         {
-            return View(new
+            return View(new InitialSpaData
             {
                 baseUrl = _pathProvider.GetAppBaseUrl(),
-                isAuthenticated = User.Identity.IsAuthenticated
+                isAuthenticated = User.Identity.IsAuthenticated,
+                disableServerSideRendering = _appOptions.DisableServerSideRendering
             });
         }
 

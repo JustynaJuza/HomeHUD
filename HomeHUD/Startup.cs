@@ -1,3 +1,4 @@
+using HomeHUD.Models;
 using HomeHUD.Models.DbContext;
 using HomeHUD.Models.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +38,8 @@ namespace HomeHUD
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppOptions>(Configuration.GetSection(nameof(AppOptions)));
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("HomeHUD"), x => x.MigrationsAssembly("HomeHUD.Models")));
@@ -57,6 +60,11 @@ namespace HomeHUD
                 .AddEntityFrameworkStores<ApplicationDbContext, int>();
 
             services.AddAntiforgeryToken(Configuration);
+
+            services.AddAuthorization(options =>
+            {
+                //options.AddPolicy(, policy => policy.RequireClaim());
+            });
 
             services
                 .AddMvc(options =>
@@ -103,7 +111,7 @@ namespace HomeHUD
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(Configuration["showDetailedErrors"]))
+                if (!string.IsNullOrWhiteSpace(Configuration[$"{nameof(AppOptions)}:{nameof(AppOptions.ShowDetailedErrors)}"]))
                 {
                     app.UseDeveloperExceptionPage();
                 }

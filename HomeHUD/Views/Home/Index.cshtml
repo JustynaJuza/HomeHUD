@@ -1,12 +1,26 @@
-@model dynamic
+@model InitialSpaData
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div id="react-app" style="height: 100%;"
-     asp-prerender-module="ClientApp/dist/main-server"
-     asp-prerender-data="@Model"
-     asp-prerender-timeout="1000000">Loading...</div>
+@if (Model.disableServerSideRendering)
+{
+    @* FOR CLIENT ONLY RENDERING *@
+    <script>
+        var baseUrl = '@Model.baseUrl';
+        var isAuthenticated = @(Model.isAuthenticated ? "true" : "false");
+    </script>
+
+    <div id="react-app" style="height: 100%;">Loading...</div>
+}
+else
+{
+    @* FOR SERVER SIDE RENDERING *@
+    <div id="react-app" style="height: 100%;"
+         asp-prerender-module="ClientApp/dist/main-server"
+         asp-prerender-data="@Model"
+         asp-prerender-timeout="10000"></div>
+}
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
