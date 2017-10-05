@@ -1,5 +1,6 @@
 import { AppThunkAction, IAppState } from '../state';
-import { IRequestState, IUser } from './requestState';
+import { IRequestState } from './requestState';
+import { IUser } from '../config/configState';
 
 import * as RequestActionTypes from './requestActionTypes';
 import * as RequestActions from './requestActions';

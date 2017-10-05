@@ -15,7 +15,7 @@ import { Field, reduxForm, initialize, FormProps, SubmissionError } from 'redux-
 import * as FieldRenderer from '../forms/fieldRendering'
 import * as Validation from '../forms/validation';
 import { IFormResult, IFormError } from '../forms/formResult';
-import { IUser } from '../../state/request/requestState';
+import { IUser } from '../../state/config/configState';
 import { Api } from '../../state/api';
 
 // style

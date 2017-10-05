@@ -12,7 +12,7 @@ import { IAppState } from '../../state/state';
 import { IRouterParams } from '../../router';
 
 // props
-import { IRoomConfig } from '../../state/config/configState';
+import { IRoom } from '../../state/config/configState';
 import { ISelectedContent } from '../../state/nav/navState';
 
 // components
@@ -24,7 +24,7 @@ import * as style from '../../css/components/roomNav.css';
 // component ---------------------------------------------------------------------------------
 
 interface IRoomNavProps {
-    rooms: IRoomConfig[];
+    rooms: IRoom[];
 }
 
 type IRoomNavPropsType =
@@ -42,7 +42,7 @@ class RoomNav extends React.Component<IRoomNavPropsType, {}> {
         )
     }
 
-    private renderRoomNavTab = (room: IRoomConfig, index: number) => {
+    private renderRoomNavTab = (room: IRoom, index: number) => {
         return (
             <RoomNavTab key={index + 1} hash={room.hash} isActive={room.hash == this.props.params['hash']}>
                 {room.name}
@@ -71,7 +71,7 @@ class RoomNav extends React.Component<IRoomNavPropsType, {}> {
 
 export default connect(
     (state: IAppState, publicProps: IRouterParams) => ({
-        rooms: _filter(state.config.rooms, room => room.lights.length > 0) as IRoomConfig[]
+        rooms: _filter(state.config.rooms, room => room.lights.length > 0) as IRoom[]
     }),
     null
 )(RoomNav);

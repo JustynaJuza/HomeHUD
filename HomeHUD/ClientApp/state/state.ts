@@ -8,7 +8,6 @@ export interface IAppState {
     lights: ILightsState;
     config: IConfigState;
     request: IRequestState;
-    //authentication: IAuthenticationState;
 }
 
 export interface AppThunkAction<TAction> {

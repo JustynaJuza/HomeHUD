@@ -1,4 +1,5 @@
-import { IRequestState, IUser } from './requestState';
+import { IRequestState } from './requestState';
+import { IUser } from '../config/configState';
 import * as RequestActionTypes from './requestActionTypes';
 
 export interface SetBaseUrlAction {

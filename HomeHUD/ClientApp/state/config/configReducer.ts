@@ -6,7 +6,9 @@ import * as ConfigActionTypes from './configActionTypes';
 import { IConfigState } from './configState';
 
 const initialConfigState: IConfigState = {
-    rooms: []
+    rooms: [],
+    users: [],
+    roles: []
 }
 
 export const configReducer: Reducer<IConfigState> = (state: IConfigState, action: ConfigActions.ConfigAction) => {

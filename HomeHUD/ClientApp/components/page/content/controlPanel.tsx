@@ -14,7 +14,7 @@ import * as LightAction from '../../../state/lights/lightActions';
 import * as LightActionTypes from '../../../state/lights/lightActionTypes';
 
 // props
-import { IRoomConfig } from '../../../state/config/configState';
+import { IRoom } from '../../../state/config/configState';
 import { lightSwitchState } from '../../../state/lights/lightsState';
 
 // components
@@ -30,14 +30,14 @@ import { Route } from 'react-router';
 
 interface IControlPanelProps {
     dispatch: Dispatch<any>;
-    rooms: IRoomConfig[];
+    rooms: IRoom[];
     onSwitchAllOn: () => void;
     onSwitchAllOff: () => void;
 }
 
 class ControlPanel extends React.Component<IControlPanelProps, {}> {
 
-    private renderRoom = (room: IRoomConfig, index: number) => {
+    private renderRoom = (room: IRoom, index: number) => {
         return (
             <RoomPanel key={index} hash={room.hash} showName={true} showBulkSwitches={false} />
         )
