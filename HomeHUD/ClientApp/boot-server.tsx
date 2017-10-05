@@ -10,28 +10,15 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { getRoutesConfig } from './router';
 import configureStore from './configureStore-server';
-import { Api } from './state/api';
-
-import * as RequestActionTypes from './state/request/requestActionTypes';
-import * as RequestActions from './state/request/requestActions';
+import initialDispatch from './boot-store';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
 
-        // Match the incoming request against the list of client-side routes
         const store = configureStore();
-        store.dispatch({
-            type: RequestActionTypes.SetBaseUrl,
-            baseUrl: params.data.baseUrl
-        } as RequestActions.SetBaseUrlAction)
+        initialDispatch(store, params.data.baseUrl, params.data.isAuthenticated);
 
-        if (params.data.isAuthenticated) {
-            store.dispatch({
-                type: RequestActionTypes.LogIn,
-                user: null
-            } as RequestActions.LogInAction)
-        }
-
+        // Match the incoming request against the list of client-side routes
         var routes = getRoutesConfig(params.data.isAuthenticated);
         match({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {
             if (error) {

@@ -1,4 +1,3 @@
-//import './css/site.css';
 import 'bootstrap';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -12,14 +11,18 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { getRoutesConfig } from './router';
 import configureStore from './configureStore-client';
+import initialDispatch from './boot-store';
 import { IAppState }  from './state/state';
 
+
 // Get the application-wide store instance, prepopulating with state from the server where available.
-const initialState = (window as any).initialReduxState as IAppState;
-export const store = configureStore(initialState);
+const prerenderingState = (window as any).initialReduxState as IAppState;
+export const store = configureStore(prerenderingState);
+const initialState = prerenderingState || store.getState() as IAppState;
 const history = syncHistoryWithStore(browserHistory, store);
 
-injectTapEventPlugin()
+initialDispatch(store, (window as any).baseUrl, (window as any).isAuthenticated);
+injectTapEventPlugin();
 
 // This code starts up the React app when it runs in a browser. It sets up the routing configuration
 // and injects the app into a DOM element.
