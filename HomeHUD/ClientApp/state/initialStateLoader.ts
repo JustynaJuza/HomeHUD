@@ -19,8 +19,8 @@ export const initialStateLoader = {
             var initialStateLoadingTask =
                 api.getJson<IAppState>(currentState.request.baseUrl + '/initialState')
                     .then((initialState) => {
-                        dispatch(<ConfigActions.SetConfigStateAction>
-                            { type: ConfigActionTypes.SetConfigState, config: initialState.config })
+                        dispatch(<ConfigActions.SetRoomsAction>
+                            { type: ConfigActionTypes.SetRooms, rooms: initialState.config.rooms })
                         dispatch(<LightActions.SetAllLightsAction>
                             { type: LightActionTypes.SetAllLights, lights: initialState.lights });
                     });

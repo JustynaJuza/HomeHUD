@@ -1,9 +1,26 @@
-import { IConfigState } from './configState';
+import { Room, User, Role, IConfigState } from './configState';
+import { IListItem } from '../../components/admin/listPanel';
 import * as ConfigActionTypes from './configActionTypes';
 
-export interface SetConfigStateAction {
-    type: typeof ConfigActionTypes.SetConfigState,
-    config: IConfigState;
+export interface SetRoomsAction {
+    type: typeof ConfigActionTypes.SetRooms,
+    rooms: Room[];
 }
 
-export type ConfigAction = SetConfigStateAction;
+export interface SetUsersAction {
+    type: typeof ConfigActionTypes.SetUsers,
+    users: User[];
+}
+
+export interface SetRolesAction {
+    type: typeof ConfigActionTypes.SetRoles,
+    roles: Role[];
+}
+
+export interface SetConfigEntriesAction {
+    type: typeof ConfigActionTypes.SetConfigEntries,
+    configEntry: string,
+    entries: IListItem[];
+}
+
+export type ConfigAction = SetRoomsAction | SetUsersAction | SetRolesAction | SetConfigEntriesAction;
