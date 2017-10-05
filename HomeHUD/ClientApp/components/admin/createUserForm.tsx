@@ -61,7 +61,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
     }
 
     private getRoleOptions() {
-        return this.api.getJson<IRole[]>(this.props.baseUrl + '/users/getRoles')
+        return this.api.getJson<IRole[]>(this.props.baseUrl + '/users/roles')
             .then(roles => {
                 var roleOptions: OptionValue[] = _map(roles, (role) => ({ label: role.name, value: role.id }));
                 this.setState((current) => ({ ...current, roleOptions: roleOptions }))
@@ -75,7 +75,7 @@ class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUs
     }
 
     public submit(values: ICreateUserFormData) {
-        return this.api.postJson(this.props.baseUrl + '/users/createUser', values)
+        return this.api.postJson(this.props.baseUrl + '/users/create', values)
             .then(this.processResponse.bind(this))
             .catch(this.formatSubmitErrors);
     }

@@ -4,12 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HomeHUD.Models.Identity
 {
-    public enum InternalRole
-    {
-        Developer,
-        Admin
-    }
-
     public class User : IdentityUser<int>
     {
         public DateTime DateCreated { get; set; }

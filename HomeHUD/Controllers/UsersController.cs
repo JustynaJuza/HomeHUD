@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace HomeHUD.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -36,7 +37,7 @@ namespace HomeHUD.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [Route("/users/create")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserViewModel model)
         {
             var result = new FormResultResponse();
@@ -78,12 +79,27 @@ namespace HomeHUD.Controllers
         }
 
         [HttpGet]
+        [Route("/users/roles")]
         public async Task<IEnumerable<RoleViewModel>> GetRoles()
         {
             return await _context.Roles.Select(x => new RoleViewModel
             {
                 Id = x.Id,
                 Name = x.Name
+            })
+            .ToListAsync();
+        }
+
+        [HttpGet]
+        [Route("/users/list")]
+        public async Task<IEnumerable<UserViewModel>> GetList()
+        {
+            return await _context.Set<User>().Select(x => new UserViewModel
+            {
+                Id = x.Id,
+                Name = x.UserName,
+                DateCreated = x.DateCreated,
+                Roles = x.Roles.Select(y => y.RoleId)
             })
             .ToListAsync();
         }
