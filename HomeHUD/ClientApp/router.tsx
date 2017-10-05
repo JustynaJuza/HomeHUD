@@ -5,6 +5,7 @@ import { Router, Route, Redirect } from 'react-router';
 
 import Layout from './components/page/layout';
 import RoomContent from './components/page/roomContent';
+import AdminContent from './components/admin/adminContent';
 import LoginForm from './components/page/loginForm';
 import LoginGuard from './components/containers/loginGuard';
 import CreateUserForm from './components/admin/createUserForm';
@@ -23,7 +24,6 @@ export interface IRouteConfig {
     requireLogin?: boolean;
 }
 
-
 export const getRoutesConfig = (isAuthenticated: boolean) =>
     (
         <Route component={Layout}>
@@ -33,6 +33,7 @@ export const getRoutesConfig = (isAuthenticated: boolean) =>
             <Route component={LoginGuard}>
                 <Route path='/r(/:hash)' component={RoomContent} />
                 <Route path='/users' component={CreateUserForm} />
+                <Route path='/manage(/:entryName)' component={AdminContent} />
             </Route>
         </Route>
     );

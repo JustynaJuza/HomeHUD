@@ -42,7 +42,7 @@ class ConfigMenu extends React.Component<IConfigMenuPropsType, {}> {
         return this.props.isAuthenticated
             ? (
                 <li>
-                    <Link to='/users'>
+                    <Link to='/manage'>
                         <button className={style.button} title="Manage">
                             <div className={style.settings}></div>
                             <span className={style.title}>Manage</span>
