@@ -5,7 +5,7 @@ import * as React from 'react'
 import { IRouterParams } from '../../router';
 
 // components
-import AdminNav from './adminNav';
+import Nav from './nav';
 import ListPanel from './listPanel';
 
 // component ---------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ class AdminContent extends React.Component<IRouterParams, {}> {
 
         return (
             <div>
-                <AdminNav {...{ params, location }} />
+                <Nav {...{ params, location }} />
                 { this.renderSelectedList() }
             </div>
         );

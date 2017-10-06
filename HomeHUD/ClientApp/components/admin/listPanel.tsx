@@ -55,9 +55,13 @@ class ListPanel extends React.Component<IListPanelPropsType, {}> {
     }
 
     public render() {
+        if (this.props.items.length == 0) {
+            this.props.getList(routerEntryMap[this.props.entryName]);
+        }
 
         return (
             <div>
+                <h2>{this.props.name}</h2>
                 {this.renderList()}
             </div>
         );
@@ -71,6 +75,7 @@ export default connect(
         var configName = routerEntryMap[publicProps.entryName];
 
         return {
+            name: configName,
             items: state.config[configName]
         };
     },
