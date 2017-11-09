@@ -41,7 +41,10 @@ export class Api {
     public getJson<T>(url: string): Promise<T> {
         return fetch(url, this.getRequestSettings)
             .then(this.processStatus)
-            .then(response => response.json() as Promise<T>);
+            .then(response => response.json() as Promise<T>)
+            .catch(e => {
+                throw new Error('There was an error processing the request by the api for url ' + url + '. ' + e);
+            });
     }
 
     private getAntiforgeryToken() {

@@ -36,12 +36,12 @@ interface ILoginFormProps {
     baseUrl: string;
 }
 
-type ILoginFormPropsType =
+type LoginFormPropsType =
     ILoginFormProps
     & FormProps<ILoginFormData, void, void>
     & typeof requestActionCreators;
 
-class LoginForm extends React.Component<ILoginFormPropsType, {}> {
+class LoginForm extends React.Component<LoginFormPropsType, {}> {
 
     private api: Api = new Api();
 

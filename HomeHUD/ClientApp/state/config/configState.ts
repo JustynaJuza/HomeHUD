@@ -54,16 +54,16 @@ export class Role implements IListItem, IRole {
 
 
 export interface IConfigState {
-    rooms: Room[],
-    users: User[],
-    roles: Role[]
+    rooms: Room[];
+    users: User[];
+    roles: Role[];
 }
 
 export const entityMap: { [key: string]: IListItem } = {
     rooms: new Room(),
     users: new User(),
-    roles: new Role(),
-}
+    roles: new Role()
+};
 
 export const routerEntryMap: { [key: string]: string } = {
     rooms: 'rooms',
@@ -71,4 +71,4 @@ export const routerEntryMap: { [key: string]: string } = {
     users: 'users',
     u: 'users',
     roles: 'roles'
-}
+};

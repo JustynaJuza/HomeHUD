@@ -27,12 +27,12 @@ interface IRoomNavProps {
     rooms: IRoom[];
 }
 
-type IRoomNavPropsType =
+type RoomNavPropsType =
     IRoomNavProps
     & IRouterParams;
 
 
-class RoomNav extends React.Component<IRoomNavPropsType, {}> {
+class RoomNav extends React.Component<RoomNavPropsType, {}> {
 
     private renderControlPanelTab = () => {
         return (

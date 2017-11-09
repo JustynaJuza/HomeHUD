@@ -43,11 +43,11 @@ interface ICreateUserFormState {
     roleOptions: OptionValue[];
 }
 
-type ICreateUserFormPropsType =
+type CreateUserFormPropsType =
     ICreateUserFormProps
     & FormProps<ICreateUserFormData, void, void>
 
-class CreateUserForm extends React.Component<ICreateUserFormPropsType, ICreateUserFormState> {
+class CreateUserForm extends React.Component<CreateUserFormPropsType, ICreateUserFormState> {
     private api: Api = new Api();
 
     constructor(props) {

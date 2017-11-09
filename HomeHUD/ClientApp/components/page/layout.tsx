@@ -24,13 +24,13 @@ interface ILayoutProps {
     redirectUrl: string
 };
 
-type ILayoutPropsType =
+type LayoutPropsType =
     ILayoutProps
     & IRouterParams
     & typeof initialStateLoader
     & typeof requestActionCreators;
 
-class Layout extends React.Component<ILayoutPropsType, {}> {
+class Layout extends React.Component<LayoutPropsType, {}> {
 
     public componentWillMount() {
         this.props.getInitialState();

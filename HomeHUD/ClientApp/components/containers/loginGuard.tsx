@@ -14,21 +14,22 @@ import * as style from '../../css/components/layout.css';
 
 // component ---------------------------------------------------------------------------------
 
-type ILoginGuardPropsType =
+type LoginGuardPropsType =
     ILoginGuardProps
+    & IRouterParams
     & typeof requestActionCreators;
 
-interface ILoginGuardProps extends IRouterParams {
+interface ILoginGuardProps {
     isAuthenticated: boolean;
     currentPath: string;
 };
 
-class LoginGuard extends React.Component<ILoginGuardPropsType, {}> {
+class LoginGuard extends React.Component<LoginGuardPropsType, {}> {
 
     public componentDidMount() {
         if (!this.props.isAuthenticated) {
             this.props.setLoginRedirectUrl(this.props.currentPath);
-            browserHistory.replace('/login')
+            browserHistory.replace('/login');
         }
     }
 
@@ -43,7 +44,7 @@ class LoginGuard extends React.Component<ILoginGuardPropsType, {}> {
 // redux ---------------------------------------------------------------------------------
 
 export default connect(
-    (state: IAppState, ownProps: ILoginGuardProps) => ({
+    (state: IAppState, ownProps: LoginGuardPropsType) => ({
         isAuthenticated: state.request.isAuthenticated,
         currentPath: ownProps.location.pathname
     }),

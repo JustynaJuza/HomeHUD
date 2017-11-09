@@ -7,7 +7,7 @@ export default function dispatchStoreActionsOnLoad(store: any, baseUrl: string, 
         store.dispatch({
             type: RequestActionTypes.SetBaseUrl,
             baseUrl: baseUrl
-        } as RequestActions.SetBaseUrlAction)
+        } as RequestActions.SetBaseUrlAction);
 
     }
 
@@ -15,6 +15,6 @@ export default function dispatchStoreActionsOnLoad(store: any, baseUrl: string, 
         store.dispatch({
             type: RequestActionTypes.LogIn,
             user: null
-        } as RequestActions.LogInAction)
+        } as RequestActions.LogInAction);
     }
 }

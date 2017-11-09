@@ -20,11 +20,11 @@ interface IConfigMenuProps {
     userName: string;
 }
 
-type IConfigMenuPropsType =
+type ConfigMenuPropsType =
     IConfigMenuProps
     & typeof requestActionCreators;
 
-class ConfigMenu extends React.Component<IConfigMenuPropsType, {}> {
+class ConfigMenu extends React.Component<ConfigMenuPropsType, {}> {
 
     private api: Api = new Api();
 
