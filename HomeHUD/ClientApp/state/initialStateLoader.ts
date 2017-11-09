@@ -1,32 +1,32 @@
 import { addTask } from 'domain-task';
 
-import { AppThunkAction, IAppState } from './state';
+import { IAppState } from './state';
 import { Api } from './api';
-
-import * as ConfigActionTypes from './config/configActionTypes';
-import * as ConfigActions from './config/configActions';
 
 import * as LightActionTypes from './lights/lightActionTypes';
 import * as LightActions from './lights/lightActions';
+
+import { configActionCreators } from './config/configActionCreators';
+import { routerEntryMap } from './config/configState';
+
 
 export const initialStateLoader = {
 
     getInitialState: () => (dispatch, getState) => {
         var currentState: IAppState = getState();
 
-        if(currentState.config.rooms.length === 0) {
-            var api = new Api();
-            var initialStateLoadingTask =
-                api.getJson<IAppState>(currentState.request.baseUrl + '/initialState')
-                    .then((initialState) => {
-                        dispatch(<ConfigActions.SetRoomsAction>
-                            { type: ConfigActionTypes.SetRooms, rooms: initialState.config.rooms })
-                        dispatch(<LightActions.SetAllLightsAction>
-                            { type: LightActionTypes.SetAllLights, lights: initialState.lights });
-                    });
+        var loadingRooms = dispatch(configActionCreators.getList(routerEntryMap.rooms));
 
-            // ensures server-side prerendering waits for this to complete
-            addTask(initialStateLoadingTask);
-        }
+        var api = new Api();
+        var initialStateLoadingTask =
+            api.getJson<IAppState>(currentState.request.baseUrl + '/initialState')
+                .then((initialState) => {
+                    dispatch(<LightActions.SetAllLightsAction>
+                        { type: LightActionTypes.SetAllLights, lights: initialState.lights });
+                });
+
+        // ensures server-side prerendering waits for this to complete
+        addTask(loadingRooms);
+        addTask(initialStateLoadingTask);
     }
 };
