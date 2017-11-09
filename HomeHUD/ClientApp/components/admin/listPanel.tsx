@@ -34,19 +34,29 @@ interface IListPanelProps extends IPublicListPanelProps {
     items: IListItem[];
 }
 
-type IListPanelPropsType =
+type ListPanelPropsType =
     IListPanelProps
     & IPublicListPanelProps
     & typeof configActionCreators;
 
-class ListPanel extends React.Component<IListPanelPropsType, {}> {
+class ListPanel extends React.Component<ListPanelPropsType, {}> {
 
     public componentWillMount() {
         this.props.getList(routerEntryMap[this.props.entryName]);
     }
 
+    public componentWillReceiveProps(nextProps: ListPanelPropsType) {
+        if (this.props.entryName !== nextProps.entryName) {
+            this.props.getList(routerEntryMap[nextProps.entryName]);
+        }
+    }
+
+    public shouldComponentUpdate(nextProps: ListPanelPropsType, nextState) {
+        return this.props.entryName !== nextProps.entryName
+            || this.props.items.length !== nextProps.items.length;
+    }
+
     private renderListItem(item: IListItem) {
-        console.log(item)
         return <div> {item.renderListEntry()} </div>;
     }
 
@@ -55,9 +65,6 @@ class ListPanel extends React.Component<IListPanelPropsType, {}> {
     }
 
     public render() {
-        if (this.props.items.length == 0) {
-            this.props.getList(routerEntryMap[this.props.entryName]);
-        }
 
         return (
             <div>
