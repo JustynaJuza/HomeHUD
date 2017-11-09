@@ -59,8 +59,9 @@ namespace HomeHUD.Services
 
         public async Task SetLightsState(LightsStateViewModel lightsState)
         {
-            if (!_lightSwitchDbService.AnyLightsToSwitchToTargetState(lightsState))
-                return;
+            // Always send the switch request, the lights might have been switched independently
+            //if (!_lightSwitchDbService.AnyLightsToSwitchToTargetState(lightsState))
+            //    return;
 
             var transition = GetLightSwitchTransition(lightsState.State);
             lightsState.State = transition[0];
