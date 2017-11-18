@@ -23,3 +23,10 @@ class HomeHud(object):
         self.ServerExternal = serverExternal
         self.AntiforgeryToken = antiforgeryToken
         self.ConfirmLights = confirmLights
+
+class MiLight(object):
+
+    def __init__(self, bridgeIp, messagePrefix, commands):
+        self.BridgeIp = bridgeIp
+        self.MessagePrefix = messagePrefix
+        self.Commands = commands

@@ -7,11 +7,9 @@ from AppSettingsProvider import AppSettingsProvider
 from MessageProcessingService import MessageProcessingService
 from QueueConsumer import QueueConsumer
 
-APPSETTINGS_FILE = 'appsettings.youShallNotCommitThis.json'
-
 def main(argv):
 
-    appSettings = AppSettingsProvider(appSettingsFileName=APPSETTINGS_FILE)
+    appSettings = AppSettingsProvider()
 
     messageProcessingService = MessageProcessingService(
         requestServer = appSettings.get_request_server())

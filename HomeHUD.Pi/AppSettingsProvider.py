@@ -1,12 +1,14 @@
 import json
 import os
 
-from AppSettingsModels import RabbitMqCredentials, RabbitMqQueue, HomeHud
+from AppSettingsModels import *
+
+APPSETTINGS_FILE = 'appsettings.youShallNotCommitThis.json'
 
 class AppSettingsProvider(object):
 
-    def __init__(self, appSettingsFileName):
-        self._appData = self.load_settings(appSettingsFileName)
+    def __init__(self):
+        self._appData = self.load_settings(APPSETTINGS_FILE)
 
     def load_settings(self, appSettingsFileName):
         currentPath = os.path.dirname(__file__)
@@ -45,4 +47,12 @@ class AppSettingsProvider(object):
             homehudWeb['ServerExternal'],
             homehudWeb['AntiforgeryToken'],
             homehudWeb['ConfirmLights'])
+
+    def get_miLight_settings(self):
+            miLightSettings = self._appData['MiLight']
+
+            return MiLight(
+                miLightSettings['BridgeIp'],
+                miLightSettings['MessagePrefix'],
+                miLightSettings['Commands'])
 
