@@ -22,7 +22,7 @@ class MiLightGroup(object):
         '4': bytes([76])
     }
 
-    def ___init___(self, groupNumber):
+    def __init__(self, groupNumber):
         self._group = str(groupNumber) if str(groupNumber) in ['1', '2', '3', '4'] else 'ALL'
 
     def on(self):
@@ -90,7 +90,7 @@ class MiLightColorGroup(MiLightGroup):
 
 
     def __init__(self, groupNumber):
-        super().___init___(groupNumber)
+        super(self.__class__, self).__init__(groupNumber)
 
     def resolve_command(self, commandName, value):
         {

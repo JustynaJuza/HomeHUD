@@ -36,5 +36,8 @@ class MiLightCommand(object):
         MiLightCommand.LastCommandTime = time.time()
 
         command = self._operator + self._value + self._terminator
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udpSocket: # Internet, UDP
-            udpSocket.sendto(command, (self.SETTINGS.BridgeIp, self.SETTINGS.BridgePort))
+        #with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udpSocket: # Internet, UDP
+        #    udpSocket.sendto(command, (self.SETTINGS.BridgeIp, self.SETTINGS.BridgePort))
+        udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        udpSocket.sendto(command, (self.SETTINGS.BridgeIp, self.SETTINGS.BridgePort))
+        udpSocket.close()
