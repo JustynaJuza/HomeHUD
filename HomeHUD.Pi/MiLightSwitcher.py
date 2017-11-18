@@ -1,20 +1,17 @@
-import logging
-
 from ArgumentParser import debuggingOnPC
 from AppSettingsProvider import AppSettingsProvider
-from MiLightGroups import ColorGroup
+from MiLightGroups import MiLightColorGroup
 
 class MiLightSwitcher(object):
 
+    FORMATTING = AppSettingsProvider().get_miLight_formatting()
+
     def __init__(self):
-        appSettings = AppSettingsProvider()
-        miLightSettings = appSettings.get_miLight_settings()
-        self._bridgeIp = miLightSettings.BridgeIp
-        self._messagePrefix = miLightSettings.MessagePrefix
+        return
 
     def has_message_prefix(self, messageParts):
-        return messageParts[0] == self._messagePrefix
+        return messageParts[0] == self.FORMATTING.Prefix
 
     def switch_lights(self, lightGroup, command, value):
-        group = ColorGroup(lightGroup, self._bridgeIp)
+        group = MiLightColorGroup(lightGroup)
         group.resolve_command(command, value)

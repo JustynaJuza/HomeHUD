@@ -1,15 +1,10 @@
 import logging
 
-import socket
-import time
+from MiLightCommand import MiLightCommand
 
 LOGGER = logging.getLogger(__name__)
 
 class MiLightGroup(object):
-    """ Common functions for bulb/strip groups """
-
-    VARIABLESUFFIX = bytes([0])
-    FIXEDSUFFIX = bytes([85])
 
     GROUP_ON = {
         'ALL': bytes([66]),
@@ -27,52 +22,22 @@ class MiLightGroup(object):
         '4': bytes([76])
     }
 
-    def ___init___(self, groupNumber, bridgeIp):
+    def ___init___(self, groupNumber):
         self._group = str(groupNumber) if str(groupNumber) in ['1', '2', '3', '4'] else 'ALL'
-        self._bridgeIp = bridgeIp
-        self._port = 8899
-        self._pause = 0.1
-        self._lastCommandTime = time.time()
-
-    def construct_command(self, operator, variableSuffix = VARIABLESUFFIX):
-        # All UDP Commands are 3 bytes.
-        # 1 byte is the operator
-        # 2 byte is 0x00 (0) or a value for specific operators when setting color or brightness
-        # 3 byte is always a suffix of 0x55 (85)
-        return operator + variableSuffix + self.FIXEDSUFFIX;
-
-    def send_command(self, command):
-        """ Send command to the wifi-bridge """
-
-        if command is None:
-            return
-
-        # Lights require time between commands, 100ms is recommended by the documentation
-        current_pause = time.time() - self._lastCommandTime
-        if current_pause < self._pause:
-            time.sleep(self._pause - current_pause)
-        self._lastCommandTime = time.time()
-
-        LOGGER.info('Dispatching udp command to bridge')
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as udpSocket: # Internet, UDP
-            udpSocket.sendto(command, (self._bridgeIp, self._port))
 
     def on(self):
         """ Switch group on """
-
         LOGGER.info('Swiching lights ON in group {0}'.format(self._group))
-        command = self.construct_command(self.GROUP_ON[self._group])
-        self.send_command(command)
+        MiLightCommand(self.GROUP_ON[self._group]).send()
 
     def off(self):
         """ Switch group off """
 
         LOGGER.info('Swiching lights OFF in group {0}'.format(self._group))
-        command = self.construct_command(self.GROUP_OFF[self._group])
-        self.send_command(command)
+        MiLightCommand(self.GROUP_OFF[self._group]).send()
 
 
-class ColorGroup(MiLightGroup):
+class MiLightColorGroup(MiLightGroup):
     """ A group of RGBW color bulbs/strips """
 
     GROUP_WHITE = {
@@ -83,31 +48,8 @@ class ColorGroup(MiLightGroup):
         '4': bytes([203])
     }
 
-    # Set BRIGHTNESS
-    # Byte2: 0×02 to 0x1B (decimal range: 2 to 27) full brightness 0x1B (decimal 27)
     BRIGHTNESS = bytes([78])
 
-    # Set to DISCO
-    DISCO_MODE = bytes([77])
-    DISCO_SPEED_SLOWER = bytes([67])
-    DISCO_SPEED_FASTER = bytes([68])
-
-    # Specials disco
-    DISCO_CODE = b"\x42\x00\x40\x40\x42\x00\x4e\x02"
-    DISCO_CODES = {
-        "RAINBOW": b"\x4d\x00" * 1,
-        "WHITE BLINK": b"\x4d\x00" * 2,
-        "COLOR FADE": b"\x4d\x00" * 3,
-        "COLOR CHANGE": b"\x4d\x00" * 4,
-        "COLOR BLINK": b"\x4d\x00" * 5,
-        "RED BLINK": b"\x4d\x00" * 6,
-        "GREEN BLINK": b"\x4d\x00" * 7,
-        "BLUE BLINK": b"\x4d\x00" * 8,
-        "DISCO": b"\x4d\x00" * 9
-    }
-
-    # Set COLOR
-    # Byte2: 0×00 to 0xFF (255 colors) = COLOR_CODE
     COLOR = bytes([64])
 
     COLOR_CODES = {
@@ -129,62 +71,64 @@ class ColorGroup(MiLightGroup):
         "LAVENDER": b"\xF0"
     }
 
-    def __init__(self, groupNumber, bridgeIp):
-        """ init """
-        super().___init___(groupNumber, bridgeIp)
+    DISCO_MODE = bytes([77])
+    DISCO_SPEED_SLOWER = bytes([67])
+    DISCO_SPEED_FASTER = bytes([68])
 
-        self._commandMappings = {
-            'ON': self.on,
-            'OFF': self.off,
-            'BRIGHTNESS': self.set_brightness,
-            'WHITE': self.set_white,
-            'COLOR': self.set_color,
-            'DISCO': self.set_disco
-        }
+    DISCO_CODE = b"\x42\x00\x40\x40\x42\x00\x4e\x02"
+    DISCO_CODES = {
+        "RAINBOW": b"\x4d\x00" * 1,
+        "WHITE BLINK": b"\x4d\x00" * 2,
+        "COLOR FADE": b"\x4d\x00" * 3,
+        "COLOR CHANGE": b"\x4d\x00" * 4,
+        "COLOR BLINK": b"\x4d\x00" * 5,
+        "RED BLINK": b"\x4d\x00" * 6,
+        "GREEN BLINK": b"\x4d\x00" * 7,
+        "BLUE BLINK": b"\x4d\x00" * 8,
+        "DISCO": b"\x4d\x00" * 9
+    }
+
+
+    def __init__(self, groupNumber):
+        super().___init___(groupNumber)
 
     def resolve_command(self, commandName, value):
-        try:
-            if value is None:
-                return self._commandMappings[commandName]()
-
-            return self._commandMappings[commandName](value)
-
-        except ValueError:
-                    LOGGER.error('Parsing message {0} failed'.format(message))
-
-        #result = {
-        #    'ON': this.on(),
-        #    'OFF': this.off(),
-        #    'BRIGHTNESS': this.setBrightness(value),
-        #    'WHITE': this.setWhite(),
-        #    'COLOR': this.setColor(value),
-        #    'DISCO': this.setDisco(value)
-        #    }[commandName](x)
+        {
+            'ON': lambda _: self.on(),
+            'OFF': lambda _: self.off(),
+            'WHITE': lambda _: self.set_white(),
+            'BRIGHTNESS': lambda value: self.set_brightness(value),
+            'COLOR': lambda value: self.set_color(value),
+            'DISCO': lambda mode: self.set_disco(mode)
+        }[commandName](value)
 
     def set_white(self):
         """ Switch to white """
-        command = self.construct_command(self.GROUP_WHITE[self.group])
-        self.send_command(command)
+
+        LOGGER.info('Swiching lights to white in group {0}'.format(self._group))
+        MiLightCommand(self.GROUP_WHITE[self._group]).send()
 
     def set_brightness(self, value=25):
-        """ Set brightness level (0 <= value <= 25) """
-        value += 2                      # value should be between 0 and 25
-        value = max(2, min(27, value))  # value should be between 2 and 27
+        # byte2: 0x02 to 0x1B (2-27)
+        """ Set brightness level (0-25) """
+
+        value = max(0, min(25, value))
+        value += 2
 
         self.on()
-        command = self.construct_command(self.BRIGHTNESS, bytes[(value)])
-        self.send_command(command)
+        LOGGER.info('Swiching light brightness to {1} in group {0}'.format(self._group, value))
+        MiLightCommand(self.BRIGHTNESS, bytes[(value)]).send()
 
     def set_color(self, hueValue):
-        """ Set color """
-        if type(hueValue) is not int:
-            hueValue = 255
+        # byte2: 0x00 to 0xFF (255 colors)
+        """ Set color hue (0-255) """
 
         hueValue = max(0, min(255, hueValue))
 
         self.on()
-        command = self.construct_command(self.COLOR, bytes([hueValue]))
-        self.send_command(command)
+        LOGGER.info('Swiching light color to {1} in group {0}'.format(self._group, hueValue))
+        MiLightCommand(self.COLOR, bytes([hueValue])).send()
+
 
     def set_disco(self, mode=''):
         """ Enable disco mode, if no valid mode is provided the default disco mode is started """

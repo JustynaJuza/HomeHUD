@@ -30,7 +30,7 @@ class AppSettingsProvider(object):
             rabbitMqCredentials['VirtualHost'])
 
     def get_rabbitMq_queue(self):
-        rabbitMqQueue = self._appData["RabbitMq"]["Queue"];
+        rabbitMqQueue = self._appData['RabbitMq']['Queue'];
 
         return RabbitMqQueue(
             rabbitMqQueue['Name'],
@@ -38,6 +38,13 @@ class AppSettingsProvider(object):
             rabbitMqQueue['AutoDelete'],
             rabbitMqQueue['NoAck'],
             rabbitMqQueue['Exclusive'])
+
+    def get_miLight_formatting(self):
+            miLightFormatting = self._appData['RabbitMq']['Formatting']['MiLight']
+
+            return MiLightFormatting(
+                miLightFormatting['Prefix'],
+                miLightFormatting['Commands'])
 
     def get_request_server(self):
         homehudWeb = self._appData['HomeHud.Web']
@@ -51,8 +58,7 @@ class AppSettingsProvider(object):
     def get_miLight_settings(self):
             miLightSettings = self._appData['MiLight']
 
-            return MiLight(
+            return MiLightSettings(
                 miLightSettings['BridgeIp'],
-                miLightSettings['MessagePrefix'],
-                miLightSettings['Commands'])
+                miLightSettings['BridgePort'])
 

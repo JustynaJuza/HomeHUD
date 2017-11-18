@@ -24,9 +24,14 @@ class HomeHud(object):
         self.AntiforgeryToken = antiforgeryToken
         self.ConfirmLights = confirmLights
 
-class MiLight(object):
+class MiLightSettings(object):
 
-    def __init__(self, bridgeIp, messagePrefix, commands):
+    def __init__(self, bridgeIp, bridgePort):
         self.BridgeIp = bridgeIp
-        self.MessagePrefix = messagePrefix
+        self.BridgePort = int(bridgePort)
+
+class MiLightFormatting(object):
+
+   def __init__(self, miLightPrefix, commands):
+        self.Prefix = miLightPrefix
         self.Commands = commands

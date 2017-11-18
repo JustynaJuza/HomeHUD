@@ -53,6 +53,8 @@ class MessageProcessingService(object):
                 lightSwitcher = EnergenieLightSwitcher()
                 lightSwitcher.switch_lights(lightState, lightIds)
 
+                # update state on homeHud website
+                # TODO: Move this somewhere
                 lightsState = []
                 for piLight in lightSwitcher.PiLights:
                     light = Light(piLight.Id, piLight.State)

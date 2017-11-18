@@ -25,6 +25,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MiLightCommand.py" />
     <Compile Include="MiLightGroups.py" />
     <Compile Include="MiLightSwitcher.py" />
     <Compile Include="EnergenieLightSwitcher.py" />

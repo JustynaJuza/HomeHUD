@@ -51,7 +51,7 @@ class EnergenieLightSwitcher(object):
         self.PiLights = LIGHTS
 
         if not debuggingOnPC:
-            self.initGPIO()
+            self.init_GPIO()
 
     def switch_lights(self, state, lightIds = None):
         if lightIds:
@@ -105,7 +105,7 @@ class EnergenieLightSwitcher(object):
         time.sleep(0.25)
         GPIO.output(22, False)
 
-    def initGPIO(self):
+    def init_GPIO(self):
         # set the pins numbering mode
         GPIO.setmode(GPIO.BOARD)
         # select the GPIO pins used for the encoder K0-K3 data inputs
