@@ -6,7 +6,7 @@ After=multi-user.target
 Type=idle
 Restart=always
 RestartSec=3
-ExecStart=/usr/bin/python /home/pi/HomeHUD.Pi/HomeHUDPi.py
+ExecStart=/usr/bin/python3 /home/pi/HomeHUD.Pi/HomeHUDPi.py
 
 [Install]
 WantedBy=multi-user.target

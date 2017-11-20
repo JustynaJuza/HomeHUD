@@ -90,7 +90,7 @@ class MiLightColorGroup(MiLightGroup):
 
 
     def __init__(self, groupNumber):
-        super(self.__class__, self).__init__(groupNumber)
+        super().__init__(groupNumber)
 
     def resolve_command(self, commandName, value):
         {

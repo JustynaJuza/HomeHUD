@@ -33,7 +33,7 @@ class ApiHandler(object):
         if response.status_code == requests.codes.ok:
             LOGGER.info('Token request sent to {0} responded OK'.format(url))
             antiforgeryToken = AntiforgeryToken()
-            json.loads(response.content, object_hook=antiforgeryToken.fromJson)
+            json.loads(response.content.decode('utf-8'), object_hook=antiforgeryToken.fromJson)
 
             antiforgeryToken.Cookies = response.cookies
             return antiforgeryToken
