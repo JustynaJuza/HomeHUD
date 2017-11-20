@@ -18,7 +18,8 @@ class PiLight(object):
       self.OnSequence = onSequence
       self.OffSequence = offSequence
 
-LIGHTS = [
+class EnergenieLightSwitcher(object):
+    LIGHTS = [
         PiLight(
             id=1,
             state=0,
@@ -45,11 +46,7 @@ LIGHTS = [
         )
     ]
 
-class EnergenieLightSwitcher(object):
-
     def __init__(self):
-        self.PiLights = LIGHTS
-
         if not debuggingOnPC:
             self.init_GPIO()
 
@@ -65,7 +62,7 @@ class EnergenieLightSwitcher(object):
             lightIds))
 
         for id in lightIds:
-            light = next((l for l in self.PiLights if l.Id == id), None)
+            light = next((l for l in self.LIGHTS if l.Id == id), None)
             if light:
                 self.switch_light(light, state)
             else:
@@ -74,7 +71,7 @@ class EnergenieLightSwitcher(object):
     def switch_all(self, state):
         LOGGER.info('Swiching all lights {0}'.format('ON' if state==1 else 'OFF'))
 
-        for light in self.PiLights:
+        for light in self.LIGHTS:
             self.switch_light(light, state)
 
     def switch_light(self, light, state):

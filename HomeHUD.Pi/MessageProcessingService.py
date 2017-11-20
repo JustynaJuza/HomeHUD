@@ -56,7 +56,7 @@ class MessageProcessingService(object):
                 # update state on homeHud website
                 # TODO: Move this somewhere
                 lightsState = []
-                for piLight in lightSwitcher.PiLights:
+                for piLight in lightSwitcher.LIGHTS:
                     light = Light(piLight.Id, piLight.State)
                     lightsState.append(light)
 
