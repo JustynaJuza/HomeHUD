@@ -61,7 +61,7 @@ class EnergenieLightSwitcher(object):
 
     def switch_selected(self, lightIds, state):
         LOGGER.info('Swiching {0} selected light(s): {1}'.format(
-            "ON" if state==1 else "OFF",
+            'ON' if state==1 else 'OFF',
             lightIds))
 
         for id in lightIds:
@@ -72,7 +72,7 @@ class EnergenieLightSwitcher(object):
                 LOGGER.error("No light was found with id {0}".format(light.Id))
 
     def switch_all(self, state):
-        LOGGER.info('Swiching all lights {0}'.format("ON" if state==1 else "OFF"))
+        LOGGER.info('Swiching all lights {0}'.format('ON' if state==1 else 'OFF'))
 
         for light in self.PiLights:
             self.switch_light(light, state)
@@ -85,7 +85,7 @@ class EnergenieLightSwitcher(object):
             self.set_output_sequence(sequence)
 
         light.State=state
-        LOGGER.info("Switched light {0} {1}".format(light.Id, "ON" if state==1 else "OFF"))
+        LOGGER.info('Switched light {0} {1}'.format(light.Id, 'ON' if state==1 else 'OFF'))
 
     def set_output_sequence(self, sequence = [()]):
         for pinState in sequence:
@@ -106,6 +106,7 @@ class EnergenieLightSwitcher(object):
         GPIO.output(22, False)
 
     def init_GPIO(self):
+        LOGGER.info('Initializing GPIO')
         # set the pins numbering mode
         GPIO.setmode(GPIO.BOARD)
         # select the GPIO pins used for the encoder K0-K3 data inputs
