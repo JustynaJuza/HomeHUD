@@ -1,6 +1,7 @@
 import { store } from '../boot-client';
 import * as _ from 'lodash';
 import 'signalr';
+declare var $: any;
 
 import * as LightAction from './lights/lightActions';
 import * as LightActionTypes from './lights/lightActionTypes';
@@ -19,6 +20,7 @@ export class ControlHub implements IControlHub {
 
     private connection: SignalR.Hub.Connection;
     private proxy: SignalR.Hub.Proxy;
+    private connectionStart: JQueryPromise<any>;
 
     public init(): void {
         this.connection = $.hubConnection();
@@ -56,17 +58,10 @@ export class ControlHub implements IControlHub {
                 lights: { all: data }
             })
         });
-
-        //this.proxy.on(SET_CURRENT_LIGHTS_STATE, (data: LightsState) => {
-        //    store.dispatch(lightActions.SET_CURRENT_LIGHTS_STATE(data));
-        //});
     }
 
     private startConnection(): void {
-        this.connection.start();
-            //.done(() => {
-            //    //this.proxy.invoke(GET_CURRENT_LIGHTS_STATE);
-            //})
+        this.connectionStart = this.connection.start();
             //.fail(() => {
             //    //store.dispatch(navigationActions.SHOW_ERROR({
             //    //    message: 'You will not be able to switch lights on and off, a connection with the server could not be established.'
@@ -75,10 +70,10 @@ export class ControlHub implements IControlHub {
     }
 
     public trySetLightState(lightState: { lightId: string | number, state: number }): void {
-        this.proxy.invoke('SetLightState', lightState);
+        this.connectionStart.done(() => this.proxy.invoke('SetLightState', lightState));
     }
 
     public trySetAllLightsState(allLightsState: { lightIds: Array<string | number>, state: number }): void {
-        this.proxy.invoke('SetAllLightsState', allLightsState);
+        this.connectionStart.done(() => this.proxy.invoke('SetAllLightsState', allLightsState));
     }
 }
