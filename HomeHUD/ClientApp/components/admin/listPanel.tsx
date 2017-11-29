@@ -22,7 +22,8 @@ import { Route } from 'react-router';
 export interface IListItem {
     id: number;
     listApi: string;
-    renderListEntry: () => string;
+    renderListEntry: () => any;
+    getListColumns: () => any[];
 }
 
 interface IPublicListPanelProps {

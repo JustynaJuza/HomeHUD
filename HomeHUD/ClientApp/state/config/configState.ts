@@ -17,8 +17,17 @@ export class Room implements IListItem, IRoom {
 
     listApi = '/rooms/list';
 
-    public renderListEntry(): string {
-        return this.name;
+    public renderListEntry(): any {
+        return {
+            id: this.id,
+            name: this.name
+        };
+    }
+
+    public getListColumns(): any[] {
+        return [
+            { key: 'id', name: 'ID' },
+            { key: 'name', name: 'Name' }];
     }
 }
 
@@ -32,8 +41,17 @@ export class User implements IListItem, IUser {
 
     listApi = '/users/list';
 
-    public renderListEntry(): string {
-        return this.name;
+    public renderListEntry(): any {
+        return {
+            id: this.id,
+            name: this.name
+        };
+    }
+
+    public getListColumns(): any[] {
+        return [
+            { key: 'id', name: 'ID' },
+            { key: 'name', name: 'Name' }];
     }
 }
 
@@ -47,8 +65,17 @@ export class Role implements IListItem, IRole {
 
     listApi = '/users/roles';
 
-    public renderListEntry(): string {
-        return this.id + ' ' + this.name;
+    public renderListEntry(): any {
+        return {
+            id: this.id,
+            name: this.name
+        };
+    }
+
+    public getListColumns(): any[] {
+        return [
+            { key: 'id', name: 'ID' },
+            { key: 'name', name: 'Name' }];
     }
 }
 
