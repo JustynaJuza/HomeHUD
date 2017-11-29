@@ -5,6 +5,7 @@ import * as _indexOf from 'lodash/indexOf';
 // react
 import * as React from 'react'
 import * as classNames from 'classnames';
+import { renderData } from './listPanel.data';
 
 // redux
 import { connect } from 'react-redux';
@@ -42,6 +43,9 @@ type ListPanelPropsType =
 
 class ListPanel extends React.Component<ListPanelPropsType, {}> {
 
+    private rows: any[];
+    private configName = routerEntryMap[this.props.entryName];
+
     public componentWillMount() {
         this.props.getList(routerEntryMap[this.props.entryName]);
     }
@@ -57,20 +61,22 @@ class ListPanel extends React.Component<ListPanelPropsType, {}> {
             || this.props.items.length !== nextProps.items.length;
     }
 
-    private renderListItem(item: IListItem) {
-        return <div> {item.renderListEntry()} </div>;
+    private renderList() {
+        this.rows = [];
+        return _map(this.props.items, item => this.rows.push(item.renderListEntry()));
     }
 
-    private renderList() {
-        return _map(this.props.items, this.renderListItem);
-    }
+    private rowGetter = (i) => {
+        return this.rows[i];
+    };
 
     public render() {
+        this.renderList();
 
         return (
             <div>
                 <h2>{this.props.name}</h2>
-                {this.renderList()}
+                {renderData(this.configName, this.rows) }
             </div>
         );
     }

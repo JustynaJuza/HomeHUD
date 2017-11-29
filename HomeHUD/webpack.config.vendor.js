@@ -34,6 +34,7 @@ module.exports = (env) => {
                 'redux-thunk',
                 'react-router-redux',
                 'react-selectize',
+                'react-data-grid',
                 'html-entities',
                 'jquery'
             ],
