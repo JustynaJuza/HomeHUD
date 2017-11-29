@@ -44,7 +44,7 @@ class RoomNav extends React.Component<RoomNavPropsType, {}> {
 
     private renderRoomNavTab = (room: IRoom, index: number) => {
         return (
-            <RoomNavTab key={index + 1} hash={room.hash} isActive={room.hash == this.props.params['hash']}>
+            <RoomNavTab key={index + 1} hash={room.hash} isActive={room.hash === this.props.params['hash']}>
                 {room.name}
             </RoomNavTab>
         )
