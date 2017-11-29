@@ -81,7 +81,19 @@ module.exports = (env) => {
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
                 sourceType: 'commonjs2',
                 name: './vendor'
-            })
+            }),
+            new webpack.NormalModuleReplacementPlugin(
+                /(.*)/,
+                (resource) => {
+                // Replace every module that has a server version for server rendering
+                    var fileNameRegex = /([\w\d_-]*)\.?[^\\\/]*$/i;
+                    var fileName = resource.request.match(fileNameRegex)[0];
+                    var serverModule = resource.request.replace(fileName, fileName + '-server');
+                    //if (fs.existsSync(serverModule)) {
+                    resource.request = resource.request.replace(fileName, serverModule);
+                    //}
+                }
+            )
         ],
         output: {
             libraryTarget: 'commonjs',
