@@ -10,7 +10,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import { getRoutesConfig } from './router';
-import configureStore from './configureStore-client';
+import configureStore from './configureStore';
 import initialDispatch from './boot-store';
 import { IAppState }  from './state/state';
 

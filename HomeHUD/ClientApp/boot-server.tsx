@@ -9,7 +9,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { getRoutesConfig } from './router';
-import configureStore from './configureStore-server';
+import configureStore from './configureStore';
 import initialDispatch from './boot-store';
 
 export default createServerRenderer(params => {
