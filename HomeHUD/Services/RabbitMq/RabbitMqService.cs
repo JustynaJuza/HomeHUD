@@ -1,8 +1,8 @@
 ﻿using HomeHUD.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Exceptions;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -18,15 +18,19 @@ namespace HomeHUD.Services
     public class RabbitMqService : IRabbitMqService
     {
         private readonly RabbitMq.Credentials _credentials;
+        private readonly RabbitMq.Formatting _formatting;
 
-        public RabbitMqService(RabbitMq.Credentials credentials)
+        public RabbitMqService(
+            RabbitMq.Credentials credentials,
+            RabbitMq.Formatting formatting)
         {
             _credentials = credentials;
+            _formatting = formatting;
         }
 
         private bool SendMessage(string message)
         {
-            var factory = new ConnectionFactory()
+            var factory = new ConnectionFactory
             {
                 Uri = string.Format(
                     "amqp://{0}:{1}@{2}:{3}/{4}",
@@ -60,7 +64,8 @@ namespace HomeHUD.Services
                                                      routingKey: "homehudToPi",
                                                      basicProperties: properties,
                                                      body: messageBody);
-                    Console.WriteLine(" [x] Sent {0}", message);
+
+                    Debug.WriteLine($"Sent message to RabbitMQ: {message}");
                 }
             }
             catch (BrokerUnreachableException)
@@ -87,6 +92,13 @@ namespace HomeHUD.Services
 
             var message = $"{(int) state}, {lightIdsMessage.ToString().TrimEnd()}";
             return SendMessage(message);
+        }
+
+        public bool SendMiLightCommand(LightStateViewModel lightState)
+        {
+            var message = $"{_formatting.MiLight.Prefix}, {lightState.LightId}, {(int) lightState.State}";
+            return SendMessage(message);
+
         }
     }
 

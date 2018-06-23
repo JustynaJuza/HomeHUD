@@ -93,6 +93,10 @@ namespace HomeHUD
                 .Get<RabbitMq.Queue>();
             container.RegisterSingleton(rabbitMqQueue);
 
+            var rabbitMqFormatting = configuration.GetSection($"{nameof(RabbitMq)}:{nameof(RabbitMq.Formatting)}")
+                .Get<RabbitMq.Formatting>();
+            container.RegisterSingleton(rabbitMqFormatting);
+
             var antiforgeryOptions = configuration.GetSection("Antiforgery")
                 .Get<AntiforgeryOptions>();
             container.RegisterSingleton(antiforgeryOptions);
